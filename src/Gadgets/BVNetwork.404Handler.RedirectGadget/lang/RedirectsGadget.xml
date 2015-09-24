@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+    <language name="English"
+              id="en">
+        <gadget>
+            <redirects>
+                <ignored>Ignored</ignored>
+                <title>Custom Redirects</title>
+                <name>Custom Redirects Manager</name>
+                <description>Administration of custom redirects</description>
+                <count>Number of redirects:</count>
+                <oldurl>Old url</oldurl>
+                <newurl>New url</newurl>
+                <info>
+                    With the 404 Handler Redirect Gadget you can add new custom redirects, delete or search for existing redirects.
+                    The "old URL" is unique, meaning that if you register two custom redirects with the same old URL, the latter will overwrite the first one.
+                </info>
+                <delete>Delete</delete>
+                <configure>Remove all</configure>
+                <cleartext>Select'OK' to remove ALL custom redirects</cleartext>
+                <note>This operation is not reversible.</note>
+                <search>Search</search>
+                <searchresult>Your search for  &lt;b&gt;{0}&lt;/b&gt; returned &lt;b&gt;{1}&lt;/b&gt; results.</searchresult>
+                <wildcard>Wildcard</wildcard>
+                <storedredirects>There are currently stored &lt;b&gt;{0}&lt;/b&gt; custom redirects</storedredirects>
+                <saveredirect>Custom redirect with old URL &lt;b&gt;{0}&lt;/b&gt; and new URL &lt;b&gt;{1}&lt;/b&gt; successfully saved.</saveredirect>
+                <redirectscount>Displaying redirects {0}-{1} of {2}</redirectscount>
+                <suggestionscount>Suggestions: {0}-{1} of {2}</suggestionscount>
+                <split>...</split>
+                <ignoreexplanation>By ignoring a suggestion, there will be added no more logging for the given URL. The suggestion will also be removed from the list</ignoreexplanation>
+                <ignoreredirect>Redirect with url &lt;b&gt;{0}&lt;/b&gt; added to ignore list</ignoreredirect>
+                <ignore>Ignore</ignore>
+                <storedsuggestions>Based on the logged 404 errors, there are &lt;b&gt;{0}&lt;/b&gt; custom redirect suggestions.</storedsuggestions>
+                <andsuggestions>and &lt;b&gt;{0}&lt;/b&gt; custom redirect suggestions</andsuggestions>
+                <searchsuggestions>Your search for  &lt;b&gt;{0}&lt;/b&gt; returned &lt;b&gt;{1}&lt;/b&gt; suggestions.</searchsuggestions>
+                <ignoredsuggestions>There are currently &lt;b&gt;{0}&lt;/b&gt; ignored suggestions stored.</ignoredsuggestions>
+                <unignore>Unignore</unignore>
+                <url>Url</url>
+                <importsuccess>{0} redirects successfully imported.</importsuccess>
+                <importnone>No redirects could be imported</importnone>
+                <importinfo>Import redirects from an XML-file </importinfo>
+                <ignoredremoved>All {0} ignored suggestions permanently removed</ignoredremoved>
+                <suggestionsdeleted>Suggestions successfully deleted</suggestionsdeleted>
+                <suggesteionsdeleteinfo1>Permanently delete all suggestions with less than</suggesteionsdeleteinfo1>
+                <suggesteionsdeleteinfo2>error counts and older than</suggesteionsdeleteinfo2>
+                <suggesteionsdeleteinfo3>days</suggesteionsdeleteinfo3>
+                <deleteignoreinfo>Permanently delete all ignored suggestions</deleteignoreinfo>
+                <Administerinfo>Clean up redirect suggestions or ignored urls, or import redirect from an XML file.</Administerinfo>
+            </redirects>
+        </gadget>
+    </language>
+</languages>

@@ -1,0 +1,39 @@
+<configuration>	 	
+	<configSections>
+		<section name="bvn404Handler"
+ 	 	                 type="BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration, BVNetwork.EPi404"/>
+    </configSections>
+	<bvn404Handler handlerMode="On"
+                   fileNotFoundPage="/404notfound.aspx">
+ 	 	<providers>
+ 	 	    <!--
+ 	 	        Register your own handler that will be given a chance to
+ 	 	        rewrite the url. The type must implement INotFoundHandler
+ 	 	        <add name="NameOfHandler" type="Your.Handler.Here" />
+ 	 	     -->
+ 	 	</providers>
+ 	</bvn404Handler>
+    <system.webServer>        
+        <modules>
+            <add name="BVNetwork.EPi404"
+ 	 	         type="BVNetwork.FileNotFound.Handler.CustomFileNotFoundHandler, BVNetwork.EPi404" />
+        </modules>
+		 <httpErrors errorMode="Custom">
+ 	 	            <remove statusCode="404"
+ 	 	                    subStatusCode="-1" />
+ 	 	            <error statusCode="404"
+ 	 	                   prefixLanguageFilePath=""
+ 	 	                   path="/404notfound.aspx"
+ 	 	                   responseMode="ExecuteURL" />
+ 	 	        </httpErrors>
+	</system.webServer>
+	<episerver.shell>
+        <publicModules>           
+ 	 	        <add name="BVNetwork.FileNotFound.RedirectGadget">
+ 	 	            <assemblies>
+ 	 	                 <add assembly="BVNetwork.FileNotFound.RedirectGadget" />
+ 	 	            </assemblies>
+ 	 	        </add>
+ 	 	 </publicModules>
+	</episerver.shell>	 
+</configuration>

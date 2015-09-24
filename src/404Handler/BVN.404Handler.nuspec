@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>BVN.404Handler</id>
+        <title>404 Handler for EPiServer</title>
+        <version>4.0.0</version>
+        <authors>BV Network</authors>
+        <owners>BV Network</owners>
+        <licenseUrl>https://www.coderesort.com/p/epicode/wiki/EpicodeLicense</licenseUrl>
+        <projectUrl>https://github.com/BVNetwork/404handler</projectUrl>
+        <iconUrl>http://www.coderesort.com/favicon.ico</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>This library contains a custom 404 handler for your EPiServer 7 project. It will replace the default 404 handler with one that you can change, in order for it to have a more consistent look with the rest of your site. It will also handle more 404 cases than the built-in handler. It also includes a Custom Redirect Gadget (for EPiServer Online Center) for editors to add redirects. The 404 handler logs all 404 errors and present them in a list in the gadget, which will allow editors to easily add redirects based on the logged errors.</description>
+        <summary>The popular 404 handler for EPiServer, enabling better control over your 404 page in addition to allowing redirects for old urls that no longer works.</summary>
+        <language>en-US</language>
+    </metadata>
+    <files>
+        <file src="lang\bvnerrorhandler.xml" target="content\lang\bvnerrorhandler.xml" />
+        <file src="lang\bvnerrorhandlerDE.xml" target="content\lang\bvnerrorhandlerDE.xml" />
+        <file src="lang\bvnerrorhandlerDK.xml" target="content\lang\bvnerrorhandlerDK.xml" />
+        <file src="lang\bvnerrorhandlerEN-GB.xml" target="content\lang\bvnerrorhandlerEN-GB.xml" />
+        <file src="lang\bvnerrorhandlerEN.xml" target="content\lang\bvnerrorhandlerEN.xml" />
+        <file src="lang\bvnerrorhandlerNO.xml" target="content\lang\bvnerrorhandlerNO.xml" />
+        <file src="lang\bvnerrorhandlerSV.xml" target="content\lang\bvnerrorhandlerSV.xml" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\BaseSprite.png" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\BaseSprite.png" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\Gradients.png" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\Gradients.png" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\gray_border.png" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\gray_border.png" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\navigate_close.png" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\navigate_close.png" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\navigate_open.png" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\navigate_open.png" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\SpriteTools.png" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Content\Images\SpriteTools.png" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Content\RedirectGadget.css" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Content\RedirectGadget.css" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Scripts\jquery.blockUI.js" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Scripts\jquery.blockUI.js" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Scripts\jquery.form.js" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Scripts\jquery.form.js" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Administer.ascx" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Administer.ascx" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Ignored.ascx" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Ignored.ascx" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Index.ascx" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Index.ascx" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Menu.ascx" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Menu.ascx" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Pager.ascx" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Pager.ascx" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Redirects.ascx" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Redirects.ascx" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Referers.ascx" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Referers.ascx" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Suggestions.ascx" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Redirect\Suggestions.ascx" />
+        <file src="..\Gadgets\BVNetwork.404Handler.RedirectGadget\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Web.config" target="content\modules\BVNetwork.FileNotFound.RedirectGadget\Views\Web.config" />
+        <file src="Bvn\FileNotFound\content\404NotFound.aspx" target="content\404NotFound.aspx" />
+        <file src="web.config.transform" target="content\web.config.transform" />
+        <file src="lib\net45\BVNetwork.EPi404.dll" target="lib\net45\BVNetwork.EPi404.dll" />
+        <file src="lib\net45\BVNetwork.FileNotFound.RedirectGadget.dll" target="lib\net45\BVNetwork.FileNotFound.RedirectGadget.dll" />
+    </files>
+</package>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+	<language name="English" id="EN">
+    <bvn>
+      <filenotfound>
+        <admin>
+          <default>
+            <heading>404 - File Not Found Configuration</heading>
+          </default>
+        </admin>
+      </filenotfound>
+    </bvn>
+		<templates>
+			<notfound>
+				<title>Page was not found</title>
+				<toptext>We're sorry, but the page you requested could not be found
+					&#60;br&#62;
+					&#60;br&#62;
+				</toptext>
+				<lookingfor>You were looking for:
+					&#60;br&#62;</lookingfor>
+				<referer>&#60;br&#62;You came from:&#60;br&#62;
+				</referer>
+				<bottomtext>
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;b&#62;What now?&#60;/b&#62;
+					&#60;br&#62;
+					&#60;br&#62;
+					You can try our &#60;a href="/search"&#62;search page&#60;/a&#62;, and search for 
+					relevant information.
+					&#60;br&#62;
+					&#60;br&#62;
+					We also have a &#60;a href="/sitemap"&#62;sitemap&#60;/a&#62; for you to try.
+					&#60;br&#62;
+					&#60;br&#62;
+					If you need to contact us, see our &#60;a href="/contact"&#62;contact page&#60;/a&#62;.
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;b&#62;Visit the &#60;a href="/"&#62;home page&#60;/a&#62;.&#60;/b&#62;
+				</bottomtext>	
+			</notfound>
+		</templates>
+	</language>
+</languages>

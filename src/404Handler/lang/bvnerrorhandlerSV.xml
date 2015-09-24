@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+	<language name="Svenska" id="SV">
+    <bvn>
+      <filenotfound>
+        <admin>
+          <default>
+            <heading>404 - File Not Found Configuration</heading>
+          </default>
+        </admin>
+      </filenotfound>
+    </bvn>
+
+    <templates>
+			<notfound>
+				<title>Felaktig länk</title>
+				<toptext>Sidan du försökte ladda hittades inte.
+					&#60;br&#62;
+					&#60;br&#62;
+				</toptext>
+				<lookingfor>Sidan du försökte ladda var:
+					&#60;br&#62;</lookingfor>
+				<referer>&#60;br&#62;Länken fanns på sidan:&#60;br&#62;
+				</referer>
+				<bottomtext>
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;b&#62;Alternativ?&#60;/b&#62;
+					&#60;br&#62;
+					&#60;br&#62;
+					Använd vår &#60;a href="/avanceradsok"&#62;söksida&#60;/a&#62;, för att hitta den information du söker.
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;a href="/webbkarta"&#62;Webbkartan&#60;/a&#62; kanske kan hjälpa dig.
+					&#60;br&#62;
+					&#60;br&#62;
+					För att kontakta oss använd &#60;a href="/kontakt"&#62;kontaktsidan&#60;/a&#62;.
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;b&#62;Gå till &#60;a href="/"&#62;startsidan&#60;/a&#62;.&#60;/b&#62;
+				</bottomtext>	
+			</notfound>
+		</templates>
+	</language>
+</languages>
