@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BVNetwork.FileNotFound.Configuration
+namespace BVNetwork.NotFound.Configuration
 {
     
     
@@ -29,11 +29,11 @@ namespace BVNetwork.FileNotFound.Configuration
         /// Gets the Bvn404HandlerConfiguration instance.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
-        public static global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration Instance
+        public static global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration Instance
         {
             get
             {
-                return ((global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration)(global::System.Configuration.ConfigurationManager.GetSection(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.Bvn404HandlerConfigurationSectionName)));
+                return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration)(global::System.Configuration.ConfigurationManager.GetSection(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.Bvn404HandlerConfigurationSectionName)));
             }
         }
         #endregion
@@ -53,12 +53,12 @@ namespace BVNetwork.FileNotFound.Configuration
         /// the parser doesn't throw an exception because it encounters the unknown "xmlns" attribute.
         /// </remarks>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.XmlnsPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.XmlnsPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public string Xmlns
         {
             get
             {
-                return ((string)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.XmlnsPropertyName]));
+                return ((string)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.XmlnsPropertyName]));
             }
         }
         #endregion
@@ -86,16 +86,16 @@ namespace BVNetwork.FileNotFound.Configuration
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         [global::System.ComponentModel.DescriptionAttribute("The RedirectsXmlFile.")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.RedirectsXmlFilePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.RedirectsXmlFilePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public string RedirectsXmlFile
         {
             get
             {
-                return ((string)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.RedirectsXmlFilePropertyName]));
+                return ((string)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.RedirectsXmlFilePropertyName]));
             }
             set
             {
-                base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.RedirectsXmlFilePropertyName] = value;
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.RedirectsXmlFilePropertyName] = value;
             }
         }
         #endregion
@@ -112,16 +112,16 @@ namespace BVNetwork.FileNotFound.Configuration
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         [global::System.ComponentModel.DescriptionAttribute("The HandlerMode.")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.HandlerModePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.HandlerModePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public string HandlerMode
         {
             get
             {
-                return ((string)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.HandlerModePropertyName]));
+                return ((string)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.HandlerModePropertyName]));
             }
             set
             {
-                base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.HandlerModePropertyName] = value;
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.HandlerModePropertyName] = value;
             }
         }
         #endregion
@@ -138,16 +138,16 @@ namespace BVNetwork.FileNotFound.Configuration
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         [global::System.ComponentModel.DescriptionAttribute("The FileNotFoundPage.")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.FileNotFoundPagePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.FileNotFoundPagePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public string FileNotFoundPage
         {
             get
             {
-                return ((string)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.FileNotFoundPagePropertyName]));
+                return ((string)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.FileNotFoundPagePropertyName]));
             }
             set
             {
-                base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.FileNotFoundPagePropertyName] = value;
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.FileNotFoundPagePropertyName] = value;
             }
         }
         #endregion
@@ -164,16 +164,16 @@ namespace BVNetwork.FileNotFound.Configuration
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         [global::System.ComponentModel.DescriptionAttribute("The Threshold.")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.ThresholdPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false, DefaultValue=-1)]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.ThresholdPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false, DefaultValue=-1)]
         public int Threshold
         {
             get
             {
-                return ((int)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.ThresholdPropertyName]));
+                return ((int)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.ThresholdPropertyName]));
             }
             set
             {
-                base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.ThresholdPropertyName] = value;
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.ThresholdPropertyName] = value;
             }
         }
         #endregion
@@ -190,16 +190,16 @@ namespace BVNetwork.FileNotFound.Configuration
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         [global::System.ComponentModel.DescriptionAttribute("The BufferSize.")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.BufferSizePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false, DefaultValue=-1)]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.BufferSizePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false, DefaultValue=-1)]
         public int BufferSize
         {
             get
             {
-                return ((int)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.BufferSizePropertyName]));
+                return ((int)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.BufferSizePropertyName]));
             }
             set
             {
-                base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.BufferSizePropertyName] = value;
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.BufferSizePropertyName] = value;
             }
         }
         #endregion
@@ -216,16 +216,16 @@ namespace BVNetwork.FileNotFound.Configuration
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         [global::System.ComponentModel.DescriptionAttribute("The Logging.")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.LoggingPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.LoggingPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public string Logging
         {
             get
             {
-                return ((string)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.LoggingPropertyName]));
+                return ((string)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.LoggingPropertyName]));
             }
             set
             {
-                base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.LoggingPropertyName] = value;
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.LoggingPropertyName] = value;
             }
         }
         #endregion
@@ -242,35 +242,35 @@ namespace BVNetwork.FileNotFound.Configuration
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         [global::System.ComponentModel.DescriptionAttribute("The Bvn404HandlerProviders.")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.Bvn404HandlerProvidersPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=true)]
-        public global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProviders Bvn404HandlerProviders
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.Bvn404HandlerProvidersPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=true)]
+        public global::BVNetwork.NotFound.Configuration.Bvn404HandlerProviders Bvn404HandlerProviders
         {
             get
             {
-                return ((global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProviders)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.Bvn404HandlerProvidersPropertyName]));
+                return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerProviders)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.Bvn404HandlerProvidersPropertyName]));
             }
             set
             {
-                base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerConfiguration.Bvn404HandlerProvidersPropertyName] = value;
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.Bvn404HandlerProvidersPropertyName] = value;
             }
         }
         #endregion
     }
 }
-namespace BVNetwork.FileNotFound.Configuration
+namespace BVNetwork.NotFound.Configuration
 {
     
     
     /// <summary>
     /// A collection of Bvn404HandlerProvider instances.
     /// </summary>
-    [global::System.Configuration.ConfigurationCollectionAttribute(typeof(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider), CollectionType=global::System.Configuration.ConfigurationElementCollectionType.BasicMapAlternate, AddItemName=global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProviders.Bvn404HandlerProviderPropertyName)]
+    [global::System.Configuration.ConfigurationCollectionAttribute(typeof(global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider), CollectionType=global::System.Configuration.ConfigurationElementCollectionType.BasicMapAlternate, AddItemName=global::BVNetwork.NotFound.Configuration.Bvn404HandlerProviders.Bvn404HandlerProviderPropertyName)]
     public partial class Bvn404HandlerProviders : global::System.Configuration.ConfigurationElementCollection
     {
         
         #region Constants
         /// <summary>
-        /// The XML name of the individual <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> instances in this collection.
+        /// The XML name of the individual <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> instances in this collection.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         internal const string Bvn404HandlerProviderPropertyName = "add";
@@ -298,7 +298,7 @@ namespace BVNetwork.FileNotFound.Configuration
         {
             get
             {
-                return global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProviders.Bvn404HandlerProviderPropertyName;
+                return global::BVNetwork.NotFound.Configuration.Bvn404HandlerProviders.Bvn404HandlerProviderPropertyName;
             }
         }
         
@@ -312,7 +312,7 @@ namespace BVNetwork.FileNotFound.Configuration
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         protected override bool IsElementName(string elementName)
         {
-            return (elementName == global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProviders.Bvn404HandlerProviderPropertyName);
+            return (elementName == global::BVNetwork.NotFound.Configuration.Bvn404HandlerProviders.Bvn404HandlerProviderPropertyName);
         }
         
         /// <summary>
@@ -325,57 +325,57 @@ namespace BVNetwork.FileNotFound.Configuration
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         protected override object GetElementKey(global::System.Configuration.ConfigurationElement element)
         {
-            return ((global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider)(element)).Name;
+            return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider)(element)).Name;
         }
         
         /// <summary>
-        /// Creates a new <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/>.
+        /// Creates a new <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/>.
         /// </summary>
         /// <returns>
-        /// A new <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/>.
+        /// A new <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/>.
         /// </returns>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         protected override global::System.Configuration.ConfigurationElement CreateNewElement()
         {
-            return new global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider();
+            return new global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider();
         }
         #endregion
         
         #region Indexer
         /// <summary>
-        /// Gets the <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> at the specified index.
+        /// Gets the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> at the specified index.
         /// </summary>
-        /// <param name="index">The index of the <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
+        /// <param name="index">The index of the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
-        public global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider this[int index]
+        public global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider this[int index]
         {
             get
             {
-                return ((global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(index)));
+                return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(index)));
             }
         }
         
         /// <summary>
-        /// Gets the <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> with the specified key.
+        /// Gets the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> with the specified key.
         /// </summary>
-        /// <param name="name">The key of the <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
+        /// <param name="name">The key of the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
-        public global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider this[object name]
+        public global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider this[object name]
         {
             get
             {
-                return ((global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(name)));
+                return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(name)));
             }
         }
         #endregion
         
         #region Add
         /// <summary>
-        /// Adds the specified <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> to the <see cref="global::System.Configuration.ConfigurationElementCollection"/>.
+        /// Adds the specified <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to the <see cref="global::System.Configuration.ConfigurationElementCollection"/>.
         /// </summary>
-        /// <param name="add">The <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> to add.</param>
+        /// <param name="add">The <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to add.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
-        public void Add(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider add)
+        public void Add(global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider add)
         {
             base.BaseAdd(add);
         }
@@ -383,11 +383,11 @@ namespace BVNetwork.FileNotFound.Configuration
         
         #region Remove
         /// <summary>
-        /// Removes the specified <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> from the <see cref="global::System.Configuration.ConfigurationElementCollection"/>.
+        /// Removes the specified <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> from the <see cref="global::System.Configuration.ConfigurationElementCollection"/>.
         /// </summary>
-        /// <param name="add">The <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> to remove.</param>
+        /// <param name="add">The <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to remove.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
-        public void Remove(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider add)
+        public void Remove(global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider add)
         {
             base.BaseRemove(this.GetElementKey(add));
         }
@@ -395,23 +395,23 @@ namespace BVNetwork.FileNotFound.Configuration
         
         #region GetItem
         /// <summary>
-        /// Gets the <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> at the specified index.
+        /// Gets the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> at the specified index.
         /// </summary>
-        /// <param name="index">The index of the <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
+        /// <param name="index">The index of the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
-        public global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider GetItemAt(int index)
+        public global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider GetItemAt(int index)
         {
-            return ((global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(index)));
+            return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(index)));
         }
         
         /// <summary>
-        /// Gets the <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> with the specified key.
+        /// Gets the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> with the specified key.
         /// </summary>
-        /// <param name="name">The key of the <see cref="global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
+        /// <param name="name">The key of the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
-        public global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider GetItemByKey(string name)
+        public global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider GetItemByKey(string name)
         {
-            return ((global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(((object)(name)))));
+            return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(((object)(name)))));
         }
         #endregion
         
@@ -427,7 +427,7 @@ namespace BVNetwork.FileNotFound.Configuration
         #endregion
     }
 }
-namespace BVNetwork.FileNotFound.Configuration
+namespace BVNetwork.NotFound.Configuration
 {
     
     
@@ -460,16 +460,16 @@ namespace BVNetwork.FileNotFound.Configuration
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         [global::System.ComponentModel.DescriptionAttribute("The Name.")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider.NamePropertyName, IsRequired=true, IsKey=true, IsDefaultCollection=false)]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider.NamePropertyName, IsRequired=true, IsKey=true, IsDefaultCollection=false)]
         public string Name
         {
             get
             {
-                return ((string)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider.NamePropertyName]));
+                return ((string)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider.NamePropertyName]));
             }
             set
             {
-                base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider.NamePropertyName] = value;
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider.NamePropertyName] = value;
             }
         }
         #endregion
@@ -486,16 +486,16 @@ namespace BVNetwork.FileNotFound.Configuration
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.0.0")]
         [global::System.ComponentModel.DescriptionAttribute("The Type.")]
-        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider.TypePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider.TypePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public string Type
         {
             get
             {
-                return ((string)(base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider.TypePropertyName]));
+                return ((string)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider.TypePropertyName]));
             }
             set
             {
-                base[global::BVNetwork.FileNotFound.Configuration.Bvn404HandlerProvider.TypePropertyName] = value;
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider.TypePropertyName] = value;
             }
         }
         #endregion

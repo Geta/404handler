@@ -8,7 +8,7 @@
     <ProjectGuid>{D0C8D9AF-B8ED-471F-B9B4-2A41A65B0116}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BVNetwork.FileNotFound.Configuration</RootNamespace>
+    <RootNamespace>BVNetwork.NotFound.Configuration</RootNamespace>
     <AssemblyName>BVNetwork.FileNotFound.Configuration</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
