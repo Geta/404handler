@@ -6,7 +6,7 @@
         else
             Html.RenderPartial("Redirects", Model);
 
-        Html.RenderPartial("Pager", Model); 
+        Html.RenderPartial("NotFoundPager", Model); 
     %>
 </div>
     

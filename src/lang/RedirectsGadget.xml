@@ -45,6 +45,7 @@
                 <suggesteionsdeleteinfo2>error counts and older than</suggesteionsdeleteinfo2>
                 <suggesteionsdeleteinfo3>days</suggesteionsdeleteinfo3>
                 <deleteignoreinfo>Permanently delete all ignored suggestions</deleteignoreinfo>
+              <deleteallSuggestions>Permanently delete all suggestions</deleteallSuggestions>
                 <Administerinfo>Clean up redirect suggestions or ignored urls, or import redirect from an XML file.</Administerinfo>
             </redirects>
         </gadget>

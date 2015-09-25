@@ -111,6 +111,11 @@ namespace BVNetwork.NotFound.Core.Data
                                                 )",REDIRECTSTABLE, minimumDaysOld, maxErrors);
             ExecuteSQL(sqlCommand, null);
         }
+        public void DeleteAllSuggestions()
+        {
+            string sqlCommand = string.Format(@"delete from {0}", REDIRECTSTABLE);
+            ExecuteSQL(sqlCommand, null);
+        }
 
         public DataSet GetRequestReferers(string url)
         {

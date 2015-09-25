@@ -147,12 +147,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
-    <Compile Include="Core\Initialization\CustomRedirectInitialization.cs" />
     <Compile Include="Core\Logging\LogEvent.cs" />
     <Compile Include="Core\Obsolete\CustomRedirect.cs" />
     <Compile Include="Core\Upgrade\Upgrader.cs" />
     <Compile Include="Core\ColorHelper.cs" />
-    <Compile Include="Controllers\RedirectGadgetController.cs" />
+    <Compile Include="Controllers\NotFoundRedirectController.cs" />
     <Compile Include="Models\RedirectIndexViewData.cs" />
     <Compile Include="Models\Suggestion.cs" />
     <Content Include="NotFound.aspx">
@@ -175,14 +174,14 @@
     <Content Include="ClientResources\Content\RedirectGadget.css" />
     <Content Include="ClientResources\Scripts\jquery.blockUI.js" />
     <Content Include="ClientResources\Scripts\jquery.form.js" />
-    <Content Include="Views\Redirect\Administer.ascx" />
-    <Content Include="Views\Redirect\Ignored.ascx" />
-    <Content Include="Views\Redirect\Index.ascx" />
-    <Content Include="Views\Redirect\Menu.ascx" />
-    <Content Include="Views\Redirect\Pager.ascx" />
-    <Content Include="Views\Redirect\Redirects.ascx" />
-    <Content Include="Views\Redirect\Referers.ascx" />
-    <Content Include="Views\Redirect\Suggestions.ascx" />
+    <Content Include="Views\NotFoundRedirect\Administer.ascx" />
+    <Content Include="Views\NotFoundRedirect\Ignored.ascx" />
+    <Content Include="Views\NotFoundRedirect\Index.ascx" />
+    <Content Include="Views\NotFoundRedirect\Menu.ascx" />
+    <Content Include="Views\NotFoundRedirect\NotFoundPager.ascx" />
+    <Content Include="Views\NotFoundRedirect\Redirects.ascx" />
+    <Content Include="Views\NotFoundRedirect\Referers.ascx" />
+    <Content Include="Views\NotFoundRedirect\Suggestions.ascx" />
     <Compile Include="Configuration\Bvn404HandlerConfiguration.csd.cs">
       <Link>Bvn\FileNotFound\Configuration\Bvn404HandlerConfiguration.csd.cs</Link>
     </Compile>

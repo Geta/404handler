@@ -14,12 +14,12 @@ using EPiServer.Shell.Gadgets;
 namespace BVNetwork.NotFound.Controllers
 {
     [EPiServer.Shell.Web.ScriptResource("ClientResources/Scripts/jquery.blockUI.js")]
-    [Gadget(ResourceType = typeof(RedirectController),
+    [Gadget(ResourceType = typeof(NotFoundRedirectController),
            NameResourceKey = "GadgetName", DescriptionResourceKey = "GadgetDescription")]
     [EPiServer.Shell.Web.CssResource("ClientResources/Content/RedirectGadget.css")]
     [EPiServer.Shell.Web.ScriptResource("ClientResources/Scripts/jquery.form.js")]
     [Authorize]
-    public class RedirectController : Controller
+    public class NotFoundRedirectController : Controller
     {
 
         private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -34,7 +34,7 @@ namespace BVNetwork.NotFound.Controllers
 
         public ActionResult Index(int? pageNumber, string searchWord, int? pageSize, bool? isSuggestions)
         {
-          
+
             CheckAccess();
 
             if (!string.IsNullOrEmpty(CustomRedirectHandler.CustomRedirectHandlerException))
@@ -215,6 +215,14 @@ namespace BVNetwork.NotFound.Controllers
             int deleteCount = dsHandler.DeleteAllIgnoredRedirects();
             string infoText = string.Format(LocalizationService.Current.GetString("/gadget/redirects/ignoredremoved"), deleteCount);
             ViewData["information"] = infoText;
+            return View("Administer");
+        }
+
+        public ActionResult DeleteAllSuggestions()
+        {
+            CheckAccess();
+            DataAccessBaseEx.GetWorker().DeleteAllSuggestions();
+            ViewData["information"] = LocalizationService.Current.GetString("/gadget/redirects/suggestionsdeleted");
             return View("Administer");
         }
 

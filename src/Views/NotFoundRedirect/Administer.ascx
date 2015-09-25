@@ -66,6 +66,18 @@
             </div>
            </td>
         </tr>
+        
+           <tr>
+         <td>
+            <div class="longer"><%= Html.Translate("/gadget/redirects/deleteallSuggestions") %>
+            </div>
+            <div class="shorter delete">
+                   <% Html.BeginGadgetForm("DeleteAllSuggestions"); %>
+                <button type="submit" class="notfoundbutton" style="float:right">Delete</button>
+                 <% Html.EndForm(); %>
+            </div>
+           </td>
+        </tr>
        
         <tr>
             <td>
