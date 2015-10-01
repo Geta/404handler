@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using log4net;
 
-namespace BVNetwork.Bvn.FileNotFound.Upgrade
+namespace BVNetwork.NotFound.Core.Upgrade
 {
     public static class Upgrader
     {
@@ -50,7 +47,7 @@ namespace BVNetwork.Bvn.FileNotFound.Upgrade
             if (create)
             {
                 _log.Info("Create 404 handler version SP START");
-                string versionSP = @"CREATE PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.CURRENT_VERSION;
+                string versionSP = @"CREATE PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
 
                 if (!dba.ExecuteNonQuery(versionSP))
                 {
@@ -66,8 +63,8 @@ namespace BVNetwork.Bvn.FileNotFound.Upgrade
             try
             {
                 // the old redirect class is obsolete, and should only be used for this upgrade
-                var oldCustomrRedirectStore = DataStoreFactory.GetStore(typeof(BVNetwork.FileNotFound.CustomRedirects.CustomRedirect));
-                var oldCustomRedirects = oldCustomrRedirectStore.Items<BVNetwork.FileNotFound.CustomRedirects.CustomRedirect>().ToList();
+                var oldCustomrRedirectStore = DataStoreFactory.GetStore(typeof(FileNotFound.CustomRedirects.CustomRedirect));
+                var oldCustomRedirects = oldCustomrRedirectStore.Items<FileNotFound.CustomRedirects.CustomRedirect>().ToList();
 
                 if (oldCustomRedirects.Count > 0)
                 {
@@ -90,7 +87,7 @@ namespace BVNetwork.Bvn.FileNotFound.Upgrade
 
         private static void Upgrade()
         {
-            string versionSP = @"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.CURRENT_VERSION;
+            string versionSP = @"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
             var dba = DataAccessBaseEx.GetWorker();
             Valid = dba.ExecuteNonQuery(versionSP);
             // TODO: Alter table if necessary

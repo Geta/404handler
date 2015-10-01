@@ -12,16 +12,5 @@
  	 	        <add name="NameOfHandler" type="Your.Handler.Here" />
  	 	     -->
  	 	</providers>
- 	</bvn404Handler>
-    <system.webServer>        
-     
-		 <httpErrors errorMode="Custom">
- 	 	            <remove statusCode="404"
- 	 	                    subStatusCode="-1" />
- 	 	            <error statusCode="404"
- 	 	                   prefixLanguageFilePath=""
- 	 	                   path="/notfound.aspx"
- 	 	                   responseMode="ExecuteURL" />
- 	 	        </httpErrors>
-	</system.webServer> 
+ 	</bvn404Handler> 
 </configuration>

@@ -96,7 +96,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                             // new one. Make a copy of the redir object as we
                             // are changing it.
                             CustomRedirect redirCopy = new CustomRedirect(cr);
-                            redirCopy.NewUrl = redirCopy.NewUrl + pathAndQuery;
+                            redirCopy.NewUrl = redirCopy.NewUrl + pathAndQuery.Substring(_enumerator.Key.ToString().Length);
                             return redirCopy;
                         }
                     }

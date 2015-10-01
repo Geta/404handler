@@ -230,7 +230,6 @@ namespace BVNetwork.NotFound.Controllers
         public FileUploadJsonResult ImportRedirects(HttpPostedFileBase xmlfile)
         {
             CheckAccess();
-            var dynamicHandler = new DataStoreHandler();
             // Read all redirects from xml file
             RedirectsXmlParser parser = new RedirectsXmlParser(xmlfile.InputStream);
             // Save all redirects from xml file

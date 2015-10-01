@@ -1,5 +1,6 @@
 using System;
 using System.Web;
+using EPiServer.Web;
 
 namespace BVNetwork.NotFound.Core.NotFoundPage
 {
@@ -24,7 +25,6 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         public static Uri GetUrlNotFound(System.Web.UI.Page page)
         {
             Uri uriNotFound = null;
-            string urlNotFound = "";
             string query = page.Request.ServerVariables["QUERY_STRING"];
             if ((query != null) && query.StartsWith("404;"))
             {
@@ -55,7 +55,7 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
             if (referer != null)
             {
                 // Strip away host name in front, if local redirect
-                string hostUrl = EPiServer.Configuration.Settings.Instance.SiteUrl.ToString();
+                string hostUrl = SiteDefinition.Current.SiteUrl.ToString();
                 if (referer.StartsWith(hostUrl))
                     referer = referer.Remove(0, hostUrl.Length);
             }

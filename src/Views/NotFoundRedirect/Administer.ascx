@@ -99,7 +99,7 @@
        
              <tr>
                     <td class="notfound-full">  
-        <form id="notfoundajaxUploadForm" action="/modules/BVNetwork.NotFound.RedirectGadget/Redirect/ImportRedirects" method="post" enctype="multipart/form-data">
+        <form id="notfoundajaxUploadForm" action="/EPiServer/BVNetwork.404Handler/NotFoundRedirect/ImportRedirects" method="post" enctype="multipart/form-data">
                   <div class="longer">
                     <%= Html.Translate("/gadget/redirects/importinfo") %>
                         <label class="error"></label>

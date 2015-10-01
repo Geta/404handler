@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Web;
+using System.Web.Mvc;
+using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Logging;
-using EPiServer.Core;
+using EPiServer.Web;
 using log4net;
 using IPAddress = System.Net.IPAddress;
 
@@ -16,7 +17,7 @@ namespace BVNetwork.NotFound.Core
 {
     public class Custom404Handler
     {
-        private const string ASPX_ERROR_PARAM = "aspxerrorpath";
+        private const string NotFoundParam = "notfound";
 
         private static readonly List<string> _ignoredResourceExtensions = new List<string> { "jpg", "gif", "png", "css", "js", "ico", "swf" };
 
@@ -33,14 +34,11 @@ namespace BVNetwork.NotFound.Core
             newUrl = null;
             if (redirect == null)
             {
-                // TODO: According to the comment, this is not correc.t
-                // Not found, lets try without the host
                 redirect = fnfHandler.CustomRedirects.FindInProviders(urlNotFound.AbsoluteUri);
             }
 
             if (redirect != null)
             {
-
                 if (redirect.State.Equals((int)DataStoreHandler.GetState.Saved))
                 {
                     // Found it, however, we need to make sure we're not running in an
@@ -49,90 +47,53 @@ namespace BVNetwork.NotFound.Core
                     {
                         newUrl = redirect.NewUrl;
                         return true;
-                        // Referer is not new url, means we can safely redirect
-                        ////TODO: ending the response too
-                        //_log.Info(String.Format("404 Custom Redirect: To: '{0}' (from: '{1}')", redirect.NewUrl, pathAndQuery));
-
-                        ////Changed so that search engines update their statistics and links correctly.
-                        //page.Response.Clear();
-                        //page.Response.StatusCode = 301;
-                        //page.Response.StatusDescription = "Moved Permanently";
-                        //page.Response.RedirectLocation = redirect.NewUrl;
-                        //page.Response.End();
                     }
                 }
             }
             else
             {
                 // log request to database - if logging is turned on.
-                //if (Settings.EnableLogging)
-                //{
-                Logger.LogRequest(pathAndQuery, referer);
-
-                // }
+                if (Configuration.Configuration.Logging == LoggerMode.On)
+                {
+                    Logger.LogRequest(pathAndQuery, referer);
+                }
             }
-
             return false;
         }
 
-
         public static void FileNotFoundHandler(object sender, EventArgs evt)
         {
-
-
             // Check if this should be enabled
-            //TODO: if (Configuration.Configuration.FileNotFoundHandlerMode == FileNotFoundMode.Off)
-
-
+            if (Configuration.Configuration.FileNotFoundHandlerMode == FileNotFoundMode.Off)
+                return;
             if (_log.IsDebugEnabled)
             {
                 _log.DebugFormat("FileNotFoundHandler called");
             }
-
-
-            HttpContext ctx = HttpContext.Current;
-
-            Exception exception;
-
-            if (ctx == null)
+            HttpContext context = HttpContext.Current;
+            if (context == null)
             {
                 if (_log.IsDebugEnabled)
                     _log.Debug("No HTTPContext, returning");
                 return;
             }
 
-            // Get the error
-            bool isAspError = false;
-            try
-            {
-                exception = ctx.Server.GetLastError();
-                if (exception != null)
-                    isAspError = true;
-            }
-            catch
-            {
-                if (_log.IsDebugEnabled)
-                    _log.Debug("Cannot GetLastError, returning");
+            if (context.Response.StatusCode != 404)
                 return;
-            }
-
-            if (ctx.Response.StatusCode != 404)
-                return;
-            string query = ctx.Request.ServerVariables["QUERY_STRING"];
+            string query = context.Request.ServerVariables["QUERY_STRING"];
             if ((query != null) && query.StartsWith("404;"))
             {
                 return;
             }
 
-            Uri notFoundUri = ctx.Request.Url;
+            Uri notFoundUri = context.Request.Url;
 
             // Skip resource files
             if (IsResourceFile(notFoundUri))
                 return;
 
             // If we're only doing this for remote users, we need to test for local host
-            // TODO: if (Configuration.Configuration.FileNotFoundHandlerMode == FileNotFoundMode.RemoteOnly)
-            if (false)
+            if (Configuration.Configuration.FileNotFoundHandlerMode == FileNotFoundMode.RemoteOnly)
             {
                 // Determine if we're on localhost
                 bool localHost = IsLocalhost();
@@ -147,75 +108,36 @@ namespace BVNetwork.NotFound.Core
             }
 
             // Avoid looping forever
-            // TODO:	bool isLoop = IsInfiniteLoop(ctx);
-            bool isLoop = false;
-            if (isLoop)
+            if (IsInfiniteLoop(context))
                 return;
 
             string newUrl;
-            if (Custom404Handler.HandleRequest(GetReferer(ctx.Request.UrlReferrer), notFoundUri, out newUrl))
+            if (HandleRequest(GetReferer(context.Request.UrlReferrer), notFoundUri, out newUrl))
             {
-                ctx.Response.RedirectPermanent(newUrl);
+                context.Response.RedirectPermanent(newUrl);
             }
-            return;
-
-            // TODO: Verify that we do not need the code below, but instead use customErrors in web.config.
-
-            // Check type of exceptions we can handle
-            //   Handles aspx files
-            //   Handles EPiServer.PageNotFoundException
-            //   Handles Resource Not Found ASP.NET exceptions
-            // The outermost exception should be HttpUnhandledException, the inner exception
-            // is the one we're interested in
-            if (exception != null)
+            else
             {
-                Exception innerEx = exception.GetBaseException();
-                if (innerEx != null && isAspError)
+                string url = Get404Url();
+
+                context.Response.Clear();
+                context.Response.TrySkipIisCustomErrors = true;
+                context.Server.ClearError();
+
+                // do the redirect to the 404 page here
+                if (HttpRuntime.UsingIntegratedPipeline)
                 {
-                    ctx.Response.StatusCode = 404;
-                    ctx.Response.Status = "404 File not found";
-                    if (innerEx is PageNotFoundException)
-                    {
-                        // Should be a normal 404 handler
-                        if (_log.IsInfoEnabled)
-                            _log.InfoFormat("404 PageNotFoundException - Url: {0}", notFoundUri.ToString());
-                        if (_log.IsDebugEnabled)
-                            _log.DebugFormat("404 PageNotFoundException - Exception: {0}", innerEx.ToString());
-
-                        // Redirect to page, handling this as a normal 404 error
-                        PerformRedirect(ctx);
-                    }
-
-                    // IO File not Found exceptions means the .aspx file cannot
-                    // be found. We'll handle this as a standard 404 error
-                    if (innerEx is FileNotFoundException)
-                    {
-                        if (_log.IsInfoEnabled)
-                            _log.InfoFormat("404 FileNotFoundException - Url: {0}", notFoundUri.ToString());
-                        if (_log.IsDebugEnabled)
-                            _log.DebugFormat("404 FileNotFoundException - Exception: {0}", innerEx.ToString());
-                        // Redirect to page, handling this as a normal 404 error
-                        PerformRedirect(ctx);
-                    }
-
-                    // Not all exceptions we need to handle are specific exception types.
-                    // We need to handle file not founds, for .aspx pages in directories
-                    // that does not exists. However, an 404 error will be returned by the
-                    // HttpException class.
-                    if (innerEx is HttpException)
-                    {
-                        HttpException httpEx = innerEx as HttpException;
-                        if (httpEx.GetHttpCode() == 404)
-                        {
-                            if (_log.IsInfoEnabled)
-                                _log.InfoFormat("404 HttpException - Url: {0}", notFoundUri.ToString());
-                            if (_log.IsDebugEnabled)
-                                _log.DebugFormat("404 HttpException - Exception: {0}", httpEx.ToString());
-
-                            PerformRedirect(ctx);
-                        }
-                    }
+                    context.Server.TransferRequest(url, true);
                 }
+                else
+                {
+                    context.RewritePath(url, false);
+                    IHttpHandler httpHandler = new MvcHttpHandler();
+                    httpHandler.ProcessRequest(context);
+                }
+                // return the original status code to the client
+                // (this won't work in integrated pipleline mode)
+                context.Response.StatusCode = 404;
             }
         }
 
@@ -249,7 +171,7 @@ namespace BVNetwork.NotFound.Core
         private static bool IsInfiniteLoop(HttpContext ctx)
         {
             string requestUrl = ctx.Request.Url.AbsolutePath;
-            string fnfPageUrl = "";//Get404Url();
+            string fnfPageUrl = Get404Url();
             if (fnfPageUrl.StartsWith("~"))
                 fnfPageUrl = fnfPageUrl.Substring(1);
             int posQuery = fnfPageUrl.IndexOf("?");
@@ -298,33 +220,13 @@ namespace BVNetwork.NotFound.Core
                 if (!string.IsNullOrEmpty(refererUrl))
                 {
                     // Strip away host name in front, if local redirect
-                    string hostUrl = EPiServer.Configuration.Settings.Instance.SiteUrl.ToString();
+                    
+                    string hostUrl = SiteDefinition.Current.SiteUrl.ToString();
                     if (refererUrl.StartsWith(hostUrl))
                         refererUrl = refererUrl.Remove(0, hostUrl.Length);
                 }
             }
             return refererUrl;
-        }
-
-        private static void PerformRedirect(HttpContext ctx)
-        {
-            // Indicate to IIS 7 that this is a special case
-            ctx.ClearError();
-            ctx.Response.Clear();
-
-            string url = Get404Url();
-
-            if (_log.IsDebugEnabled)
-                _log.DebugFormat("Performing 404 Redirect to: '{0}'", url);
-
-            // if this is a friendly url address, we're unable to use server.transfer
-            if (Configuration.Configuration.FileNotFoundHandlerPage.EndsWith(".aspx"))
-            {
-                ctx.Response.Redirect(url);
-            }
-            ctx.Server.Transfer(url);
-            ctx.Response.End();
-            HttpContext.Current = null;
         }
 
         /// <summary>
@@ -336,7 +238,7 @@ namespace BVNetwork.NotFound.Core
         {
             string baseUrl = Configuration.Configuration.FileNotFoundHandlerPage;
             string currentUrl = HttpContext.Current.Request.Url.PathAndQuery;
-            return String.Format("{0}?{1}={2}", baseUrl, ASPX_ERROR_PARAM, HttpContext.Current.Server.UrlEncode(currentUrl));
+            return String.Format("{0}?{1}={2}", baseUrl, NotFoundParam, HttpContext.Current.Server.UrlEncode(currentUrl));
         }
     }
 }

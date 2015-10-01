@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Web;
-using BVNetwork.Bvn.FileNotFound.Upgrade;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
+using BVNetwork.NotFound.Core.Upgrade;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using log4net;

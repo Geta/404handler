@@ -42,7 +42,7 @@ namespace BVNetwork.NotFound.Core.Data
             if (excludeIgnored)
             {
                 customRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                                  where s.State.Equals((int)GetState.Saved) || s.State == null
+                                  where s.State.Equals((int)GetState.Saved)
                                   select s;
             }
             else

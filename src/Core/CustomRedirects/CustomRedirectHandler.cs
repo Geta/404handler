@@ -1,7 +1,7 @@
 using System;
 using System.Web.Caching;
-using BVNetwork.Bvn.FileNotFound.Upgrade;
 using BVNetwork.NotFound.Core.Data;
+using BVNetwork.NotFound.Core.Upgrade;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
 {
@@ -135,12 +135,8 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// </summary>
         private static void StoreHandlerInCache(CustomRedirectHandler handler)
         {
-            EPiServer.CacheManager.RuntimeCacheInsert(CACHE_KEY_CUSTOM_REDIRECT_HANDLER_INSTANCE,
-                                                handler,
-                                                null,
-                                                Cache.NoAbsoluteExpiration,
-                                                Cache.NoSlidingExpiration,
-                                                CacheItemPriority.AboveNormal);
+            EPiServer.CacheManager.Insert(CACHE_KEY_CUSTOM_REDIRECT_HANDLER_INSTANCE,
+                                                handler);
         }
 
         public static string CustomRedirectHandlerException { get; set; }
