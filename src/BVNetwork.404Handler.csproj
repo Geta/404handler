@@ -402,7 +402,7 @@
     <NuspecFile>$(SolutionDir)\BVNetwork.404Handler.nuspec</NuspecFile>
     <ProjectFile>$(SolutionDir)\BVNetwork.404Handler.csproj</ProjectFile>
   </PropertyGroup>
-  <Target Name="CreateNugetPackage" AfterTargets="Build">
+  <Target Name="CreateNugetPackage" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' ">
     <PropertyGroup>
       <Version>
       </Version>
