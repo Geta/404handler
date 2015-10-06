@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using log4net;
+using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.Data
 {
@@ -21,8 +21,7 @@ namespace BVNetwork.NotFound.Core.Data
         }
         private const string REDIRECTSTABLE = "[dbo].[BVN.NotFoundRequests]";
 
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private static readonly ILogger Logger = LogManager.GetLogger();
 
         public DataSet ExecuteSQL(string sqlCommand, List<IDbDataParameter> parameters)
         {
@@ -46,7 +45,7 @@ namespace BVNetwork.NotFound.Core.Data
                 }
                 catch (Exception ex)
                 {
-                    _log.Error(string.Format("An error occureding in the ExecuteSQL method with the following sql{0}. Exception:{1}", sqlCommand, ex));
+                    Logger.Error(string.Format("An error occureding in the ExecuteSQL method with the following sql{0}. Exception:{1}", sqlCommand, ex));
                 }
 
                 return ds;
@@ -69,7 +68,7 @@ namespace BVNetwork.NotFound.Core.Data
                 catch (Exception ex)
                 {
                     success = false;
-                    _log.Error(string.Format("An error occureding in the ExecuteSQL method with the following sql{0}. Exception:{1}", sqlCommand, ex));
+                    Logger.Error(string.Format("An error occureding in the ExecuteSQL method with the following sql{0}. Exception:{1}", sqlCommand, ex));
 
                 }
                 return success;
@@ -161,12 +160,12 @@ namespace BVNetwork.NotFound.Core.Data
         }
         catch (SqlException)
         {
-            _log.Info("Stored procedure not found. Creating it.");
+            Logger.Information("Stored procedure not found. Creating it.");
             return version;
         }
         catch (Exception ex)
         {
-            _log.Error(string.Format("Error during NotFoundHandler version check:{0}", ex));
+            Logger.Error(string.Format("Error during NotFoundHandler version check:{0}", ex));
         }
         finally
         {
@@ -212,7 +211,7 @@ namespace BVNetwork.NotFound.Core.Data
                    catch (Exception ex)
                    {
 
-                       _log.Error("An error occured while logging a 404 handler error. Ex:" + ex);
+                       Logger.Error("An error occured while logging a 404 handler error. Ex:" + ex);
                    }
                    finally
                    {

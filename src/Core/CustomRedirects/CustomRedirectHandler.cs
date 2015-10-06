@@ -1,7 +1,7 @@
 using System;
-using System.Web.Caching;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Upgrade;
+using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
 {
@@ -11,7 +11,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
     /// </summary>
     public class CustomRedirectHandler
     {
-        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Logger = LogManager.GetLogger();
         private const string CACHE_KEY_CUSTOM_REDIRECT_HANDLER_INSTANCE = "BvnCustomRedirectHandler";
         private CustomRedirectCollection _customRedirects = null;
 
@@ -70,15 +70,15 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         {
             get
             {
-                _log.Debug("Begin: Get Current CustomRedirectHandler");
+                Logger.Debug("Begin: Get Current CustomRedirectHandler");
                 // First check if there is a cached version of
                 // this object
                 CustomRedirectHandler handler = null;
                 handler = GetHandlerFromCache();
                 if (handler != null)
                 {
-                    _log.Debug("Returning cached handler.");
-                    _log.Debug("End: Get Current CustomRedirectHandler");
+                    Logger.Debug("Returning cached handler.");
+                    Logger.Debug("End: Get Current CustomRedirectHandler");
                     // Got the cached version, return it
                     return handler;
                 }
@@ -86,7 +86,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 // Not cached, we need to create it
                 handler = new CustomRedirectHandler();
                 // Load redirects with standard settings
-                _log.Debug("Begin: Load custom redirects from dynamic data store");
+                Logger.Debug("Begin: Load custom redirects from dynamic data store");
                 try
                 {
 
@@ -96,16 +96,16 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 }
                 catch (Exception ex)
                 {
-                    _log.Error("An error occured while loading redirects from dds. CustomRedirectHandlerException has now been set. Exception:" + ex);
+                    Logger.Error("An error occured while loading redirects from dds. CustomRedirectHandlerException has now been set. Exception:" + ex);
                     CustomRedirectHandlerException = ex.ToString();
                     Upgrader.Valid = false;
                 }
-                _log.Debug("End: Load custom redirects from dynamic data store");
+                Logger.Debug("End: Load custom redirects from dynamic data store");
 
                 // Store in cache
                 StoreHandlerInCache(handler);
 
-                _log.Debug("End: Get Current CustomRedirectHandler");
+                Logger.Debug("End: Get Current CustomRedirectHandler");
                 return handler;
             }
         }

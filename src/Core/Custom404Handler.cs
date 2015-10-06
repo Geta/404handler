@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
-using System.Reflection;
 using System.Web;
+using EPiServer.Logging;
 using System.Web.Mvc;
 using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Logging;
 using EPiServer.Web;
-using log4net;
 using IPAddress = System.Net.IPAddress;
 
 namespace BVNetwork.NotFound.Core
@@ -21,8 +20,7 @@ namespace BVNetwork.NotFound.Core
 
         private static readonly List<string> _ignoredResourceExtensions = new List<string> { "jpg", "gif", "png", "css", "js", "ico", "swf" };
 
-        private static readonly ILog _log =
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Logger = LogManager.GetLogger();
 
         public static bool HandleRequest(string referer, Uri urlNotFound, out string newUrl)
         {
@@ -55,7 +53,7 @@ namespace BVNetwork.NotFound.Core
                 // log request to database - if logging is turned on.
                 if (Configuration.Configuration.Logging == LoggerMode.On)
                 {
-                    Logger.LogRequest(pathAndQuery, referer);
+                    RequestLogger.Instance.LogRequest(pathAndQuery, referer);
                 }
             }
             return false;
@@ -66,15 +64,14 @@ namespace BVNetwork.NotFound.Core
             // Check if this should be enabled
             if (Configuration.Configuration.FileNotFoundHandlerMode == FileNotFoundMode.Off)
                 return;
-            if (_log.IsDebugEnabled)
-            {
-                _log.DebugFormat("FileNotFoundHandler called");
-            }
+
+            Logger.Debug("FileNotFoundHandler called");
+
             HttpContext context = HttpContext.Current;
             if (context == null)
             {
-                if (_log.IsDebugEnabled)
-                    _log.Debug("No HTTPContext, returning");
+
+                Logger.Debug("No HTTPContext, returning");
                 return;
             }
 
@@ -99,12 +96,10 @@ namespace BVNetwork.NotFound.Core
                 bool localHost = IsLocalhost();
                 if (localHost)
                 {
-                    if (_log.IsDebugEnabled)
-                        _log.Debug("Determined to be localhost, returning");
+                    Logger.Debug("Determined to be localhost, returning");
                     return;
                 }
-                if (_log.IsDebugEnabled)
-                    _log.Debug("Not localhost, handling error");
+                Logger.Debug("Not localhost, handling error");
             }
 
             // Avoid looping forever
@@ -158,8 +153,7 @@ namespace BVNetwork.NotFound.Core
                 if (_ignoredResourceExtensions.Contains(extension))
                 {
                     // Ignoring 404 rewrite of known resource extension
-                    if (_log.IsDebugEnabled)
-                        _log.DebugFormat("Ignoring rewrite of '{0}'. '{1}' is a known resource extension", notFoundUri.ToString(),
+                    Logger.Debug("Ignoring rewrite of '{0}'. '{1}' is a known resource extension", notFoundUri.ToString(),
                                          extension);
 
                     return true;
@@ -180,7 +174,7 @@ namespace BVNetwork.NotFound.Core
 
             if (string.Compare(requestUrl, fnfPageUrl, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
-                _log.Info("404 Handler detected an infinite loop to 404 page. Exiting");
+                Logger.Information("404 Handler detected an infinite loop to 404 page. Exiting");
                 return true;
             }
             return false;
@@ -220,7 +214,7 @@ namespace BVNetwork.NotFound.Core
                 if (!string.IsNullOrEmpty(refererUrl))
                 {
                     // Strip away host name in front, if local redirect
-                    
+
                     string hostUrl = SiteDefinition.Current.SiteUrl.ToString();
                     if (refererUrl.StartsWith(hostUrl))
                         refererUrl = refererUrl.Remove(0, hostUrl.Length);

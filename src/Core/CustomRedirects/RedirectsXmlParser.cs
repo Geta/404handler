@@ -1,5 +1,6 @@
 using System.IO;
 using System.Xml;
+using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
 {
@@ -8,8 +9,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
     /// </summary>
     public class RedirectsXmlParser
     {
-        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private static readonly ILogger Logger = LogManager.GetLogger();
         private XmlDocument _customRedirectsXmlFile = null;
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 // Not on disk, not in a vpp, construct an empty one
                 _customRedirectsXmlFile = new XmlDocument();
                 _customRedirectsXmlFile.InnerXml = "<redirects><urls></urls></redirects>";
-                _log.ErrorFormat("404 Handler: The Custom Redirects file '{0}' does not exist.", xmlContent);
+                Logger.Error("404 Handler: The Custom Redirects file '{0}' does not exist.", xmlContent);
             }
         }
 
