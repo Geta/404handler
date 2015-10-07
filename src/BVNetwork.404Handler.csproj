@@ -6,7 +6,6 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{DFBF0553-7E44-44BF-A59F-F94F9493FC17}</ProjectGuid>
-    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>
@@ -107,23 +106,23 @@
     <EmbeddedResource Include="lang\bvnerrorhandlerNO.xml" />
     <EmbeddedResource Include="lang\bvnerrorhandlerSV.xml" />
     <EmbeddedResource Include="lang\RedirectsGadget.xml" />
-    <Content Include="ClientResources\Content\Images\BaseSprite.png" />
-    <Content Include="ClientResources\Content\Images\Gradients.png" />
-    <Content Include="ClientResources\Content\Images\gray_border.png" />
-    <Content Include="ClientResources\Content\Images\navigate_close.png" />
-    <Content Include="ClientResources\Content\Images\navigate_open.png" />
-    <Content Include="ClientResources\Content\Images\SpriteTools.png" />
-    <Content Include="ClientResources\Content\RedirectGadget.css" />
-    <Content Include="ClientResources\Scripts\jquery.blockUI.js" />
-    <Content Include="ClientResources\Scripts\jquery.form.js" />
-    <Content Include="Views\NotFoundRedirect\Administer.ascx" />
-    <Content Include="Views\NotFoundRedirect\Ignored.ascx" />
-    <Content Include="Views\NotFoundRedirect\Index.ascx" />
-    <Content Include="Views\NotFoundRedirect\Menu.ascx" />
-    <Content Include="Views\NotFoundRedirect\NotFoundPager.ascx" />
-    <Content Include="Views\NotFoundRedirect\Redirects.ascx" />
-    <Content Include="Views\NotFoundRedirect\Referers.ascx" />
-    <Content Include="Views\NotFoundRedirect\Suggestions.ascx" />
+    <None Include="ClientResources\Content\Images\BaseSprite.png" />
+    <None Include="ClientResources\Content\Images\Gradients.png" />
+    <None Include="ClientResources\Content\Images\gray_border.png" />
+    <None Include="ClientResources\Content\Images\navigate_close.png" />
+    <None Include="ClientResources\Content\Images\navigate_open.png" />
+    <None Include="ClientResources\Content\Images\SpriteTools.png" />
+    <None Include="ClientResources\Content\RedirectGadget.css" />
+    <None Include="ClientResources\Scripts\jquery.blockUI.js" />
+    <None Include="ClientResources\Scripts\jquery.form.js" />
+    <None Include="Views\NotFoundRedirect\Administer.ascx" />
+    <None Include="Views\NotFoundRedirect\Ignored.ascx" />
+    <None Include="Views\NotFoundRedirect\Index.ascx" />
+    <None Include="Views\NotFoundRedirect\Menu.ascx" />
+    <None Include="Views\NotFoundRedirect\NotFoundPager.ascx" />
+    <None Include="Views\NotFoundRedirect\Redirects.ascx" />
+    <None Include="Views\NotFoundRedirect\Referers.ascx" />
+    <None Include="Views\NotFoundRedirect\Suggestions.ascx" />
     <Compile Include="Configuration\Bvn404HandlerConfiguration.csd.cs">
       <Link>Bvn\FileNotFound\Configuration\Bvn404HandlerConfiguration.csd.cs</Link>
     </Compile>
@@ -274,10 +273,6 @@
       <HintPath>packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <HintPath>packages\structuremap-signed.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="StructureMap.Net4, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\structuremap-signed.3.1.6.186\lib\net40\StructureMap.Net4.dll</HintPath>
       <Private>True</Private>
@@ -327,25 +322,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
-          <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>52869</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-        </WebProjectProperties>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
+  <ProjectExtensions />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <UsingTask TaskName="ZipDirectory" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
@@ -392,7 +369,7 @@
     <!-- Create the package -->
     <PropertyGroup>
       <NugetCommand>
-        "$(NuGetExe)" pack "$(ProjectFile)" -OutputDirectory "$(OutDir.TrimEnd('\\'))" -Version "$(Version)" -Properties Configuration=$(Configuration)
+        "$(NuGetExe)" pack "$(NuspecFile)" -OutputDirectory "$(OutDir.TrimEnd('\\'))" -Version "$(Version)" -Properties Configuration=$(Configuration)
       </NugetCommand>
     </PropertyGroup>
     <Exec Command="$(NugetCommand)" />
