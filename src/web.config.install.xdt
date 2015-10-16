@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<configSections>
+    <section name="bvn404Handler" type="BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration, BVNetwork.EPi404"
+             xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing"/>
+	</configSections>
+  <bvn404Handler handlerMode="On" fileNotFoundPage="/notfound.aspx" xdt:Transform="InsertIfMissing">
+    <providers>
+      <!--
+ 	 	        Register your own handler that will be given a chance to
+ 	 	        rewrite the url. The type must implement INotFoundHandler
+ 	 	        <add name="NameOfHandler" type="Your.Handler.Here" />
+ 	 	     -->
+    </providers>
+  </bvn404Handler>
+</configuration>

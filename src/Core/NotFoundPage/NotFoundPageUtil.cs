@@ -1,5 +1,6 @@
 using System;
 using System.Web;
+using EPiServer;
 using EPiServer.Web;
 
 namespace BVNetwork.NotFound.Core.NotFoundPage
@@ -22,28 +23,14 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         /// </summary>
         /// <param name="page">The request page.</param>
         /// <returns></returns>
-        public static Uri GetUrlNotFound(System.Web.UI.Page page)
+        public static string GetUrlNotFound(System.Web.UI.Page page)
         {
-            Uri uriNotFound = null;
             string query = page.Request.ServerVariables["QUERY_STRING"];
-            if ((query != null) && query.StartsWith("404;"))
+            if (query != null && query.StartsWith(Custom404Handler.NotFoundParam))
             {
-                string url = query.Split(';')[1];
-                if (!Uri.TryCreate(url, UriKind.Absolute, out uriNotFound))
-                {
-                    uriNotFound = new Uri(HttpUtility.UrlDecode(url));
-                }
-
+                return Url.Decode(query).Substring(Custom404Handler.NotFoundParam.Length + 2);
             }
-            if (uriNotFound == null)
-            {
-                if (query.StartsWith("aspxerrorpath="))
-                {
-                    string[] parts = query.Split('=');
-                    uriNotFound = new Uri(page.Request.Url.GetLeftPart(UriPartial.Authority) + HttpUtility.UrlDecode(parts[1]));
-                }
-            }
-            return uriNotFound;
+            return null;
         }
 
         /// <summary>

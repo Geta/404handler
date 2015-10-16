@@ -1,4 +1,5 @@
 using System;
+using EPiServer.Web;
 
 namespace BVNetwork.NotFound.Core.NotFoundPage
 {
@@ -31,7 +32,7 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
             {
                 if (_urlNotFound == null)
                 {
-                    _urlNotFound = NotFoundPageUtil.GetUrlNotFound(this.Page);
+                       _urlNotFound = new Uri(SiteDefinition.Current.SiteUrl + NotFoundPageUtil.GetUrlNotFound(this.Page)); ;
                 }
                 return _urlNotFound;
             }

@@ -169,9 +169,9 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="CustomRedirects.config" />
-    <Content Include="web.config.transform" />
     <None Include="module.config" />
     <Content Include="packages.config" />
+    <None Include="web.config.install.xdt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bvn\FileNotFound\Configuration\" />
