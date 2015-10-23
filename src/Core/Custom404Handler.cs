@@ -16,7 +16,7 @@ namespace BVNetwork.NotFound.Core
 {
     public class Custom404Handler
     {
-        public const string NotFoundParam = "notfound";
+        public const string NotFoundParam = "404;notfound";
 
         private static readonly List<string> _ignoredResourceExtensions = new List<string> { "jpg", "gif", "png", "css", "js", "ico", "swf" };
 
