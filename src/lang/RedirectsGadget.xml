@@ -41,11 +41,13 @@
                 <importinfo>Import redirects from an XML-file </importinfo>
                 <ignoredremoved>All {0} ignored suggestions permanently removed</ignoredremoved>
                 <suggestionsdeleted>Suggestions successfully deleted</suggestionsdeleted>
+                <redirectsdeleted>Redirects successfully deleted</redirectsdeleted>
                 <suggesteionsdeleteinfo1>Permanently delete all suggestions with less than</suggesteionsdeleteinfo1>
                 <suggesteionsdeleteinfo2>error counts and older than</suggesteionsdeleteinfo2>
                 <suggesteionsdeleteinfo3>days</suggesteionsdeleteinfo3>
                 <deleteignoreinfo>Permanently delete all ignored suggestions</deleteignoreinfo>
               <deleteallSuggestions>Permanently delete all suggestions</deleteallSuggestions>
+              <deleteallredirects>Permanently delete all custom redirects</deleteallredirects>
                 <Administerinfo>Clean up redirect suggestions or ignored urls, or import redirect from an XML file.</Administerinfo>
             </redirects>
         </gadget>

@@ -222,6 +222,16 @@ namespace BVNetwork.NotFound.Controllers
             return View("Administer");
         }
 
+        public ActionResult DeleteAllRedirects()
+        {
+            CheckAccess();
+            DataStoreHandler dsHandler = new DataStoreHandler();
+            dsHandler.DeleteAllCustomRedirects();
+            DataStoreEventHandlerHook.DataStoreUpdated();
+            ViewData["information"] = LocalizationService.Current.GetString("/gadget/redirects/redirectsdeleted");
+            return View("Administer");
+        }
+
         [AcceptVerbs(HttpVerbs.Post)]
         public FileUploadJsonResult ImportRedirects(HttpPostedFileBase xmlfile)
         {

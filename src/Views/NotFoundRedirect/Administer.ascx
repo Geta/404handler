@@ -1,4 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
+<%@ Import Namespace="System.Web.Mvc.Html" %>
+<%@ Import Namespace="EPiServer.Shell" %>
+<%@ Import Namespace="EPiServer.Shell.Web.Mvc.Html" %>
 <script type="text/javascript">
     
     function notfoundvalidator() {
@@ -78,6 +81,18 @@
             </div>
            </td>
         </tr>
+        
+                   <tr>
+         <td>
+            <div class="longer"><%= Html.Translate("/gadget/redirects/deleteallredirects") %>
+            </div>
+            <div class="shorter delete">
+                   <% Html.BeginGadgetForm("DeleteAllRedirects"); %>
+                <button type="submit" class="notfoundbutton" style="float:right">Delete</button>
+                 <% Html.EndForm(); %>
+            </div>
+           </td>
+        </tr>
        
         <tr>
             <td>
@@ -99,7 +114,7 @@
        
              <tr>
                     <td class="notfound-full">  
-        <form id="notfoundajaxUploadForm" action="/EPiServer/BVNetwork.404Handler/NotFoundRedirect/ImportRedirects" method="post" enctype="multipart/form-data">
+        <form id="notfoundajaxUploadForm" action="<%=Paths.ProtectedRootPath %>BVNetwork.404Handler/NotFoundRedirect/ImportRedirects" method="post" enctype="multipart/form-data">
                   <div class="longer">
                     <%= Html.Translate("/gadget/redirects/importinfo") %>
                         <label class="error"></label>
