@@ -347,14 +347,10 @@
     <SolutionDir Condition="$(SolutionDir) == ''">$(MSBuildProjectDirectory)\..\</SolutionDir>
     <NuGetExe>$(SolutionDir)\.nuget\NuGet.exe</NuGetExe>
     <TmpOutDir>$(SolutionDir)\tmp</TmpOutDir>
-    <NuspecFile>$(SolutionDir)\BVNetwork.404Handler.nuspec</NuspecFile>
-    <ProjectFile>$(SolutionDir)\BVNetwork.404Handler.csproj</ProjectFile>
+    <NuspecFile>$(SolutionDir)\$(ProjectName).nuspec</NuspecFile>
+    <ProjectFile>$(SolutionDir)\$(ProjectName).csproj</ProjectFile>
   </PropertyGroup>
   <Target Name="CreateNugetPackage" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' ">
-    <PropertyGroup>
-      <Version>
-      </Version>
-    </PropertyGroup>
     <!-- Create the Versioned out dir for the client resources-->
     <!-- Copy -->
     <ItemGroup>
@@ -365,11 +361,11 @@
     <Copy SourceFiles="@(ClientResources)" DestinationFiles="@(ClientResources -> '$(TmpOutDir)\content\ClientResources\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(Views)" DestinationFiles="@(Views -> '$(TmpOutDir)\content\Views\%(RecursiveDir)%(Filename)%(Extension)')" />
     <!-- Create the Zip file -->
-    <ZipDirectory InputPath="$(TmpOutDir)\content" OutputFileName="$(OutDir)\BVNetwork.404Handler.zip" OverwriteExistingFile="true" />
+    <ZipDirectory InputPath="$(TmpOutDir)\content" OutputFileName="$(OutDir)\$(ProjectName).zip" OverwriteExistingFile="true" />
     <!-- Create the package -->
     <PropertyGroup>
       <NugetCommand>
-        "$(NuGetExe)" pack "$(NuspecFile)" -OutputDirectory "$(OutDir.TrimEnd('\\'))" -Version "$(Version)" -Properties Configuration=$(Configuration)
+        "$(NuGetExe)" pack "$(NuspecFile)" -OutputDirectory "$(OutDir.TrimEnd('\\'))" -Properties Configuration=$(Configuration)
       </NugetCommand>
     </PropertyGroup>
     <Exec Command="$(NugetCommand)" />

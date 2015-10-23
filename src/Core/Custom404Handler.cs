@@ -18,7 +18,7 @@ namespace BVNetwork.NotFound.Core
     {
         public const string NotFoundParam = "404;notfound";
 
-        private static readonly List<string> _ignoredResourceExtensions = new List<string> { "jpg", "gif", "png", "css", "js", "ico", "swf" };
+        private static readonly List<string> _ignoredResourceExtensions = new List<string> { "jpg", "gif", "png", "css", "js", "ico", "swf", "woff" };
 
         private static readonly ILogger Logger = LogManager.GetLogger();
 
@@ -28,7 +28,7 @@ namespace BVNetwork.NotFound.Core
             // to the static list of custom redirects
             CustomRedirectHandler fnfHandler = CustomRedirectHandler.Current;
             CustomRedirect redirect = fnfHandler.CustomRedirects.Find(urlNotFound);
-            string pathAndQuery = HttpUtility.HtmlEncode(urlNotFound.PathAndQuery);
+            string pathAndQuery = urlNotFound.PathAndQuery;
             newUrl = null;
             if (redirect == null)
             {
@@ -53,6 +53,7 @@ namespace BVNetwork.NotFound.Core
                 // log request to database - if logging is turned on.
                 if (Configuration.Configuration.Logging == LoggerMode.On)
                 {
+                    // Safe logging
                     RequestLogger.Instance.LogRequest(pathAndQuery, referer);
                 }
             }

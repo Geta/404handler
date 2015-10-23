@@ -58,54 +58,75 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 		// TODO: If desired, change parameters to Find method to search based on a property of CustomRedirect.
 		public CustomRedirect Find(Uri urlNotFound)
 		{
-		    string pathAndQuery = HttpUtility.HtmlEncode(urlNotFound.PathAndQuery);
+            // Handle absolute addresses first
+		    string url = urlNotFound.AbsoluteUri;
+            CustomRedirect foundRedirect = FindInternal(url);
 
-			object foundRedirect = _quickLookupTable[urlNotFound.AbsoluteUri] ?? _quickLookupTable[pathAndQuery];
-            if (foundRedirect != null)
+            // Common case
+            if (foundRedirect == null)
             {
-                return foundRedirect as CustomRedirect;
+                url = urlNotFound.PathAndQuery; ;
+                foundRedirect = FindInternal(url);
             }
-            else
+
+            // Handle legacy databases with encoded values
+            if (foundRedirect == null)
             {
-                // No exact match could be done, so we'll check if the 404 url
-                // starts with one of the urls we're matching against. This
-                // will be kind of a wild card match (even though we only check
-                // for the start of the url
-                // Example: http://www.mysite.com/news/mynews.html is not found
-                // We have defined an "<old>/news</old>" entry in the config
-                // file. We will get a match on the /news part of /news/myne...
-                // Depending on the skip wild card append setting, we will either
-                // redirect using the <new> url as is, or we'll append the 404
-                // url to the <new> url.
-                IDictionaryEnumerator _enumerator = _quickLookupTable.GetEnumerator();
-                while (_enumerator.MoveNext())
-                {             
-                    // See if this "old" url (the one that cannot be found) starts with one 
-                    if (pathAndQuery.StartsWith(_enumerator.Key.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        foundRedirect = _quickLookupTable[_enumerator.Key];
-                        CustomRedirect cr = foundRedirect as CustomRedirect;
-                        if (cr.WildCardSkipAppend == true)
-                        {
-                            // We'll redirect without appending the 404 url
-                            return cr;
-                        }
-                        else
-                        {
-                            // We need to append the 404 to the end of the
-                            // new one. Make a copy of the redir object as we
-                            // are changing it.
-                            CustomRedirect redirCopy = new CustomRedirect(cr);
-                            redirCopy.NewUrl = redirCopy.NewUrl + pathAndQuery.Substring(_enumerator.Key.ToString().Length);
-                            return redirCopy;
-                        }
-                    }
-                }
+                url = HttpUtility.HtmlEncode(url);
+                foundRedirect = FindInternal(url);
             }
-			return null;
+
+		    return foundRedirect;
 		}
 
-        public CustomRedirect FindInProviders(string oldUrl)
+	    private CustomRedirect FindInternal(string url)
+	    {
+	        object foundRedirect = _quickLookupTable[url];
+	        if (foundRedirect != null)
+	        {
+	            return foundRedirect as CustomRedirect;
+	        }
+	        else
+	        {
+	            // No exact match could be done, so we'll check if the 404 url
+	            // starts with one of the urls we're matching against. This
+	            // will be kind of a wild card match (even though we only check
+	            // for the start of the url
+	            // Example: http://www.mysite.com/news/mynews.html is not found
+	            // We have defined an "<old>/news</old>" entry in the config
+	            // file. We will get a match on the /news part of /news/myne...
+	            // Depending on the skip wild card append setting, we will either
+	            // redirect using the <new> url as is, or we'll append the 404
+	            // url to the <new> url.
+	            IDictionaryEnumerator _enumerator = _quickLookupTable.GetEnumerator();
+	            while (_enumerator.MoveNext())
+	            {
+	                // See if this "old" url (the one that cannot be found) starts with one 
+	                if (url.StartsWith(_enumerator.Key.ToString(), StringComparison.InvariantCultureIgnoreCase))
+	                {
+	                    foundRedirect = _quickLookupTable[_enumerator.Key];
+	                    CustomRedirect cr = foundRedirect as CustomRedirect;
+	                    if (cr.WildCardSkipAppend == true)
+	                    {
+	                        // We'll redirect without appending the 404 url
+	                        return cr;
+	                    }
+	                    else
+	                    {
+	                        // We need to append the 404 to the end of the
+	                        // new one. Make a copy of the redir object as we
+	                        // are changing it.
+	                        CustomRedirect redirCopy = new CustomRedirect(cr);
+	                        redirCopy.NewUrl = redirCopy.NewUrl + url.Substring(_enumerator.Key.ToString().Length);
+	                        return redirCopy;
+	                    }
+	                }
+	            }
+	        }
+	        return null;
+	    }
+
+	    public CustomRedirect FindInProviders(string oldUrl)
         {
             // If no exact or wildcard match is found, try to parse the url through the custom providers
             if (Bvn404HandlerConfiguration.Instance.Bvn404HandlerProviders != null || Bvn404HandlerConfiguration.Instance.Bvn404HandlerProviders.Count != 0)
