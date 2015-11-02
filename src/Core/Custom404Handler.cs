@@ -37,7 +37,7 @@ namespace BVNetwork.NotFound.Core
 
             if (redirect != null)
             {
-                if (redirect.State.Equals((int)DataStoreHandler.GetState.Saved))
+                if (redirect.State.Equals((int)DataStoreHandler.State.Saved))
                 {
                     // Found it, however, we need to make sure we're not running in an
                     // infinite loop. The new url must not be the referrer to this page

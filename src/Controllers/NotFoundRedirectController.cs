@@ -125,7 +125,7 @@ namespace BVNetwork.NotFound.Controllers
             // add redirect to dds with state "ignored"
             var redirect = new CustomRedirect();
             redirect.OldUrl = oldUrl;
-            redirect.State = Convert.ToInt32(DataStoreHandler.GetState.Ignored);
+            redirect.State = Convert.ToInt32(DataStoreHandler.State.Ignored);
             DataStoreHandler dsHandler = new DataStoreHandler();
             dsHandler.SaveCustomRedirect(redirect);
             DataStoreEventHandlerHook.DataStoreUpdated();
@@ -312,7 +312,7 @@ namespace BVNetwork.NotFound.Controllers
 
             foreach (KeyValuePair<string, int> redirect in dict)
             {
-                customRedirectList.Add(new CustomRedirect(redirect.Key, Convert.ToInt32(DataStoreHandler.GetState.Suggestion), redirect.Value));
+                customRedirectList.Add(new CustomRedirect(redirect.Key, Convert.ToInt32(DataStoreHandler.State.Suggestion), redirect.Value));
             }
 
             return customRedirectList;

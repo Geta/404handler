@@ -8,7 +8,7 @@ namespace BVNetwork.NotFound.Core.Data
     public class DataStoreHandler
     {
 
-        public enum GetState
+        public enum State
         {
             Saved = 0,
             Suggestion = 1,
@@ -42,7 +42,7 @@ namespace BVNetwork.NotFound.Core.Data
             if (excludeIgnored)
             {
                 customRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                                  where s.State.Equals((int)GetState.Saved)
+                                  where s.State.Equals((int)State.Saved)
                                   select s;
             }
             else
@@ -58,7 +58,7 @@ namespace BVNetwork.NotFound.Core.Data
             DynamicDataStore store = DataStoreFactory.GetStore(typeof(CustomRedirect));
 
             var customRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                              where s.State.Equals(GetState.Ignored)
+                              where s.State.Equals(State.Ignored)
                               select s;
             return customRedirects.ToList();
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Web;
 using BVNetwork.NotFound.Configuration;
+using BVNetwork.NotFound.Core.Data;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
 {
@@ -106,6 +107,10 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 	                {
 	                    foundRedirect = _quickLookupTable[_enumerator.Key];
 	                    CustomRedirect cr = foundRedirect as CustomRedirect;
+	                    if (cr.State == (int) DataStoreHandler.State.Ignored)
+	                    {
+	                        return null;
+	                    }
 	                    if (cr.WildCardSkipAppend == true)
 	                    {
 	                        // We'll redirect without appending the 404 url
