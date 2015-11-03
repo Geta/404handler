@@ -1,13 +1,15 @@
 using System;
 using System.Web;
 using BVNetwork.FileNotFound;
+
+using EPiServer.Logging;
 using EPiServer.Web;
 
 namespace BVNetwork.NotFound.Core.NotFoundPage
 {
     public class NotFoundBase : System.Web.UI.Page
     {
-        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger _log = LogManager.GetLogger(typeof(NotFoundBase));
 
         private Uri _urlNotFound = null;
         private string _referer = null;
