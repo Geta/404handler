@@ -81,7 +81,7 @@ namespace BVNetwork.NotFound.Core
             var context = HttpContext.Current;
             if (context == null)
             {
-                Logger.Debug("No HTTPContext, returning");               
+                Logger.Debug("No HTTPContext, returning");
             }
             return context;
         }
@@ -119,7 +119,7 @@ namespace BVNetwork.NotFound.Core
             // Skip resource files
             if (IsResourceFile(notFoundUri))
                 return;
-           
+
             string query = context.Request.ServerVariables["QUERY_STRING"];
 
             // avoid duplicate log entries
@@ -175,41 +175,35 @@ namespace BVNetwork.NotFound.Core
                 if (exception != null)
                 {
                     Exception innerEx = exception.GetBaseException();
-                    if (innerEx != null)
+                    if (innerEx is PageNotFoundException)
                     {
-                        if (innerEx is PageNotFoundException)
-                        {
-                            // Should be a normal 404 handler
-                            Logger.Information("404 PageNotFoundException - Url: {0}", notFoundUri.ToString());
-                            Logger.Debug("404 PageNotFoundException - Exception: {0}", innerEx.ToString());
+                        // Should be a normal 404 handler
+                        Logger.Information("404 PageNotFoundException - Url: {0}", notFoundUri.ToString());
+                        Logger.Debug("404 PageNotFoundException - Exception: {0}", innerEx.ToString());
+                        return true;
+                    }
 
-                            // Redirect to page, handling this as a normal 404 error
+                    // IO File not Found exceptions means the .aspx file cannot
+                    // be found. We'll handle this as a standard 404 error
+                    if (innerEx is FileNotFoundException)
+                    {
+                        Logger.Information("404 FileNotFoundException - Url: {0}", notFoundUri.ToString());
+                        Logger.Debug("404 FileNotFoundException - Exception: {0}", innerEx.ToString());
+                        return true;
+                    }
+
+                    // Not all exceptions we need to handle are specific exception types.
+                    // We need to handle file not founds, for .aspx pages in directories
+                    // that does not exists. However, an 404 error will be returned by the
+                    // HttpException class.
+                    HttpException httpEx = innerEx as HttpException;
+                    if (httpEx != null)
+                    {
+                        if (httpEx.GetHttpCode() == 404)
+                        {
+                            Logger.Information("404 HttpException - Url: {0}", notFoundUri.ToString());
+                            Logger.Debug("404 HttpException - Exception: {0}", httpEx.ToString());
                             return true;
-                        }
-
-                        // IO File not Found exceptions means the .aspx file cannot
-                        // be found. We'll handle this as a standard 404 error
-                        if (innerEx is FileNotFoundException)
-                        {
-                            Logger.Information("404 FileNotFoundException - Url: {0}", notFoundUri.ToString());
-                            Logger.Debug("404 FileNotFoundException - Exception: {0}", innerEx.ToString());
-                            // Redirect to page, handling this as a normal 404 error
-                            return true;
-                        }
-
-                        // Not all exceptions we need to handle are specific exception types.
-                        // We need to handle file not founds, for .aspx pages in directories
-                        // that does not exists. However, an 404 error will be returned by the
-                        // HttpException class.
-                        HttpException httpEx = innerEx as HttpException;
-                        if (httpEx != null)
-                        {
-                            if (httpEx.GetHttpCode() == 404)
-                            {
-                                Logger.Information("404 HttpException - Url: {0}", notFoundUri.ToString());
-                                Logger.Debug("404 HttpException - Exception: {0}", httpEx.ToString());
-                                return true;
-                            }
                         }
                     }
                 }
@@ -238,7 +232,7 @@ namespace BVNetwork.NotFound.Core
                 if (_ignoredResourceExtensions.Contains(extension))
                 {
                     // Ignoring 404 rewrite of known resource extension
-                    Logger.Debug("Ignoring rewrite of '{0}'. '{1}' is a known resource extension", notFoundUri.ToString(),extension);
+                    Logger.Debug("Ignoring rewrite of '{0}'. '{1}' is a known resource extension", notFoundUri.ToString(), extension);
                     return true;
                 }
             }
