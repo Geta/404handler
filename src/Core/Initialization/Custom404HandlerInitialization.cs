@@ -47,7 +47,7 @@ namespace BVNetwork.NotFound.Core.Initialization
 
         public void InitializeHttpEvents(HttpApplication application)
         {
-            application.Error += Custom404Handler.FileNotFoundHandler;
+            application.Error += Custom404Handler.FileNotFoundExceptionHandler;
             application.EndRequest += Custom404Handler.FileNotFoundHandler;
         }
     }
