@@ -186,6 +186,13 @@ namespace BVNetwork.NotFound.Controllers
             var ignoredRedirects = dsHandler.GetIgnoredRedirect();
             return View("Ignored", ignoredRedirects);
         }
+        public ActionResult Deleted()
+        {
+            CheckAccess();
+            DataStoreHandler dsHandler = new DataStoreHandler();
+            var deletedRedirects = dsHandler.GetDeletedRedirect();
+            return View("Deleted", deletedRedirects);
+        }
 
 
         public ActionResult Unignore(string url)
@@ -317,6 +324,14 @@ namespace BVNetwork.NotFound.Controllers
 
             return customRedirectList;
         }
+        public List<CustomRedirect> GetDeletedUrls()
+        {
+            DataStoreHandler dsHandler = new DataStoreHandler();
+            List<CustomRedirect> customRedirectList;
+            customRedirectList = dsHandler.GetDeletedRedirect();
+
+            return customRedirectList;
+        }
 
         public static string GadgetEditMenuName
         {
@@ -331,6 +346,29 @@ namespace BVNetwork.NotFound.Controllers
         public static string GadgetDescription
         {
             get { return LocalizationService.Current.GetString("/gadget/redirects/description"); }
+        }
+
+        public ActionResult AddDeletedUrl(string oldUrl)
+        {
+            CheckAccess();
+
+
+            // add redirect to dds with state "deleted"
+            var redirect = new CustomRedirect();
+            redirect.OldUrl = oldUrl;
+            redirect.State = Convert.ToInt32(DataStoreHandler.State.Deleted);
+            DataStoreHandler dsHandler = new DataStoreHandler();
+            dsHandler.SaveCustomRedirect(redirect);
+            DataStoreEventHandlerHook.DataStoreUpdated();
+
+            // delete rows from DB
+            var dbAccess = DataAccessBaseEx.GetWorker();
+            dbAccess.DeleteRowsForRequest(oldUrl);
+
+            //
+            List<CustomRedirect> customRedirectList = GetDeletedUrls();
+            DataStoreEventHandlerHook.DataStoreUpdated();
+            return Deleted();
         }
     }
 

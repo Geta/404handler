@@ -34,5 +34,14 @@
                     "",
                     new {isSuggestions = true}) %>
         </li>
+        <li class="<%= Model == "Deleted" ? "selected" : "" %> ntab">
+            <%= Html.ViewLink(
+                    "Deleted", // html helper
+                    "", // title
+                    "Deleted", // Action name
+                    "", // css class
+                    "",
+                    new {}) %>
+        </li>
     </ul>
 </div>

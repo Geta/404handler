@@ -19,19 +19,20 @@ namespace BVNetwork.NotFound.Core
     public class Custom404Handler
     {
         public const string NotFoundParam = "404;notfound";
+        public const string DeletedParam = "410;deleted";
 
         private static readonly List<string> _ignoredResourceExtensions = new List<string> { "jpg", "gif", "png", "css", "js", "ico", "swf", "woff" };
 
         private static readonly ILogger Logger = LogManager.GetLogger();
 
-        public static bool HandleRequest(string referer, Uri urlNotFound, out string newUrl)
+        public static bool HandleRequest(string referer, Uri urlNotFound, out CustomRedirect foundRedirect)
         {
             // Try to match the requested url my matching it
             // to the static list of custom redirects
             CustomRedirectHandler fnfHandler = CustomRedirectHandler.Current;
             CustomRedirect redirect = fnfHandler.CustomRedirects.Find(urlNotFound);
             string pathAndQuery = urlNotFound.PathAndQuery;
-            newUrl = null;
+            foundRedirect = null;
             if (redirect == null)
             {
                 redirect = fnfHandler.CustomRedirects.FindInProviders(urlNotFound.AbsoluteUri);
@@ -39,13 +40,20 @@ namespace BVNetwork.NotFound.Core
 
             if (redirect != null)
             {
+                // Url has been deleted from this site
+                if(redirect.State.Equals((int)DataStoreHandler.State.Deleted))
+                {
+                    foundRedirect = redirect;
+                    return true;
+                }
+
                 if (redirect.State.Equals((int)DataStoreHandler.State.Saved))
                 {
                     // Found it, however, we need to make sure we're not running in an
                     // infinite loop. The new url must not be the referrer to this page
                     if (string.Compare(redirect.NewUrl, pathAndQuery, StringComparison.InvariantCultureIgnoreCase) != 0)
                     {
-                        newUrl = redirect.NewUrl;
+                        foundRedirect = redirect;
                         return true;
                     }
                 }
@@ -132,39 +140,41 @@ namespace BVNetwork.NotFound.Core
             if (IsInfiniteLoop(context))
                 return;
 
-            string newUrl;
-            if (HandleRequest(GetReferer(context.Request.UrlReferrer), notFoundUri, out newUrl))
+            CustomRedirect newUrl;
+            var canHandleRedirect = HandleRequest(GetReferer(context.Request.UrlReferrer), notFoundUri, out newUrl);
+            if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Saved)
             {
                 context.Response.Clear();
                 context.Response.TrySkipIisCustomErrors = true;
                 context.Server.ClearError();
-                context.Response.RedirectPermanent(newUrl);
+                context.Response.RedirectPermanent(newUrl.NewUrl);
                 context.Response.End();
+            }
+            else if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Deleted)
+            {
+                SetStatusCodeAndShow404(context, 410);
             }
             else
             {
-                string url = Get404Url();
-
-                context.Response.Clear();
-                context.Response.TrySkipIisCustomErrors = true;
-                context.Server.ClearError();
-
-                // do the redirect to the 404 page here
-                if (HttpRuntime.UsingIntegratedPipeline)
-                {
-                    context.Server.TransferRequest(url, true);
-                }
-                else
-                {
-                    context.RewritePath(url, false);
-                    IHttpHandler httpHandler = new MvcHttpHandler();
-                    httpHandler.ProcessRequest(context);
-                }
-                // return the original status code to the client
-                // (this won't work in integrated pipleline mode)
-                context.Response.StatusCode = 404;
-                context.Response.End();
+                SetStatusCodeAndShow404(context, 404);
             }
+        }
+
+        protected static void SetStatusCodeAndShow404(HttpContext context, int statusCode = 404)
+        {
+            string url = Get404Url();
+
+            context.Response.Clear();
+            context.Response.TrySkipIisCustomErrors = true;
+            context.Server.ClearError();
+
+            // do the redirect to the 404 page here
+            context.Server.TransferRequest(url, true);
+
+            // return the original status code to the client
+            // (this won't work in integrated pipleline mode)
+            context.Response.StatusCode = statusCode;
+            context.Response.End();
         }
 
         private static bool CheckForException(HttpContext context, Uri notFoundUri)
@@ -305,11 +315,16 @@ namespace BVNetwork.NotFound.Core
         /// variable with information about the current request url
         /// </summary>
         /// <returns></returns>
-        private static string Get404Url()
+        private static string Get404Url(string param = null)
         {
+            if(param == null)
+            {
+                param = NotFoundParam;
+            }
+
             string baseUrl = Configuration.Configuration.FileNotFoundHandlerPage;
             string currentUrl = HttpContext.Current.Request.Url.PathAndQuery;
-            return String.Format("{0}?{1}={2}", baseUrl, NotFoundParam, HttpContext.Current.Server.UrlEncode(currentUrl));
+            return String.Format("{0}?{1}={2}", baseUrl, param, HttpContext.Current.Server.UrlEncode(currentUrl));
         }
     }
 }

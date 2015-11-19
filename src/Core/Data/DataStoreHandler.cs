@@ -12,7 +12,8 @@ namespace BVNetwork.NotFound.Core.Data
         {
             Saved = 0,
             Suggestion = 1,
-            Ignored = 2
+            Ignored = 2,
+            Deleted
         };
 
         private const string OLD_URL_PROPERTY_NAME = "OldUrl";
@@ -61,6 +62,16 @@ namespace BVNetwork.NotFound.Core.Data
                               where s.State.Equals(State.Ignored)
                               select s;
             return customRedirects.ToList();
+
+        }
+        public List<CustomRedirect> GetDeletedRedirect()
+        {
+            DynamicDataStore store = DataStoreFactory.GetStore(typeof(CustomRedirect));
+
+            var deletedRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
+                              where s.State.Equals(State.Deleted)
+                              select s;
+            return deletedRedirects.ToList();
 
         }
 

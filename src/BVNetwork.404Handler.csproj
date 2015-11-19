@@ -98,6 +98,9 @@
     <Content Include="NotFound.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <None Include="Views\NotFoundRedirect\Deleted.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
     <EmbeddedResource Include="lang\bvnerrorhandler.xml" />
     <EmbeddedResource Include="lang\bvnerrorhandlerDE.xml" />
     <EmbeddedResource Include="lang\bvnerrorhandlerDK.xml" />
@@ -116,13 +119,25 @@
     <None Include="ClientResources\Scripts\jquery.blockUI.js" />
     <None Include="ClientResources\Scripts\jquery.form.js" />
     <None Include="Views\NotFoundRedirect\Administer.ascx" />
-    <None Include="Views\NotFoundRedirect\Ignored.ascx" />
-    <None Include="Views\NotFoundRedirect\Index.ascx" />
-    <None Include="Views\NotFoundRedirect\Menu.ascx" />
-    <None Include="Views\NotFoundRedirect\NotFoundPager.ascx" />
-    <None Include="Views\NotFoundRedirect\Redirects.ascx" />
+    <None Include="Views\NotFoundRedirect\Ignored.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
+    <None Include="Views\NotFoundRedirect\Index.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
+    <None Include="Views\NotFoundRedirect\Menu.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
+    <None Include="Views\NotFoundRedirect\NotFoundPager.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
+    <None Include="Views\NotFoundRedirect\Redirects.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
     <None Include="Views\NotFoundRedirect\Referers.ascx" />
-    <None Include="Views\NotFoundRedirect\Suggestions.ascx" />
+    <None Include="Views\NotFoundRedirect\Suggestions.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
     <Compile Include="Configuration\Bvn404HandlerConfiguration.csd.cs">
       <Link>Bvn\FileNotFound\Configuration\Bvn404HandlerConfiguration.csd.cs</Link>
     </Compile>
