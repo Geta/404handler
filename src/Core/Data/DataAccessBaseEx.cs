@@ -29,26 +29,28 @@ namespace BVNetwork.NotFound.Core.Data
 
             return base.Database.Execute<DataSet>(delegate
             {
-                DataSet ds = new DataSet();
-                try
+                using (DataSet ds = new DataSet())
                 {
-                    DbCommand command = this.CreateCommand(sqlCommand);
-                    if (parameters != null)
+                    try
                     {
-                        foreach (SqlParameter parameter in parameters)
+                        DbCommand command = this.CreateCommand(sqlCommand);
+                        if (parameters != null)
                         {
-                            command.Parameters.Add(parameter);
+                            foreach (SqlParameter parameter in parameters)
+                            {
+                                command.Parameters.Add(parameter);
+                            }
                         }
+                        command.CommandType = CommandType.Text;
+                        base.CreateDataAdapter(command).Fill(ds);
                     }
-                    command.CommandType = CommandType.Text;
-                    base.CreateDataAdapter(command).Fill(ds);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(string.Format("An error occureding in the ExecuteSQL method with the following sql{0}. Exception:{1}", sqlCommand, ex));
-                }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(string.Format("An error occureding in the ExecuteSQL method with the following sql{0}. Exception:{1}", sqlCommand, ex));
+                    }
 
-                return ds;
+                    return ds;
+                }
             });
 
         }
@@ -78,6 +80,30 @@ namespace BVNetwork.NotFound.Core.Data
 
         }
 
+        public int ExecuteScalar(string sqlCommand)
+        {
+            return base.Database.Execute<int>(delegate
+            {
+                int result;
+                try
+                {
+                    IDbCommand dbCommand = this.CreateCommand(sqlCommand);
+                    dbCommand.CommandType = CommandType.Text;
+                    result = (int)dbCommand.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    result = 0;
+                    Logger.Error(
+                        string.Format(
+                            "An error occureding in the ExecuteScalar method with the following sql{0}. Exception:{1}",
+                            sqlCommand,
+                            ex));
+                    
+                }
+                return result;
+            });
+        }
 
         public DataSet GetAllClientRequestCount()
         {

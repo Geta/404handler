@@ -5,7 +5,7 @@ using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Upgrade;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
-using log4net;
+using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.Initialization
 {
@@ -16,7 +16,7 @@ namespace BVNetwork.NotFound.Core.Initialization
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]
     public class Custom404HandlerInitialization : IInitializableHttpModule
     {
-        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger _log = LogManager.GetLogger(typeof(Custom404HandlerInitialization));
 
         public void Initialize(InitializationEngine context)
         {

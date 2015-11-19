@@ -1,13 +1,14 @@
 using System;
 using System.Web;
 using EPiServer;
+using EPiServer.Logging;
 using EPiServer.Web;
 
 namespace BVNetwork.NotFound.Core.NotFoundPage
 {
     public static class NotFoundPageUtil
     {
-        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger _log = LogManager.GetLogger(typeof(NotFoundPageUtil));
 
         /// <summary>
         /// Gets the content for the 404 page from the language files.

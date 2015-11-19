@@ -2,13 +2,14 @@
 using System.Linq;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
-using log4net;
+
+using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.Upgrade
 {
     public static class Upgrader
     {
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public static bool Valid { get; set; }
 
@@ -32,7 +33,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
 
             var dba = DataAccessBaseEx.GetWorker();
 
-            _log.Info("Create 404 handler redirects table START");
+            _log.Information("Create 404 handler redirects table START");
             string createTableScript = @"CREATE TABLE [dbo].[BVN.NotFoundRequests](
 	                                    [ID] [int] IDENTITY(1,1) NOT NULL,
 	                                    [OldUrl] [nvarchar](2000) NOT NULL,
@@ -41,22 +42,38 @@ namespace BVNetwork.NotFound.Core.Upgrade
                                         ) ON [PRIMARY]";
             create = dba.ExecuteNonQuery(createTableScript);
 
-            _log.Info("Create 404 handler redirects table END");
+            _log.Information("Create 404 handler redirects table END");
 
 
             if (create)
             {
-                _log.Info("Create 404 handler version SP START");
+                _log.Information("Create 404 handler version SP START");
                 string versionSP = @"CREATE PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
 
                 if (!dba.ExecuteNonQuery(versionSP))
                 {
                     create = false;
                     _log.Error("An error occured during the creation of the 404 handler version stored procedure. Canceling.");
-
-                    _log.Info("Create 404 handler version SP END");
                 }
+
+                _log.Information("Create 404 handler version SP END");
             }
+
+            if (create)
+            {
+                _log.Information("Create Clustered index START");
+                string clusteredIndex =
+                    "CREATE CLUSTERED INDEX NotFoundRequests_ID ON [dbo].[BVN.NotFoundRequests] (ID)";
+
+                if (!dba.ExecuteNonQuery(clusteredIndex))
+                {
+                    create = false;
+                    _log.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
+                }
+
+                _log.Information("Create Clustered index END");
+            }
+
             Valid = create;
 
             // copy dds items, if there are any.
@@ -87,13 +104,27 @@ namespace BVNetwork.NotFound.Core.Upgrade
 
         private static void Upgrade()
         {
-            string versionSP = @"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
             var dba = DataAccessBaseEx.GetWorker();
-            Valid = dba.ExecuteNonQuery(versionSP);
-            // TODO: Alter table if necessary
+
+            string indexCheck =
+                "SELECT COUNT(*) FROM sys.indexes WHERE name='NotFoundRequests_ID' AND object_id = OBJECT_ID('[dbo].[BVN.NotFoundRequests]')";
+
+            int num = dba.ExecuteScalar(indexCheck);
+            if (num == 0)
+            {
+                if (!dba.ExecuteNonQuery("CREATE CLUSTERED INDEX NotFoundRequests_ID ON [dbo].[BVN.NotFoundRequests] (ID)"))
+                {
+                    Valid = false;
+                    _log.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
+                }
+                _log.Information("Create Clustered index END");
+            }
+            if (Valid)
+            {
+                string versionSP = @"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
+                Valid = dba.ExecuteNonQuery(versionSP);
+                // TODO: Alter table if necessary
+            }
         }
-
-
-
     }
 }
