@@ -1,8 +1,13 @@
 using System;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Web;
-using EPiServer;
+using System.Web.UI;
+using EPiServer.Framework;
 using EPiServer.Logging;
+using EPiServer.ServiceLocation;
 using EPiServer.Web;
+using EPiServer.Web.Routing.Segments;
 
 namespace BVNetwork.NotFound.Core.NotFoundPage
 {
@@ -22,24 +27,34 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         /// <summary>
         /// Gets the URL that was not found.
         /// </summary>
-        /// <param name="page">The request page.</param>
+        /// <param name="request">The request.</param>
         /// <returns></returns>
-        public static string GetUrlNotFound(System.Web.UI.Page page)
+        public static string GetUrlNotFound(HttpRequestBase request)
         {
-            string query = page.Request.ServerVariables["QUERY_STRING"];
-            if (query != null && query.StartsWith(Custom404Handler.NotFoundParam))
+            string urlNotFound = null;
+            string query = request.ServerVariables["QUERY_STRING"];
+            if ((query != null) && query.StartsWith("4"))
             {
-                return Url.Decode(query).Substring(Custom404Handler.NotFoundParam.Length + 2);
+                string url = query.Split(';')[1];
+                urlNotFound = HttpUtility.UrlDecode(url);
             }
-            return null;
+            if (urlNotFound == null)
+            {
+                if (query.StartsWith("aspxerrorpath="))
+                {
+                    string[] parts = query.Split('=');
+                    urlNotFound = request.Url.GetLeftPart(UriPartial.Authority) + HttpUtility.UrlDecode(parts[1]);
+                }
+            }
+            return urlNotFound;
         }
 
         /// <summary>
         /// The refering url
         /// </summary>
-        public static string GetReferer(System.Web.UI.Page page)
+        public static string GetReferer(HttpRequestBase request)
         {
-            string referer = page.Request.ServerVariables["HTTP_REFERER"];
+            string referer = request.ServerVariables["HTTP_REFERER"];
             if (referer != null)
             {
                 // Strip away host name in front, if local redirect
@@ -52,12 +67,66 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
             return referer;
         }
 
-        public static void HandleOnLoad(System.Web.UI.Page page, Uri urlNotFound, string referer)
+        public static void HandleOnLoad(Page page, Uri urlNotFound, string referer)
         {
-            // We need to signal that this is indeed a 404 error
-            page.Response.TrySkipIisCustomErrors = true;
-            page.Response.StatusCode = 404;
-            page.Response.Status = "404 File not found";
+            var statusCode = GetStatusCode(new HttpRequestWrapper(page.Request));
+            page.Response.StatusCode = statusCode;
+            page.Response.Status = GetStatus(statusCode);
+
+            SetCurrentLanguage(urlNotFound.PathAndQuery);
+        }
+
+        public static int GetStatusCode(HttpRequestBase request)
+        {
+            int code = 0;
+            string queryString = GetQueryString(request);
+            if (!string.IsNullOrEmpty(queryString))
+            {
+                Regex regex = new Regex(@"(?:[0-9]{3}\;)");
+                Match match = regex.Match(queryString);
+                if (match.Success)
+                {
+                    string[] queryStrings = queryString.Split(';');
+                    if (queryStrings.Length > 0)
+                    {
+                        if (int.TryParse(queryStrings[0], out code))
+                            return code;
+                    }
+                }
+            }
+            return code;
+        }
+
+        public static string GetQueryString(HttpRequestBase request)
+        {
+            return HttpUtility.UrlDecode(request.QueryString.ToString());
+        }
+
+        public static void SetCurrentLanguage(string url)
+        {
+            url = url.Substring(1);
+            if (url.Contains("/"))
+            {
+                string languageSegment = url.Substring(0, url.IndexOf('/'));
+                if (!string.IsNullOrEmpty(languageSegment))
+                {
+                    var languageMatcher = ServiceLocator.Current.GetInstance<ILanguageSegmentMatcher>();
+                    string languageId;
+                    languageMatcher.TryGetLanguageId(languageSegment, out languageId);
+                    if (languageId != null)
+                        ContextCache.Current["EPiServer:ContentLanguage"] = new CultureInfo(languageId);
+                }
+            }
+        }
+
+        public static string GetStatus(int statusCode)
+        {
+            string status = "";
+            if (statusCode == 410)
+                status =  "404 File not found";
+            else if (statusCode == 404)
+                status = "410 Deleted";
+            return status;
         }
     }
 }

@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
     <Compile Include="Core\Logging\LogEvent.cs" />
+    <Compile Include="Core\NotFoundPage\NotFoundPageAttribute.cs" />
     <Compile Include="Core\Obsolete\CustomRedirect.cs" />
     <Compile Include="Core\Upgrade\Upgrader.cs" />
     <Compile Include="Core\ColorHelper.cs" />
@@ -269,6 +270,7 @@
       <HintPath>packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -314,6 +316,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bvn\FileNotFound\Configuration\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

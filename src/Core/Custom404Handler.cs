@@ -5,7 +5,6 @@ using System.IO;
 using System.Net;
 using System.Web;
 using EPiServer.Logging;
-using System.Web.Mvc;
 using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
@@ -41,7 +40,7 @@ namespace BVNetwork.NotFound.Core
             if (redirect != null)
             {
                 // Url has been deleted from this site
-                if(redirect.State.Equals((int)DataStoreHandler.State.Deleted))
+                if (redirect.State.Equals((int)DataStoreHandler.State.Deleted))
                 {
                     foundRedirect = redirect;
                     return true;
@@ -162,19 +161,9 @@ namespace BVNetwork.NotFound.Core
 
         protected static void SetStatusCodeAndShow404(HttpContext context, int statusCode = 404)
         {
-            string url = Get404Url();
-
-            context.Response.Clear();
             context.Response.TrySkipIisCustomErrors = true;
             context.Server.ClearError();
-
-            // do the redirect to the 404 page here
-            context.Server.TransferRequest(url, true);
-
-            // return the original status code to the client
-            // (this won't work in integrated pipleline mode)
             context.Response.StatusCode = statusCode;
-            context.Response.End();
         }
 
         private static bool CheckForException(HttpContext context, Uri notFoundUri)
@@ -317,7 +306,7 @@ namespace BVNetwork.NotFound.Core
         /// <returns></returns>
         private static string Get404Url(string param = null)
         {
-            if(param == null)
+            if (param == null)
             {
                 param = NotFoundParam;
             }

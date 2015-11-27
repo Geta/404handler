@@ -1,18 +1,13 @@
 using System;
 using System.Web;
-using BVNetwork.FileNotFound;
-
 using EPiServer.Logging;
-using EPiServer.Web;
 
 namespace BVNetwork.NotFound.Core.NotFoundPage
 {
     public class NotFoundBase : System.Web.UI.Page
     {
-        private static readonly ILogger _log = LogManager.GetLogger(typeof(NotFoundBase));
-
-        private Uri _urlNotFound = null;
-        private string _referer = null;
+        private Uri _urlNotFound;
+        private string _referer;
         PageContent _content;
 
         /// <summary>
@@ -38,7 +33,7 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
             {
                 if (_urlNotFound == null)
                 {
-                    _urlNotFound = new Uri(SiteDefinition.Current.SiteUrl +  NotFoundPageUtil.GetUrlNotFound(this.Page)); ;
+                    _urlNotFound = new Uri(NotFoundPageUtil.GetUrlNotFound(new HttpRequestWrapper(Page.Request)));
                 }
                 return _urlNotFound;
             }
@@ -53,7 +48,7 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
             {
                 if (_referer == null)
                 {
-                    _referer = HttpUtility.HtmlEncode(NotFoundPageUtil.GetReferer(this.Page));
+                    _referer = HttpUtility.HtmlEncode(NotFoundPageUtil.GetReferer(new HttpRequestWrapper(Page.Request)));
                 }
                 return _referer;
             }
@@ -65,7 +60,6 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
             NotFoundPageUtil.HandleOnLoad(this.Page, UrlNotFound, this.Referer);
         }
     }
