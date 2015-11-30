@@ -14,8 +14,16 @@
         $("#notfoundajaxUploadForm label.error").text("");
         return true;
     }
-  
 
+    function notfoundDeletedvalidator() {
+        var file = $('#notfoundDeletedajaxUploadForm input[type=file]').val();
+        if (!file) {
+            $("#notfoundDeletedajaxUploadForm label.error").text("No file selected!");
+            return false;
+        }
+        $("#notfoundDeletedajaxUploadForm label.error").text("");
+        return true;
+    }
     $(function () {
         $("#notfoundajaxUploadForm").ajaxForm({
             iframe: true,
@@ -29,6 +37,21 @@
             error: function (xhr, textStatus, errorThrown) {
                 $("#notfoundajaxUploadForm").unblock();
                 $("#notfoundajaxUploadForm").resetForm();
+                $(".notfound-viewInfo").text('Error uploading file');
+            }
+        });
+        $("#notfoundDeletedajaxUploadForm").ajaxForm({
+            iframe: true,
+            dataType: "json",
+            beforeSubmit: notfoundDeletedvalidator,
+            success: function (result) {
+                $("#notfoundDeletedajaxUploadForm").unblock();
+                $("#notfoundDeletedajaxUploadForm").resetForm();
+                $(".notfound-viewInfo").text(result.message);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                $("#notfoundDeletedajaxUploadForm").unblock();
+                $("#notfoundDeletedajaxUploadForm").resetForm();
                 $(".notfound-viewInfo").text('Error uploading file');
             }
         });
@@ -119,6 +142,23 @@
                     <%= Html.Translate("/gadget/redirects/importinfo") %>
                         <label class="error"></label>
                     <input type="file" name="xmlfile" />
+                      
+                </div>
+                <div class="shorter delete">
+                  
+                     <button type="submit" class="notfoundbutton" style="float:right">Import</button>
+                </div>
+           
+        </form>
+                 </td>
+
+                  </tr>             <tr>
+                    <td class="notfound-full">  
+        <form id="notfoundDeletedajaxUploadForm" action="<%=Paths.ProtectedRootPath %>BVNetwork.404Handler/NotFoundRedirect/ImportDeleted" method="post" enctype="multipart/form-data">
+                  <div class="longer">
+                    <%= Html.Translate("/gadget/redirects/importDeleted") %>
+                        <label class="error"></label>
+                    <input type="file" name="txtFile" />
                       
                 </div>
                 <div class="shorter delete">

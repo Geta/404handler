@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: AssemblyCulture("")]		 
 
 
-[assembly: AssemblyVersion("4.0.4")]
+[assembly: AssemblyVersion("4.1.0")]
 
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]

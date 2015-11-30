@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security;
 using System.Web;
@@ -144,7 +145,7 @@ namespace BVNetwork.NotFound.Controllers
             CheckAccess();
 
             Logger.Debug("Deleting redirect: '{0}'", oldUrl);
-            
+
             DataStoreHandler dsHandler = new DataStoreHandler();
             dsHandler.DeleteCustomRedirect(oldUrl);
             DataStoreEventHandlerHook.DataStoreUpdated();
@@ -239,6 +240,19 @@ namespace BVNetwork.NotFound.Controllers
             return View("Administer");
         }
 
+        /// <summary>
+        /// Removed Deleted (410) redirect
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public ActionResult DeleteDeleted(string url)
+        {
+            CheckAccess();
+            var dsHandler = new DataStoreHandler();
+            dsHandler.DeleteCustomRedirect(url);
+            return Deleted();
+        }
+
         [AcceptVerbs(HttpVerbs.Post)]
         public FileUploadJsonResult ImportRedirects(HttpPostedFileBase xmlfile)
         {
@@ -252,6 +266,39 @@ namespace BVNetwork.NotFound.Controllers
             {
                 CustomRedirectHandler.Current.SaveCustomRedirects(redirects);
                 message = string.Format(LocalizationService.Current.GetString("/gadget/redirects/importsuccess"), redirects.Count);
+            }
+            else
+            {
+                message = LocalizationService.Current.GetString("/gadget/redirects/importnone");
+            }
+            return new FileUploadJsonResult { Data = new { message = message } };
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public FileUploadJsonResult ImportDeleted(HttpPostedFileBase txtFile)
+        {
+            CheckAccess();
+            var redirects = new CustomRedirectCollection();
+            using (var streamReader = new StreamReader(txtFile.InputStream))
+            {
+                while (streamReader.Peek() >= 0)
+                {
+                    var url = streamReader.ReadLine();
+                    if (!string.IsNullOrEmpty(url))
+                    {
+                        redirects.Add(new CustomRedirect
+                        {
+                            OldUrl = url,
+                            State = (int)DataStoreHandler.State.Deleted,
+                        });
+                    }
+                }
+            }
+            string message;
+            if (redirects.Count != 0)
+            {
+                CustomRedirectHandler.Current.SaveCustomRedirects(redirects);
+                message = string.Format(LocalizationService.Current.GetString("/gadget/redirects/importdeletedsuccess"), redirects.Count);
             }
             else
             {

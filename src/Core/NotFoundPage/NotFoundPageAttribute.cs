@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Web.Mvc;
+using EPiServer.Editor;
 using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.NotFoundPage
@@ -10,13 +11,24 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var request = filterContext.HttpContext.Request;
-            Log.Debug("Starting 404 action filter");
-            filterContext.ParentActionViewContext.ViewBag.Referrer = NotFoundPageUtil.GetReferer(request);
-            filterContext.ParentActionViewContext.ViewBag.NotFoundUrl = NotFoundPageUtil.GetUrlNotFound(request);
-            filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
-            filterContext.HttpContext.Response.StatusCode = NotFoundPageUtil.GetStatusCode(request);
-            filterContext.HttpContext.Response.Status = "404 File not found";
+            if (!PageEditing.PageIsInEditMode)
+            {
+                Log.Debug("Starting 404 handler action filter");
+                var request = filterContext.HttpContext.Request;
+                filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
+                int statusCode = NotFoundPageUtil.GetStatusCode(request);
+                filterContext.HttpContext.Response.StatusCode = statusCode;
+                filterContext.HttpContext.Response.Status = NotFoundPageUtil.GetStatus(statusCode);
+                NotFoundPageUtil.SetCurrentLanguage(filterContext.HttpContext);
+                filterContext.Controller.ViewBag.Referrer = NotFoundPageUtil.GetReferer(request);
+                filterContext.Controller.ViewBag.NotFoundUrl = NotFoundPageUtil.GetUrlNotFound(request);
+                filterContext.Controller.ViewBag.StatusCode = statusCode;
+            }
+        }
+
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+    
         }
     }
 }

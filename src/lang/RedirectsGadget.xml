@@ -37,8 +37,10 @@
                 <unignore>Unignore</unignore>
                 <url>Url</url>
                 <importsuccess>{0} redirects successfully imported.</importsuccess>
+                <importdeletedsuccess>{0} urls successfully imported.</importdeletedsuccess>
                 <importnone>No redirects could be imported</importnone>
                 <importinfo>Import redirects from an XML-file </importinfo>
+                <importDeleted>Import Deleted(410) urls from a text file</importDeleted>
                 <ignoredremoved>All {0} ignored suggestions permanently removed</ignoredremoved>
                 <suggestionsdeleted>Suggestions successfully deleted</suggestionsdeleted>
                 <redirectsdeleted>Redirects successfully deleted</redirectsdeleted>

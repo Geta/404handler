@@ -119,12 +119,18 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
             }
         }
 
+        public static void SetCurrentLanguage(HttpContextBase context)
+        {
+            Uri urlNotFound = new Uri(SiteDefinition.Current.SiteUrl + GetUrlNotFound(context.Request));
+            SetCurrentLanguage(urlNotFound.ToString());
+        }
+
         public static string GetStatus(int statusCode)
         {
             string status = "";
-            if (statusCode == 410)
+            if (statusCode == 404)
                 status =  "404 File not found";
-            else if (statusCode == 404)
+            else if (statusCode == 410)
                 status = "410 Deleted";
             return status;
         }

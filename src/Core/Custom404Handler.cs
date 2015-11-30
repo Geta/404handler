@@ -17,8 +17,6 @@ namespace BVNetwork.NotFound.Core
 {
     public class Custom404Handler
     {
-        public const string NotFoundParam = "404;notfound";
-        public const string DeletedParam = "410;deleted";
 
         private static readonly List<string> _ignoredResourceExtensions = new List<string> { "jpg", "gif", "png", "css", "js", "ico", "swf", "woff" };
 
@@ -52,6 +50,7 @@ namespace BVNetwork.NotFound.Core
                     // infinite loop. The new url must not be the referrer to this page
                     if (string.Compare(redirect.NewUrl, pathAndQuery, StringComparison.InvariantCultureIgnoreCase) != 0)
                     {
+
                         foundRedirect = redirect;
                         return true;
                     }
@@ -135,10 +134,6 @@ namespace BVNetwork.NotFound.Core
                 return;
             }
 
-            // Avoid looping forever
-            if (IsInfiniteLoop(context))
-                return;
-
             CustomRedirect newUrl;
             var canHandleRedirect = HandleRequest(GetReferer(context.Request.UrlReferrer), notFoundUri, out newUrl);
             if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Saved)
@@ -161,9 +156,11 @@ namespace BVNetwork.NotFound.Core
 
         protected static void SetStatusCodeAndShow404(HttpContext context, int statusCode = 404)
         {
+
             context.Response.TrySkipIisCustomErrors = true;
             context.Server.ClearError();
             context.Response.StatusCode = statusCode;
+            context.Response.End();
         }
 
         private static bool CheckForException(HttpContext context, Uri notFoundUri)
@@ -238,24 +235,6 @@ namespace BVNetwork.NotFound.Core
             return false;
         }
 
-        private static bool IsInfiniteLoop(HttpContext ctx)
-        {
-            string requestUrl = ctx.Request.Url.AbsolutePath;
-            string fnfPageUrl = Get404Url();
-            if (fnfPageUrl.StartsWith("~"))
-                fnfPageUrl = fnfPageUrl.Substring(1);
-            int posQuery = fnfPageUrl.IndexOf("?");
-            if (posQuery > 0)
-                fnfPageUrl = fnfPageUrl.Substring(0, posQuery);
-
-            if (string.Compare(requestUrl, fnfPageUrl, StringComparison.InvariantCultureIgnoreCase) == 0)
-            {
-                Logger.Information("404 Handler detected an infinite loop to 404 page. Exiting");
-                return true;
-            }
-            return false;
-        }
-
         /// <summary>
         /// Determines whether the current request is on localhost.
         /// </summary>
@@ -297,23 +276,6 @@ namespace BVNetwork.NotFound.Core
                 }
             }
             return refererUrl;
-        }
-
-        /// <summary>
-        /// Creates a url to the 404 page, containing the aspxerrorpath query
-        /// variable with information about the current request url
-        /// </summary>
-        /// <returns></returns>
-        private static string Get404Url(string param = null)
-        {
-            if (param == null)
-            {
-                param = NotFoundParam;
-            }
-
-            string baseUrl = Configuration.Configuration.FileNotFoundHandlerPage;
-            string currentUrl = HttpContext.Current.Request.Url.PathAndQuery;
-            return String.Format("{0}?{1}={2}", baseUrl, param, HttpContext.Current.Server.UrlEncode(currentUrl));
         }
     }
 }

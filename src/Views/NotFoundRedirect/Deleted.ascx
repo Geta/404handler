@@ -43,7 +43,7 @@
                 <%= Html.ViewLink(
                         "",  // html helper
                         "Delete",  // title
-                        "RemoveDeleted", // Action name
+                        "DeleteDeleted", // Action name
                         "epi-quickLinksDelete epi-iconToolbar-item-link epi-iconToolbar-delete", // css class
                         "Index",
                         new { url =  m.OldUrl })%>
