@@ -22,7 +22,7 @@ namespace BVNetwork.NotFound.Core.Data
             // Get hold of the datastore
             DynamicDataStore store = DataStoreFactory.GetStore(typeof(CustomRedirect));
             //check if there is an exisiting object with matching property "OldUrl"
-            CustomRedirect match = store.Find<CustomRedirect>(OLD_URL_PROPERTY_NAME, currentCustomRedirect.OldUrl.ToLower()).SingleOrDefault();
+            CustomRedirect match = store.Find<CustomRedirect>(OLD_URL_PROPERTY_NAME, currentCustomRedirect.OldUrl).SingleOrDefault();
             //if there is a match, replace the value.
             if (match != null)
                 store.Save(currentCustomRedirect, match.Id);
