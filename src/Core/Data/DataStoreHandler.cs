@@ -95,7 +95,7 @@ namespace BVNetwork.NotFound.Core.Data
             DynamicDataStore store = DataStoreFactory.GetStore(typeof(CustomRedirect));
 
             //find object with matching property "OldUrl"
-            CustomRedirect match = store.Find<CustomRedirect>(OLD_URL_PROPERTY_NAME, oldUrl).SingleOrDefault();
+            CustomRedirect match = store.Find<CustomRedirect>(OLD_URL_PROPERTY_NAME, oldUrl.ToLower()).SingleOrDefault();
             if (match != null)
                 store.Delete(match);
         }
