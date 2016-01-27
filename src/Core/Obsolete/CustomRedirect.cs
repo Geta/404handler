@@ -40,7 +40,7 @@ namespace BVNetwork.FileNotFound.CustomRedirects
         {
             get
             {
-                return _oldUrl;
+                return _oldUrl.ToLower(); 
             }
             set
             {
