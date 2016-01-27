@@ -78,7 +78,7 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
 
         public static int GetStatusCode(HttpRequestBase request)
         {
-            int code = 0;
+            int code = 404;
             string queryString = GetQueryString(request);
             if (!string.IsNullOrEmpty(queryString))
             {
