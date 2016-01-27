@@ -8,7 +8,63 @@ The perfect companion if you're transitioning to EPiServer from another system a
 
 The package can be found in the [EPiServer Nuget Feed](http://nuget.episerver.com/).
 
-Until we've moved the documentation over, please check out the existing (somewhat outdated) [docs on EPiCode](https://www.coderesort.com/p/epicode/wiki/404Handler).
+# Configuration
+When installed, the following sections are added to your web.config:
+
+```xml
+<configSections>
+	<section name="bvn404Handler" type="BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration, BVNetwork.EPi404" />
+</configSections>
+<bvn404Handler handlerMode="On">
+</bvn404Handler>
+<system.webServer>        
+	<httpErrors errorMode="Custom" existingResponse="Replace">
+        <remove statusCode="404" />
+        <error statusCode="404" path="/notfound.aspx" responseMode="ExecuteURL" />
+    </httpErrors>
+</system.webServer>
+```
+
+You can turn off the redirects by setting `handlerMode` to `Off`.
+
+The `httpErrors` section is responsible for showing a custom 404 page. If you do not already have this section in your config, it will be added with the default settings as shown above. If the section exists, it will not be changed, and you might have to change it manually.
+
+**Important!** `errorMode` needs to be set to `Custom` and `existingResponse` needs to be set to `Replace`, or the 404 page will not be shown, or will only be shown for urls not ending with `.aspx`. 
+
+
+# Custom 404 Page
+You probably want to change the path to the 404 page to something else, typically a view in your project, or even a page in Episerver. Example:
+
+```xml
+<error statusCode="404" path="/Error/Error404" responseMode="ExecuteURL" />
+```
+
+In this case, the `/Error/Error404` is a MVC Action (`Error404`) on a `Error` controller. This will work out of the box (you no longer need Mark Everard's [BVN.404Handler.MvcContrib](https://github.com/markeverard/BVN.404Handler.MvcContrib) package), but the Http status code will be 200, not 404. You can set this status code yourself, or decorate the Action with the `NotFoundPage` attribute.
+
+Example:
+```C#
+public class ErrorController : PageControllerBase<PageData>
+{
+    
+    [BVNetwork.NotFound.Core.NotFoundPage.NotFoundPage]
+    public ActionResult Error404()
+    {
+		// Custom implementation
+        ErrorPageViewModel model = GetViewModel();
+
+        // The Action Filter will add the following to the ViewBag:
+        // Referrer, NotFoundUrl and StatusCode
+        model.NotFoundUrl = ViewBag.NotFoundUrl;
+        model.Referer = ViewBag.Referrer;
+
+        return View("Error404", model);
+    }
+}
+```
+
+The `NotFoundPageAttribute` action filter will set the http status code to 404 and populate the ViewBag with the following properties: `Referrer`, `NotFoundUrl` and `StatusCode`. You can use these properties in your view or for additional logging.
+
+The filter will also attempt to set the language by matching the language segment in the beginning of the url (if used.)
 
 # Custom Handlers
 If you need more advanced or custom logic to create redirects, you can implement an INotFoundHandler.
@@ -17,7 +73,7 @@ If you need more advanced or custom logic to create redirects, you can implement
 2. In the `public string RewriteUrl(string url)` method, add your custom logic
 3. Register the handler in web.config:
 ```xml
-<bvn404Handler handlerMode="On" fileNotFoundPage="/your404pagehere">
+<bvn404Handler handlerMode="On">
     <providers>
         <add name="Custom Handler" type="Your.Name.Space.YourClass, YourAssemblyName" />
     </providers>
@@ -57,6 +113,16 @@ public class CustomProductRedirectHandler : INotFoundHandler
 ```
 
 **Note!** Make sure the code you add has good performance, it could be called a lot. If you're querying a database or a search index, you might want to add caching and perhaps Denial Of Service prevention measures.
+
+# Troubleshooting
+The module has extensive logging. Turn on debug logging for the `BVNetwork.NotFound` namespace in your episerverlog.config:
+```xml
+<logger name="BVNetwork.NotFound"
+            additivity="false">
+    <level value="All" />
+    <appender-ref ref="debugLogAppender"/>
+</logger>
+```
 
 # Mentions and Resources
 * http://world.episerver.com/blogs/Per-Magne-Skuseth/Dates/2013/2/404-handler-for-EPiServer-7/
