@@ -21,5 +21,9 @@
             <error statusCode="404" path="/notfound.aspx" responseMode="ExecuteURL" />
         </httpErrors>
     </system.webServer>
-
+    <episerver.shell>
+        <protectedModules>
+            <add name="BVNetwork.404Handler" xdt:Transform="InsertIfMissing" />
+        </protectedModules>
+    </episerver.shell>
 </configuration>
