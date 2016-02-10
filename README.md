@@ -3,6 +3,15 @@ The popular 404 handler for EPiServer, enabling better control over your 404 pag
 
 The perfect companion if you're transitioning to EPiServer from another system and cannot keep the url structure, or plan to do major re-structuring of your content.
 
+![](https://raw.githubusercontent.com/BVNetwork/404handler/master/doc/img/Redirects.png)
+
+- The 404 handler stores the redirects in the database, not web.config. Editors can add redirects without any deployments.
+  - All redirects are edited in the gadget as shown above. After the add-on is installed and a proper 404 page has been created, no changes to the application is needed to add new redirects.
+- Handles partial and "full" urls and can redirect out of the site by using fully qualified urls for the "New url" field.
+- Supports wildcard redirects.
+- By using fully qualified urls in the "Old url" field, they will only apply for that specific site. Editing redirects is done for all sites in the same UI.
+- You need to be authorized to work with the gadget, and have access to edit mode, but there is no restriction on which editors can edit.
+
 # Installation
 `Install-Package BVN.404Handler`
 
