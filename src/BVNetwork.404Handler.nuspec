@@ -3,7 +3,7 @@
     <metadata>
         <id>BVN.404Handler</id>
         <title>404 Handler for EPiServer</title>
-        <version>4.1.0</version>
+        <version>4.1.1</version>
         <authors>BV Network</authors>
         <owners>BV Network</owners>
         <licenseUrl>https://www.coderesort.com/p/epicode/wiki/EpicodeLicense</licenseUrl>
@@ -23,5 +23,6 @@
         <file src="bin\$configuration$\BVNetwork.404Handler.zip" target="content\modules\_protected\BVNetwork.404Handler\" />
         <file src="NotFound.aspx" target="content\NotFound.aspx" />
         <file src="web.config.install.xdt" target="content" />
+        <file src="readme.txt" target="" />
     </files>
 </package>
