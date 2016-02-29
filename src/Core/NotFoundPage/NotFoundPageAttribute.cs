@@ -18,7 +18,11 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
                 filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
                 int statusCode = NotFoundPageUtil.GetStatusCode(request);
                 filterContext.HttpContext.Response.StatusCode = statusCode;
-                filterContext.HttpContext.Response.Status = NotFoundPageUtil.GetStatus(statusCode);
+                string status = NotFoundPageUtil.GetStatus(statusCode);
+                if (!string.IsNullOrEmpty(status))
+                {
+                    filterContext.HttpContext.Response.Status = status;
+                }
                 NotFoundPageUtil.SetCurrentLanguage(filterContext.HttpContext);
                 filterContext.Controller.ViewBag.Referrer = NotFoundPageUtil.GetReferer(request);
                 filterContext.Controller.ViewBag.NotFoundUrl = NotFoundPageUtil.GetUrlNotFound(request);
