@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Models;
@@ -272,6 +273,18 @@ namespace BVNetwork.NotFound.Controllers
                 message = LocalizationService.Current.GetString("/gadget/redirects/importnone");
             }
             return new FileUploadJsonResult { Data = new { message = message } };
+        }
+
+        public XmlActionResult ExportAllRedirects()
+        {
+            CheckAccess();
+            DataStoreHandler dsHandler = new DataStoreHandler();
+
+            List<CustomRedirect> redirects = dsHandler.GetCustomRedirects(true);
+
+            XmlDocument document = new RedirectsXmlParser().Export(redirects);
+
+            return new XmlActionResult(document);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

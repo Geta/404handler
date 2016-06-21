@@ -87,6 +87,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\CustomRedirects\XmlActionResult.cs" />
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
     <Compile Include="Core\Logging\LogEvent.cs" />
     <Compile Include="Core\NotFoundPage\NotFoundPageAttribute.cs" />
@@ -119,7 +120,9 @@
     <None Include="ClientResources\Content\RedirectGadget.css" />
     <None Include="ClientResources\Scripts\jquery.blockUI.js" />
     <None Include="ClientResources\Scripts\jquery.form.js" />
-    <None Include="Views\NotFoundRedirect\Administer.ascx" />
+    <None Include="Views\NotFoundRedirect\Administer.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
     <None Include="Views\NotFoundRedirect\Ignored.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>

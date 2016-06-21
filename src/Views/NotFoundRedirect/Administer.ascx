@@ -3,13 +3,13 @@
 <%@ Import Namespace="EPiServer.Shell" %>
 <%@ Import Namespace="EPiServer.Shell.Web.Mvc.Html" %>
 <script type="text/javascript">
-    
+
     function notfoundvalidator() {
         //$('#notfoundajaxUploadForm').submit(function (event) {
         var file = $('#notfoundajaxUploadForm input[type=file]').val();
         if (!file) {
             $("#notfoundajaxUploadForm label.error").text("No file selected!");
-                return false;
+            return false;
         }
         $("#notfoundajaxUploadForm label.error").text("");
         return true;
@@ -67,9 +67,9 @@
         </fieldset>
     </div>
     <div class="epi-tabView">
-    <ul>
-        <li class="<%= Model == "Index" ? "selected" : "" %> ntab">
-            <%= Html.ViewLink(
+        <ul>
+            <li class="<%= Model == "Index" ? "selected" : "" %> ntab">
+                <%= Html.ViewLink(
                     "Back to redirects", // html helper
                     "", // title
                     "Index", // Action name
@@ -77,99 +77,120 @@
                     "",
                     new {}) %>
         </li>
-     </ul>
-        </div>
-    <br/>
+        </ul>
+    </div>
+    <br />
     <table class="epi-default">
         <tr>
-         <td>
-            <div class="longer"><%= Html.Translate("/gadget/redirects/deleteignoreinfo") %>
-            </div>
-            <div class="shorter delete">
-                   <% Html.BeginGadgetForm("DeleteAllIgnored"); %>
-                <button type="submit" class="notfoundbutton" style="float:right">Delete</button>
-                 <% Html.EndForm(); %>
-            </div>
-           </td>
-        </tr>
-        
-           <tr>
-         <td>
-            <div class="longer"><%= Html.Translate("/gadget/redirects/deleteallSuggestions") %>
-            </div>
-            <div class="shorter delete">
-                   <% Html.BeginGadgetForm("DeleteAllSuggestions"); %>
-                <button type="submit" class="notfoundbutton" style="float:right">Delete</button>
-                 <% Html.EndForm(); %>
-            </div>
-           </td>
-        </tr>
-        
-                   <tr>
-         <td>
-            <div class="longer"><%= Html.Translate("/gadget/redirects/deleteallredirects") %>
-            </div>
-            <div class="shorter delete">
-                   <% Html.BeginGadgetForm("DeleteAllRedirects"); %>
-                <button type="submit" class="notfoundbutton" style="float:right">Delete</button>
-                 <% Html.EndForm(); %>
-            </div>
-           </td>
-        </tr>
-       
-        <tr>
             <td>
-                 <% Html.BeginGadgetForm("DeleteSuggestions"); %>
-            <div class="delete suggestions"><%= Html.Translate("/gadget/redirects/suggesteionsdeleteinfo1") %>
-                <input name="maxErrors" value="5" class="required" />
-                <%= Html.Translate("/gadget/redirects/suggesteionsdeleteinfo2") %>
-                <input name="minimumDays" value="30" class="required" />
-                <%= Html.Translate("/gadget/redirects/suggesteionsdeleteinfo3") %>
-            </div>
-
-            <div class="shorter delete">
-                <button type="submit" class="notfoundbutton" style="float:right">Delete</button>
-
-            </div>
-                 <% Html.EndForm(); %>
+                <div class="longer">
+                    <%= Html.Translate("/gadget/redirects/deleteignoreinfo") %>
+                </div>
+                <div class="shorter delete">
+                    <% Html.BeginGadgetForm("DeleteAllIgnored"); %>
+                    <button type="submit" class="notfoundbutton" style="float: right">Delete</button>
+                    <% Html.EndForm(); %>
+                </div>
             </td>
         </tr>
-       
-             <tr>
-                    <td class="notfound-full">  
-        <form id="notfoundajaxUploadForm" action="<%=Paths.ProtectedRootPath %>BVNetwork.404Handler/NotFoundRedirect/ImportRedirects" method="post" enctype="multipart/form-data">
-                  <div class="longer">
-                    <%= Html.Translate("/gadget/redirects/importinfo") %>
-                        <label class="error"></label>
-                    <input type="file" name="xmlfile" />
-                      
+
+        <tr>
+            <td>
+                <div class="longer">
+                    <%= Html.Translate("/gadget/redirects/deleteallSuggestions") %>
                 </div>
                 <div class="shorter delete">
-                  
-                     <button type="submit" class="notfoundbutton" style="float:right">Import</button>
+                    <% Html.BeginGadgetForm("DeleteAllSuggestions"); %>
+                    <button type="submit" class="notfoundbutton" style="float: right">Delete</button>
+                    <% Html.EndForm(); %>
                 </div>
-           
-        </form>
-                 </td>
+            </td>
+        </tr>
 
-                  </tr>             <tr>
-                    <td class="notfound-full">  
-        <form id="notfoundDeletedajaxUploadForm" action="<%=Paths.ProtectedRootPath %>BVNetwork.404Handler/NotFoundRedirect/ImportDeleted" method="post" enctype="multipart/form-data">
-                  <div class="longer">
-                    <%= Html.Translate("/gadget/redirects/importDeleted") %>
-                        <label class="error"></label>
-                    <input type="file" name="txtFile" />
-                      
+        <tr>
+            <td>
+                <div class="longer">
+                    <%= Html.Translate("/gadget/redirects/deleteallredirects") %>
                 </div>
                 <div class="shorter delete">
-                  
-                     <button type="submit" class="notfoundbutton" style="float:right">Import</button>
+                    <% Html.BeginGadgetForm("DeleteAllRedirects"); %>
+                    <button type="submit" class="notfoundbutton" style="float: right">Delete</button>
+                    <% Html.EndForm(); %>
                 </div>
-           
-        </form>
-                 </td>
+            </td>
+        </tr>
 
-                  </tr>
+        <tr>
+            <td>
+                <% Html.BeginGadgetForm("DeleteSuggestions"); %>
+                <div class="delete suggestions">
+                    <%= Html.Translate("/gadget/redirects/suggesteionsdeleteinfo1") %>
+                    <input name="maxErrors" value="5" class="required" />
+                    <%= Html.Translate("/gadget/redirects/suggesteionsdeleteinfo2") %>
+                    <input name="minimumDays" value="30" class="required" />
+                    <%= Html.Translate("/gadget/redirects/suggesteionsdeleteinfo3") %>
+                </div>
+
+                <div class="shorter delete">
+                    <button type="submit" class="notfoundbutton" style="float: right">Delete</button>
+
+                </div>
+                <% Html.EndForm(); %>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="notfound-full">
+                <form id="notfoundajaxUploadForm" action="<%=Paths.ProtectedRootPath %>BVNetwork.404Handler/NotFoundRedirect/ImportRedirects" method="post" enctype="multipart/form-data">
+                    <div class="longer">
+                        <%= Html.Translate("/gadget/redirects/importinfo") %>
+                        <label class="error"></label>
+                        <input type="file" name="xmlfile" />
+
+                    </div>
+                    <div class="shorter delete">
+
+                        <button type="submit" class="notfoundbutton" style="float: right">Import</button>
+                    </div>
+
+                </form>
+            </td>
+
+        </tr>
+
+        
+
+        <tr>
+            <td class="notfound-full">
+                <form id="notfoundDeletedajaxUploadForm" action="<%=Paths.ProtectedRootPath %>BVNetwork.404Handler/NotFoundRedirect/ImportDeleted" method="post" enctype="multipart/form-data">
+                    <div class="longer">
+                        <%= Html.Translate("/gadget/redirects/importDeleted") %>
+                        <label class="error"></label>
+                        <input type="file" name="txtFile" />
+
+                    </div>
+                    <div class="shorter delete">
+
+                        <button type="submit" class="notfoundbutton" style="float: right">Import</button>
+                    </div>
+
+                </form>
+            </td>
+
+        </tr>
+        
+        <tr>
+            <td>
+                <div class="longer">
+                    <%= Html.Translate("/gadget/redirects/exportredirects") %>
+                </div>
+                <div class="shorter delete">
+                    <% Html.BeginForm("ExportAllRedirects", "NotFoundRedirect", new {@class = "epi-gadgetform", target="_blank"}); %>
+                    <button type="submit" class="notfoundbutton" style="float: right">Export</button>
+                    <% Html.EndForm(); %>
+                </div>
+            </td>
+        </tr>
     </table>
 
 </div>
