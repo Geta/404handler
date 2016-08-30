@@ -7,6 +7,7 @@ The perfect companion if you're transitioning to EPiServer from another system a
 
 - The 404 handler stores the redirects in the database, not web.config. Editors can add redirects without any deployments.
   - All redirects are edited in the gadget as shown above. After the add-on is installed and a proper 404 page has been created, no changes to the application is needed to add new redirects.
+  - You can import and export redirects as XML from the admin interface.
 - Handles partial and "full" urls and can redirect out of the site by using fully qualified urls for the "New url" field.
 - Supports wildcard redirects.
 - By using fully qualified urls in the "Old url" field, they will only apply for that specific site. Editing redirects is done for all sites in the same UI.
@@ -40,6 +41,15 @@ The `httpErrors` section is responsible for showing a custom 404 page. If you do
 
 **Important!** `errorMode` needs to be set to `Custom` and `existingResponse` needs to be set to `Replace`, or the 404 page will not be shown, or will only be shown for urls not ending with `.aspx`. 
 
+## Specifying ignored resources
+By default, requests to files with the following extensions will be ignored by the redirect module: `jpg,gif,png,css,js,ico,swf,woff`
+
+If you want to specify this yourself, add `ignoredResourceExtensions` to the configuration:
+```xml
+<bvn404Handler handlerMode="On" 
+               ignoredResourceExtensions="jpg,gif,png,css,js,ico,swf,woff,eot,otf">
+</bvn404Handler>
+```
 
 # Custom 404 Page
 You probably want to change the path to the 404 page to something else, typically a view in your project, or even a page in Episerver. Example:
