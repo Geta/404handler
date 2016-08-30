@@ -10,13 +10,13 @@
 <xs:schema xmlns:tns="BVNetwork404HandlerConfiguration" elementFormDefault="qualified" targetNamespace="BVNetwork404HandlerConfiguration" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="bvn404Handler" type="tns:BVNetwork.NotFound.Configuration.Bvn404HandlerConfigurationCT" />
 	<xs:complexType name="BVNetwork.NotFound.Configuration.Bvn404HandlerConfigurationCT">
-		<xs:sequence>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element minOccurs="0" name="providers" type="tns:BVNetwork.NotFound.Configuration.Bvn404HandlerProvidersCT">
 				<xs:annotation>
 					<xs:documentation>The Bvn404HandlerProviders.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-		</xs:sequence>
+		</xs:choice>
 		<xs:attribute name="redirectsXmlFile" use="optional" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>The RedirectsXmlFile.</xs:documentation>
@@ -47,19 +47,22 @@
 				<xs:documentation>The Logging.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="ignoredResourceExtensions" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The IgnoredResourceExtensions.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="BVNetwork.NotFound.Configuration.Bvn404HandlerProvidersCT">
-		<xs:sequence>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element minOccurs="0" maxOccurs="unbounded" name="add" type="tns:BVNetwork.NotFound.Configuration.Bvn404HandlerProviderCT">
 				<xs:annotation>
 					<xs:documentation>The Bvn404HandlerProvider Configuration Element.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-		</xs:sequence>
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="BVNetwork.NotFound.Configuration.Bvn404HandlerProviderCT">
-		<xs:sequence>
-		</xs:sequence>
 		<xs:attribute name="name" use="required" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>The Name.</xs:documentation>

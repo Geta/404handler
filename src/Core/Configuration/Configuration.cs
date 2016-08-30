@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using BVNetwork.NotFound.Configuration;
 
@@ -43,6 +44,8 @@ namespace BVNetwork.NotFound.Core.Configuration
         private static bool _handlerMode_IsRead = false;
         private static bool _fallbackToEPiServerError = false;
         private static bool _fallbackToEPiServerError_IsRead = false;
+        private const string DEF_IGNORED_EXTENSIONS = "jpg,gif,png,css,js,ico,swf,woff";
+        private static List<string> _ignoredResourceExtensions;
 
         public const int CURRENT_VERSION = 3;
 
@@ -70,6 +73,24 @@ namespace BVNetwork.NotFound.Core.Configuration
                         bool.TryParse(ConfigurationManager.AppSettings[KEY_ERROR_FALLBACK], out _fallbackToEPiServerError);
                 }
                 return _fallbackToEPiServerError;
+            }
+        }
+
+        /// <summary>
+        /// Resource extensions to be ignored.
+        /// </summary>
+        public static List<string> IgnoredResourceExtensions
+        {
+            get
+            {
+                if (_ignoredResourceExtensions == null)
+                {
+                    _ignoredResourceExtensions = new List<string>( string.IsNullOrEmpty(Bvn404HandlerConfiguration.Instance.IgnoredResourceExtensions) ?
+                                                    DEF_IGNORED_EXTENSIONS.Split(',') : 
+                                                    Bvn404HandlerConfiguration.Instance.IgnoredResourceExtensions.Split(','));
+                }
+
+                return _ignoredResourceExtensions;
             }
         }
 
@@ -174,7 +195,7 @@ namespace BVNetwork.NotFound.Core.Configuration
                 if (Bvn404HandlerConfiguration.Instance != null && Bvn404HandlerConfiguration.Instance.BufferSize != -1)
                 {
                     return Bvn404HandlerConfiguration.Instance.BufferSize;
-                }   
+                }
 
                 return DEF_BUFFER_SIZE;
             }

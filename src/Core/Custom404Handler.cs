@@ -18,7 +18,7 @@ namespace BVNetwork.NotFound.Core
     public class Custom404Handler
     {
 
-        private static readonly List<string> _ignoredResourceExtensions = new List<string> { "jpg", "gif", "png", "css", "js", "ico", "swf", "woff" };
+        private static readonly List<string> _ignoredResourceExtensions = Configuration.Configuration.IgnoredResourceExtensions;
 
         private static readonly ILogger Logger = LogManager.GetLogger();
 
