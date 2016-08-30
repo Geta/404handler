@@ -50,8 +50,9 @@
                 <deleteignoreinfo>Permanently delete all ignored suggestions</deleteignoreinfo>
                 <deleteallSuggestions>Permanently delete all suggestions</deleteallSuggestions>
                 <deleteallredirects>Permanently delete all custom redirects</deleteallredirects>
-                <Administerinfo>Clean up redirect suggestions or ignored urls, or import redirect from an XML file.</Administerinfo>
+                <Administerinfo>Clean up redirect suggestions or ignored urls, or import/export redirects from/to an XML file.</Administerinfo>
                 <deletedurls>There are currently &lt;b&gt;{0}&lt;/b&gt; urls that return a Deleted response. This tells crawlers to remove these urls from their index.</deletedurls>
+                <exportredirects>Export redirects to an XML-file</exportredirects>
             </redirects>
         </gadget>
     </language>
