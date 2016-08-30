@@ -80,9 +80,10 @@ namespace BVNetwork.NotFound.Core.Upgrade
             try
             {
                 // the old redirect class is obsolete, and should only be used for this upgrade
+#pragma warning disable CS0618
                 var oldCustomrRedirectStore = DataStoreFactory.GetStore(typeof(FileNotFound.CustomRedirects.CustomRedirect));
                 var oldCustomRedirects = oldCustomrRedirectStore.Items<FileNotFound.CustomRedirects.CustomRedirect>().ToList();
-
+#pragma warning restore CS0618
                 if (oldCustomRedirects.Count > 0)
                 {
                     var newCustomrRedirectStore = DataStoreFactory.GetStore(typeof(CustomRedirect));
