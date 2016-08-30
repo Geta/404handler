@@ -100,6 +100,7 @@
     <Content Include="NotFound.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <None Include=".editorconfig" />
     <None Include="Views\NotFoundRedirect\Deleted.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
