@@ -1,11 +1,11 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<List<CustomRedirect>>" %>
 <%@ Import Namespace="BVNetwork.NotFound.Core.CustomRedirects" %>
-<%@ Import Namespace="EPiServer.Core" %>
+<%@ Import Namespace="EPiServer.Framework.Localization" %>
 
 <div class="notfound">
        <div class="epi-formArea">
             <fieldset>
-               <%=string.Format(LanguageManager.Instance.Translate("/gadget/redirects/deletedurls"), Model.Count)%>
+               <%=string.Format(LocalizationService.Current.GetString("/gadget/redirects/deletedurls"), Model.Count)%>
          
             </fieldset>
         </div>
@@ -19,7 +19,7 @@
             <tr>
                 <th>
                     <label>
-                        <%=LanguageManager.Instance.Translate("/gadget/redirects/url")%></label>
+                        <%= Html.Translate("/gadget/redirects/url")%></label>
                 </th>
                 <th>&nbsp;</th>
             </tr>

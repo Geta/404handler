@@ -33,15 +33,15 @@
                 <tr>
                     <th>
                         <label>
-                            <%=LanguageManager.Instance.Translate("/gadget/redirects/oldurl")%></label>
+                            <%= Html.Translate("/gadget/redirects/oldurl")%></label>
                     </th>
                     <th>
                         <label>
-                            <%=LanguageManager.Instance.Translate("/gadget/redirects/newurl")%></label>
+                            <%= Html.Translate("/gadget/redirects/newurl")%></label>
                     </th>
                     <th style="text-align: center">
                         <label>
-                            <%=LanguageManager.Instance.Translate("/gadget/redirects/wildcard")%></label>
+                            <%= Html.Translate("/gadget/redirects/wildcard")%></label>
                     </th>
                     <th>
                     </th>
@@ -75,7 +75,7 @@
                 <td class="longer">
                     <%if (m.State.Equals((int)DataStoreHandler.State.Ignored))
                       {%>
-                    <i>[<%=LanguageManager.Instance.Translate("/gadget/redirects/ignored")%>]</i>
+                    <i>[<%= Html.Translate("/gadget/redirects/ignored")%>]</i>
                     <%}
                       else
                       {  %>

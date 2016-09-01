@@ -1,10 +1,8 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<BVNetwork.NotFound.Models.RedirectIndexViewData>" %>
-
 <%@ Import Namespace="BVNetwork.NotFound.Core" %>
 <%@ Import Namespace="BVNetwork.NotFound.Core.CustomRedirects" %>
 <%@ Import Namespace="BVNetwork.NotFound.Core.Data" %>
-<%@ Import Namespace="EPiServer.Core" %>
-<%@ Import Namespace="EPiServer.Shell.Web.Mvc.Html" %>
+<%@ Import Namespace="EPiServer.Framework.Localization" %>
 <script type="text/javascript">
 
     function replaceArrow(inputid) {
@@ -39,16 +37,16 @@
             <tr>
                 <th>
                     <label>
-                        <%=LanguageManager.Instance.Translate("/gadget/redirects/oldurl")%></label>
+                        <%= Html.Translate("/gadget/redirects/oldurl")%></label>
                 </th>
                 <th>
                     <label>
-                        <%=LanguageManager.Instance.Translate("/gadget/redirects/newurl")%></label>
+                        <%= Html.Translate("/gadget/redirects/newurl")%></label>
                 </th>
                 
                 <th style="text-align: center">
                     <label>
-                        <%=LanguageManager.Instance.Translate("/gadget/redirects/ignore")%></label>
+                        <%= Html.Translate("/gadget/redirects/ignore")%></label>
                 </th>
             </tr>
         </thead>
@@ -145,7 +143,7 @@
             <td class="shorter delete">
                 <%= Html.ViewLink(
                                 "",  // html helper
-                                LanguageManager.Instance.Translate("/gadget/redirects/ignoreexplanation"),  // title
+                                LocalizationService.Current.GetString("/gadget/redirects/ignoreexplanation"),  // title
                                 "IgnoreRedirect", // Action name
                                 "epi-quickLinksDelete epi-iconToolbar-item-link epi-iconToolbar-delete", // css class
                                 "Index",
