@@ -36,8 +36,8 @@ namespace BVNetwork.NotFound.Core.Logging
 
         public void LogRequest(string oldUrl, string referrer)
         {
-            int bufferSize = Configuration.Configuration.BufferSize;     
-            if (LogQueue.Count >= bufferSize)
+            int bufferSize = Configuration.Configuration.BufferSize;
+            if (LogQueue.Count > 0 && LogQueue.Count >= bufferSize)
             {
                 lock (LogQueue)
                 {
@@ -49,7 +49,7 @@ namespace BVNetwork.NotFound.Core.Logging
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error("An error occured whil trying to log 404 errors. ", ex);
+                        Logger.Error("An error occured while trying to log 404 errors. ", ex);
                         LogQueue = new List<LogEvent>();
                     }
                 }

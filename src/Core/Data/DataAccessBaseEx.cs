@@ -99,7 +99,7 @@ namespace BVNetwork.NotFound.Core.Data
                             "An error occureding in the ExecuteScalar method with the following sql{0}. Exception:{1}",
                             sqlCommand,
                             ex));
-                    
+
                 }
                 return result;
             });
@@ -119,10 +119,10 @@ namespace BVNetwork.NotFound.Core.Data
             var parameters = new List<IDbDataParameter>();
             parameters.Add(oldUrlParam);
             ExecuteSQL(sqlCommand, parameters);
-        } 
+        }
 
         public void DeleteSuggestions(int maxErrors, int minimumDaysOld)
-        { 
+        {
             string sqlCommand = string.Format(@"delete from {0}
                                                 where [OldUrl] in (
                                                 select [OldUrl]
@@ -131,7 +131,7 @@ namespace BVNetwork.NotFound.Core.Data
                                                       from {0}
                                                       Where DATEDIFF(day, [Requested], getdate()) >= {1}
                                                       group by [OldUrl]
-                                                      having count(*) <= {2} 
+                                                      having count(*) <= {2}
                                                       ) t
                                                 )",REDIRECTSTABLE, minimumDaysOld, maxErrors);
             ExecuteSQL(sqlCommand, null);
