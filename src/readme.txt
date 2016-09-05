@@ -1,6 +1,6 @@
 Important information about the 404 Handler
 ===========================================
-If you are upgrading this package from a version previous to 4.1.1, make sure you inspect your configuration.
+If you are upgrading this package from a version previous to 4.1.1 (or 3.4.0 for CMS 8), make sure you inspect your configuration.
 
 Instead of specifying the fileNotFoundPage attribute on the bvn404handler, use the standard httpErrors section instead.
 

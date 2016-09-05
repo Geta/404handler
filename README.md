@@ -41,6 +41,37 @@ The `httpErrors` section is responsible for showing a custom 404 page. If you do
 
 **Important!** `errorMode` needs to be set to `Custom` and `existingResponse` needs to be set to `Replace`, or the 404 page will not be shown, or will only be shown for urls not ending with `.aspx`. 
 
+## Logging
+Suggestions for 404 rules require 404 requests to be logged to the database.
+
+Logging of 404 requests is buffered to shield your application from Denial of Service attacks. By default, logging will happen for every 30'th error. You can edit the `bvn404Handler` section in `web.config` and set `bufferSize="0"` to log the errors immediately. This is not recommended as you will be vulnerable to massive logging to your database. You can control how much you would like to log by specifying a threshold value. This value determines how frequent 404 errors are allowed to be logged.
+
+**Important!** Even if the threshold is set low, you can still receive a lot of requests in the 404 log. In the Admin view (follow "Administer" link in gadget) you can delete suggestions (logged 404 requests). You can find all the logged items in the `BVN.NotFoundRequests` table in your CMS database if you want to manually clear the logged requests (this will not remove any redirects).
+
+![](https://raw.githubusercontent.com/BVNetwork/404handler/master/doc/img/Administer.png)
+
+```xml
+<bvn404Handler handlerMode="On" logging="On" bufferSize="30" threshold="5">
+</bvn404Handler>
+```
+
+**logging**: Turn logging `On` or `Off`. Default is `On`
+
+**bufferSize**: Size of memory buffer to hold 404 requests. Default is 30
+
+**threshold**: Average maximum allowed requests per second. Default is 5
+
+ * Example 1:
+   * bufferSize is set to 100, threshold is set to 10
+   * Case: 100 errors in 5 seconds - (diff = seconds between first logged request and the last logged request in the buffer).
+   * 100 / 5 = 20. Error frequency is higher than threshold value. Buffered requests will not get logged, the entire buffer will be discarded.
+ * Example 2:
+   * bufferSize is 100, threshold is 10
+   * Case: 100 errors in 15 seconds
+   * 100 / 15 = 6. Error frequency is within threshold value. Buffered requests will get logged.
+   
+If the `bufferSize` is set to 0, the `threshold` value will be ignored, and every request will be logged immediately.
+
 ## Specifying ignored resources
 By default, requests to files with the following extensions will be ignored by the redirect module: `jpg,gif,png,css,js,ico,swf,woff`
 
