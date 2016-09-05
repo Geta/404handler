@@ -3,19 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BVNetwork.404Handler.Cms8", "BVNetwork.404Handler.Cms8.csproj", "{DFBF0553-7E44-44BF-A59F-F94F9493FC17}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{526A4D89-5EB3-459A-9009-05A071B23C2E}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7F2A46E7-8995-4E6F-AB53-3B130ABC4047}"
-	ProjectSection(SolutionItems) = preProject
-		..\README.md = ..\README.md
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BVNetwork.404Handler", "BVNetwork.404Handler.csproj", "{DFBF0553-7E44-44BF-A59F-F94F9493FC17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

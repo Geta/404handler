@@ -87,6 +87,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.Cms9.cs" />
     <Compile Include="Core\CustomRedirects\XmlActionResult.cs" />
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
     <Compile Include="Core\Logging\LogEvent.cs" />
@@ -101,6 +102,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <None Include=".editorconfig" />
+    <None Include="packages.BVNetwork.404Handler.config" />
     <None Include="Views\NotFoundRedirect\Deleted.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
@@ -190,7 +192,6 @@
     </Content>
     <None Include="CustomRedirects.config" />
     <None Include="module.config" />
-    <Content Include="packages.config" />
     <None Include="web.config.install.xdt" />
   </ItemGroup>
   <ItemGroup>
