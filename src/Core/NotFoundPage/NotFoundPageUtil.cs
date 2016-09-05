@@ -114,9 +114,20 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
                     string languageId;
                     languageMatcher.TryGetLanguageId(languageSegment, out languageId);
                     if (languageId != null)
-                        ContextCache.Current["EPiServer:ContentLanguage"] = new CultureInfo(languageId);
+                    {
+                        SetContextLanguage(new CultureInfo(languageId));
+                    }
                 }
             }
+        }
+
+        private static void SetContextLanguage(CultureInfo culture)
+        {
+#if CMS8
+            EPiServer.BaseLibrary.Context.Current["EPiServer:ContentLanguage"] = culture;
+#else
+            ContextCache.Current["EPiServer:ContentLanguage"] = culture;
+#endif
         }
 
         public static void SetCurrentLanguage(HttpContextBase context)
