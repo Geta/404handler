@@ -87,6 +87,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.Cms8.cs" />
     <Compile Include="Core\CustomRedirects\XmlActionResult.cs" />
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
     <Compile Include="Core\Logging\LogEvent.cs" />
@@ -355,31 +356,17 @@
   <ProjectExtensions />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <UsingTask TaskName="ZipDirectory" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
-    <ParameterGroup>
-      <InputPath ParameterType="System.String" Required="true" />
-      <OutputFileName ParameterType="System.String" Required="true" />
-      <OverwriteExistingFile ParameterType="System.Boolean" Required="false" />
-    </ParameterGroup>
-    <Task>
-      <Reference Include=" System.IO.Compression.FileSystem" />
-      <Using Namespace="System.IO" />
-      <Using Namespace="System.IO.Compression" />
-      <Code Type="Fragment" Language="cs"><![CDATA[        
-          if(this.OverwriteExistingFile) {
-            File.Delete(this.OutputFileName);
-          }
-          ZipFile.CreateFromDirectory(this.InputPath, this.OutputFileName);
-        ]]></Code>
-    </Task>
-  </UsingTask>
+
+  <!-- Used below, so define it first -->
   <PropertyGroup>
     <SolutionDir>$(ProjectDir)</SolutionDir>
-    <NuGetExe>$(SolutionDir)\.nuget\NuGet.exe</NuGetExe>
-    <TmpOutDir>$(SolutionDir)\tmp</TmpOutDir>
-    <NuspecFile>$(SolutionDir)\$(ProjectName).nuspec</NuspecFile>
-    <ProjectFile>$(SolutionDir)\$(ProjectName).csproj</ProjectFile>
   </PropertyGroup>
+
+  <!-- This holds the version of the package -->
+  <Import Project="$(SolutionDir)\packageVersion.Cms8.targets" Condition="Exists('$(SolutionDir)\packageVersion.Cms8.targets')" />
+  <!-- Pack -->
+  <Import Project="$(SolutionDir)\packageTools.targets" Condition="Exists('$(SolutionDir)\packageTools.targets')" />
+
   <Target Name="CreateNugetPackage" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' ">
     <!-- Create the Versioned out dir for the client resources-->
     <!-- Copy -->
@@ -393,11 +380,6 @@
     <!-- Create the Zip file -->
     <ZipDirectory InputPath="$(TmpOutDir)\content" OutputFileName="$(OutDir)\$(ProjectName).zip" OverwriteExistingFile="true" />
     <!-- Create the package -->
-    <PropertyGroup>
-      <NugetCommand>
-        "$(NuGetExe)" pack "$(NuspecFile)" -OutputDirectory "$(OutDir.TrimEnd('\\'))" -Properties Configuration=$(Configuration)
-      </NugetCommand>
-    </PropertyGroup>
     <Exec Command="$(NugetCommand)" />
     <!-- Cleanup -->
     <RemoveDir Directories="$(TmpOutDir)" />

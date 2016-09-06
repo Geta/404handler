@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <SolutionDir Condition="$(SolutionDir) == ''">$(MSBuildProjectDirectory)\..\</SolutionDir>
+        <NuGetExe>$(SolutionDir)\.nuget\NuGet.exe</NuGetExe>
+        <TmpOutDir>$(SolutionDir)\tmp</TmpOutDir>
+        <NuspecFile>$(ProjectDir)\$(ProjectName).nuspec</NuspecFile>
+        <PackageOutDir>$(SolutionDir)</PackageOutDir>
+    </PropertyGroup>
+
+	<PropertyGroup>
+		<NugetCommand>
+			"$(NuGetExe)" pack "$(NuspecFile)" -OutputDirectory "$(PackageOutDir.TrimEnd('\\'))" -Version $(PackageVersion) -Properties Configuration=$(Configuration)
+		</NugetCommand>
+	</PropertyGroup>
+	
+    <UsingTask TaskName="ZipDirectory" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+        <ParameterGroup>
+            <InputPath ParameterType="System.String" Required="true" />
+            <OutputFileName ParameterType="System.String" Required="true" />
+            <OverwriteExistingFile ParameterType="System.Boolean" Required="false" />
+        </ParameterGroup>
+        <Task>
+            <Reference Include=" System.IO.Compression.FileSystem" />
+            <Using Namespace="System.IO" />
+            <Using Namespace="System.IO.Compression" />
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[        
+          if(this.OverwriteExistingFile) {
+            File.Delete(this.OutputFileName);
+          }
+          ZipFile.CreateFromDirectory(this.InputPath, this.OutputFileName);
+        ]]>
+            </Code>
+        </Task>
+    </UsingTask>
+
+</Project>
