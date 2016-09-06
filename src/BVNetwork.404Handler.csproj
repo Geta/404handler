@@ -102,6 +102,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <None Include=".editorconfig" />
+    <None Include="BVNetwork.404Handler.Version.targets" />
     <None Include="packages.BVNetwork.404Handler.config" />
     <None Include="Views\NotFoundRedirect\Deleted.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -339,17 +340,16 @@
   <ProjectExtensions />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-
   <!-- Used below, so define it first -->
   <PropertyGroup>
     <SolutionDir>$(ProjectDir)</SolutionDir>
+    <!-- NOTE! This is different between cms versions, the zip file needs to be named the same in the package -->
+    <zipFile>$(OutDir)\BVNetwork.404Handler.zip</zipFile>
   </PropertyGroup>
-
   <!-- This holds the version of the package -->
-  <Import Project="$(SolutionDir)\packageVersion.targets" Condition="Exists('$(SolutionDir)\packageVersion.targets')" />
+  <Import Project="$(SolutionDir)\$(ProjectName).Version.targets" Condition="Exists('$(SolutionDir)\$(ProjectName).Version.targets')" />
   <!-- Pack -->
   <Import Project="$(SolutionDir)\packageTools.targets" Condition="Exists('$(SolutionDir)\packageTools.targets')" />
-
   <Target Name="CreateNugetPackage" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' ">
     <!-- Create the Versioned out dir for the client resources-->
     <!-- Copy -->
@@ -361,10 +361,11 @@
     <Copy SourceFiles="@(ClientResources)" DestinationFiles="@(ClientResources -> '$(TmpOutDir)\content\ClientResources\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(Views)" DestinationFiles="@(Views -> '$(TmpOutDir)\content\Views\%(RecursiveDir)%(Filename)%(Extension)')" />
     <!-- Create the Zip file -->
-    <ZipDirectory InputPath="$(TmpOutDir)\content" OutputFileName="$(OutDir)\$(ProjectName).zip" OverwriteExistingFile="true" />
+    <ZipDirectory InputPath="$(TmpOutDir)\content" OutputFileName="$(zipFile)" OverwriteExistingFile="true" />
     <!-- Create the package -->
     <Exec Command="$(NugetCommand)" />
     <!-- Cleanup -->
     <RemoveDir Directories="$(TmpOutDir)" />
+    <Delete Files="$(zipFile)" />
   </Target>
 </Project>
