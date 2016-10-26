@@ -189,9 +189,6 @@
     <Compile Include="Core\NotFoundPage\NotFoundBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Content Include="BVNetwork.404Handler.nuspec">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="CustomRedirects.config" />
     <None Include="module.config" />
     <None Include="web.config.install.xdt" />
