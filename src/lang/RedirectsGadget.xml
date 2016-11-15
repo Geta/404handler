@@ -24,6 +24,8 @@
                 <wildcard>Wildcard</wildcard>
                 <storedredirects>There are currently stored &lt;b&gt;{0}&lt;/b&gt; custom redirects</storedredirects>
                 <saveredirect>Custom redirect with old URL &lt;b&gt;{0}&lt;/b&gt; and new URL &lt;b&gt;{1}&lt;/b&gt; successfully saved.</saveredirect>
+                <inactiveredirects>To see custom redirects select 'Show redirects' checkbox</inactiveredirects>
+                <showredirects>Show redirects</showredirects>
                 <redirectscount>Displaying redirects {0}-{1} of {2}</redirectscount>
                 <suggestionscount>Suggestions: {0}-{1} of {2}</suggestionscount>
                 <split>...</split>

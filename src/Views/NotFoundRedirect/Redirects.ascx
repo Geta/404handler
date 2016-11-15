@@ -15,7 +15,15 @@
         <div class="epi-formArea">
             <fieldset>
                 <div class="rightsearch">
-                    <input type="text" class="notfound-search" name="searchWord" />
+                    <%= Html.Translate("/gadget/redirects/showredirects")%>
+                    <%= Html.ViewLink(
+                        " "+Html.CheckBox("showRedirects", Model.ShowRedirects)+"",  // html helper
+                        "showRedirects",  // title
+                        "Index", // Action name
+                         "", // css class
+                        "Index",
+                        new { showRedirects = !Model.ShowRedirects })%> |
+                    <input type="text" class="notfound-search" name="searchWord" required/>
                      <button type="submit" class="notfoundbutton search"><%=Html.Translate("/gadget/redirects/search")%></button>
                     <input type="hidden" name="pageSize" value='<%=Model.PageSize %>' />
                     <input type="hidden" name="isSuggestions" value='<%=Model.IsSuggestions %>' />

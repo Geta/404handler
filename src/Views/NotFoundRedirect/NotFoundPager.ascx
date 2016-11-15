@@ -23,7 +23,7 @@
                         "Index", // Action name
                         "arrow", // css class
                         "Previous",
-                                                                      new { pageNumber = Model.PageNumber - 1, searchWord = Model.SearchWord, pageSize = Model.PageSize, isSuggestions = Model.IsSuggestions })%>
+                                                                      new { pageNumber = Model.PageNumber - 1, searchWord = Model.SearchWord, pageSize = Model.PageSize, isSuggestions = Model.IsSuggestions, showRedirects = true })%>
         <% }
            foreach (int page in Model.Pages)
            {
@@ -51,7 +51,7 @@
                         "Index", // Action name
                         "", // css class
                         page.ToString(),
-                                                             new { pageNumber = page, searchWord = Model.SearchWord, pageSize = Model.PageSize, isSuggestions = Model.IsSuggestions })%>
+                                                             new { pageNumber = page, searchWord = Model.SearchWord, pageSize = Model.PageSize, isSuggestions = Model.IsSuggestions, showRedirects = true })%>
         <% }
            if (Model.PageNumber < Model.TotalPagesCount)
            { %>
@@ -61,7 +61,7 @@
                         "Index", // Action name
                         "arrow", // css class
                                          "Next",
-                                       new { pageNumber = Model.PageNumber + 1, searchWord = Model.SearchWord, pageSize = Model.PageSize, isSuggestions = Model.IsSuggestions })%>
+                                       new { pageNumber = Model.PageNumber + 1, searchWord = Model.SearchWord, pageSize = Model.PageSize, isSuggestions = Model.IsSuggestions, showRedirects = true })%>
      <% } %>
     </div>
   
