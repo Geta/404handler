@@ -16,6 +16,7 @@ namespace BVNetwork.NotFound.Models
         public bool IsSuggestions { get; set; }
         public int HighestSuggestionValue { get; set; }
         public int LowestSuggestionValue { get; set; }
+        public bool ShowRedirects { get; set; }
 
 
         public IEnumerable<int> Pages

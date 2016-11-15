@@ -37,6 +37,7 @@
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -114,7 +115,9 @@
     <EmbeddedResource Include="lang\bvnerrorhandlerEN.xml" />
     <EmbeddedResource Include="lang\bvnerrorhandlerNO.xml" />
     <EmbeddedResource Include="lang\bvnerrorhandlerSV.xml" />
-    <EmbeddedResource Include="lang\RedirectsGadget.xml" />
+    <EmbeddedResource Include="lang\RedirectsGadget.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="ClientResources\Content\Images\BaseSprite.png" />
     <None Include="ClientResources\Content\Images\Gradients.png" />
     <None Include="ClientResources\Content\Images\gray_border.png" />
@@ -142,7 +145,9 @@
     <None Include="Views\NotFoundRedirect\Redirects.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
-    <None Include="Views\NotFoundRedirect\Referers.ascx" />
+    <None Include="Views\NotFoundRedirect\Referers.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
     <None Include="Views\NotFoundRedirect\Suggestions.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
@@ -367,5 +372,12 @@
     <!-- Cleanup -->
     <RemoveDir Directories="$(TmpOutDir)" />
     <Delete Files="$(zipFile)" />
+  </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
 </Project>
