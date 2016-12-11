@@ -115,9 +115,7 @@
     <EmbeddedResource Include="lang\bvnerrorhandlerEN.xml" />
     <EmbeddedResource Include="lang\bvnerrorhandlerNO.xml" />
     <EmbeddedResource Include="lang\bvnerrorhandlerSV.xml" />
-    <EmbeddedResource Include="lang\RedirectsGadget.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="lang\RedirectsGadget.xml" />
     <None Include="ClientResources\Content\Images\BaseSprite.png" />
     <None Include="ClientResources\Content\Images\Gradients.png" />
     <None Include="ClientResources\Content\Images\gray_border.png" />
@@ -332,10 +330,15 @@
     <Folder Include="Bvn\FileNotFound\Configuration\" />
   </ItemGroup>
   <PropertyGroup>
+    <SolutionDir>$(ProjectDir)</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+   <PropertyGroup>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
@@ -345,24 +348,30 @@
   <ProjectExtensions />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  
   <!-- Used below, so define it first -->
   <PropertyGroup>
-    <SolutionDir>$(ProjectDir)</SolutionDir>
+    <ProjectDir Condition="'$(ProjectDir)' == ''">$(MSBuildProjectDirectory)</ProjectDir>
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(ProjectDir)</SolutionDir>
     <!-- NOTE! This is different between cms versions, the zip file needs to be named the same in the package -->
+    <OutDir>$(OutputPath)</OutDir>
     <zipFile>$(OutDir)\BVNetwork.404Handler.zip</zipFile>
   </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- This holds the version of the package -->
   <Import Project="$(SolutionDir)\$(ProjectName).Version.targets" Condition="Exists('$(SolutionDir)\$(ProjectName).Version.targets')" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />  
+  <Import Project="$(ProjectDir)\packageTools.targets" />
   <!-- Pack -->
-  <Import Project="$(SolutionDir)\packageTools.targets" Condition="Exists('$(SolutionDir)\packageTools.targets')" />
-  <Target Name="CreateNugetPackage" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' ">
+  <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
+    <Message Text="Creating Nuget Package"/>
     <!-- Create the Versioned out dir for the client resources-->
     <!-- Copy -->
     <ItemGroup>
-      <ClientResources Include="$(SolutionDir)\ClientResources\**\*" />
-      <Views Include="$(SolutionDir)\Views\**\*" />
+      <ClientResources Include="$(ProjectDir)\ClientResources\**\*" />
+      <Views Include="$(ProjectDir)\Views\**\*" />
     </ItemGroup>
-    <Copy SourceFiles="$(SolutionDir)\module.config" DestinationFolder="$(TmpOutDir)\content" />
+    <Copy SourceFiles="$(ProjectDir)\module.config" DestinationFolder="$(TmpOutDir)\content" />
     <Copy SourceFiles="@(ClientResources)" DestinationFiles="@(ClientResources -> '$(TmpOutDir)\content\ClientResources\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(Views)" DestinationFiles="@(Views -> '$(TmpOutDir)\content\Views\%(RecursiveDir)%(Filename)%(Extension)')" />
     <!-- Create the Zip file -->
@@ -372,12 +381,5 @@
     <!-- Cleanup -->
     <RemoveDir Directories="$(TmpOutDir)" />
     <Delete Files="$(zipFile)" />
-  </Target>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
 </Project>

@@ -37,6 +37,7 @@
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -142,7 +143,9 @@
     <None Include="Views\NotFoundRedirect\Redirects.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
-    <None Include="Views\NotFoundRedirect\Referers.ascx" />
+    <None Include="Views\NotFoundRedirect\Referers.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </None>
     <None Include="Views\NotFoundRedirect\Suggestions.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </None>
@@ -327,10 +330,15 @@
     <Folder Include="Bvn\FileNotFound\Configuration\" />
   </ItemGroup>
   <PropertyGroup>
+    <SolutionDir>$(ProjectDir)</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+   <PropertyGroup>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
@@ -342,22 +350,27 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- Used below, so define it first -->
   <PropertyGroup>
-    <SolutionDir>$(ProjectDir)</SolutionDir>
+    <ProjectDir Condition="'$(ProjectDir)' == ''">$(MSBuildProjectDirectory)</ProjectDir>
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(ProjectDir)</SolutionDir>
     <!-- NOTE! This is different between cms versions, the zip file needs to be named the same in the package -->
+    <OutDir>$(OutputPath)</OutDir>
     <zipFile>$(OutDir)\BVNetwork.404Handler.zip</zipFile>
   </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- This holds the version of the package -->
   <Import Project="$(SolutionDir)\$(ProjectName).Version.targets" Condition="Exists('$(SolutionDir)\$(ProjectName).Version.targets')" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />  
+  <Import Project="$(ProjectDir)\packageTools.targets" />
   <!-- Pack -->
-  <Import Project="$(SolutionDir)\packageTools.targets" Condition="Exists('$(SolutionDir)\packageTools.targets')" />
-  <Target Name="CreateNugetPackage" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' ">
+  <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
+    <Message Text="Creating Nuget Package"/>
     <!-- Create the Versioned out dir for the client resources-->
     <!-- Copy -->
     <ItemGroup>
-      <ClientResources Include="$(SolutionDir)\ClientResources\**\*" />
-      <Views Include="$(SolutionDir)\Views\**\*" />
+      <ClientResources Include="$(ProjectDir)\ClientResources\**\*" />
+      <Views Include="$(ProjectDir)\Views\**\*" />
     </ItemGroup>
-    <Copy SourceFiles="$(SolutionDir)\module.config" DestinationFolder="$(TmpOutDir)\content" />
+    <Copy SourceFiles="$(ProjectDir)\module.config" DestinationFolder="$(TmpOutDir)\content" />
     <Copy SourceFiles="@(ClientResources)" DestinationFiles="@(ClientResources -> '$(TmpOutDir)\content\ClientResources\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(Views)" DestinationFiles="@(Views -> '$(TmpOutDir)\content\Views\%(RecursiveDir)%(Filename)%(Extension)')" />
     <!-- Create the Zip file -->
