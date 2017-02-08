@@ -77,7 +77,6 @@ namespace BVNetwork.NotFound.Core
             {
                 context.Response.Clear();
                 context.Response.TrySkipIisCustomErrors = true;
-                context.Server.ClearError();
                 context.Response.StatusCode = 404;
             }
         }
