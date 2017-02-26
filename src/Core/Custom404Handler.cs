@@ -170,7 +170,7 @@ namespace BVNetwork.NotFound.Core
                 if (exception != null)
                 {
                     Exception innerEx = exception.GetBaseException();
-                    if (innerEx is PageNotFoundException)
+                    if (innerEx is ContentNotFoundException)
                     {
                         // Should be a normal 404 handler
                         Logger.Information("404 PageNotFoundException - Url: {0}", notFoundUri.ToString());

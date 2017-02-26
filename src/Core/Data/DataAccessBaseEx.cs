@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using EPiServer.Data;
 using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.Data
 {
-    public class DataAccessBaseEx : EPiServer.DataAccess.DataAccessBase
+    public class DataAccessBaseEx  : EPiServer.DataAccess.DataAccessBase
     {
-        public DataAccessBaseEx(EPiServer.Data.IDatabaseHandler handler)
+        public DataAccessBaseEx(EPiServer.Data.IDatabaseExecutor handler)
             : base(handler)
         {
-            this.Database = handler;
+            Executor = handler;
         }
 
         public static DataAccessBaseEx GetWorker()
@@ -27,13 +28,13 @@ namespace BVNetwork.NotFound.Core.Data
         {
 
 
-            return base.Database.Execute<DataSet>(delegate
+            return Executor.Execute<DataSet>(delegate
             {
                 using (DataSet ds = new DataSet())
                 {
                     try
                     {
-                        DbCommand command = this.CreateCommand(sqlCommand);
+                        DbCommand command = CreateCommand(sqlCommand);
                         if (parameters != null)
                         {
                             foreach (SqlParameter parameter in parameters)
@@ -57,13 +58,13 @@ namespace BVNetwork.NotFound.Core.Data
 
         public bool ExecuteNonQuery(string sqlCommand)
         {
-            return base.Database.Execute<bool>(delegate
+            return Executor.Execute<bool>(delegate
             {
                 bool success = true;
 
                 try
                 {
-                    IDbCommand command = this.CreateCommand(sqlCommand);
+                    IDbCommand command = CreateCommand(sqlCommand);
                     command.CommandType = CommandType.Text;
                     command.ExecuteNonQuery();
                 }
@@ -82,7 +83,7 @@ namespace BVNetwork.NotFound.Core.Data
 
         public int ExecuteScalar(string sqlCommand)
         {
-            return base.Database.Execute<int>(delegate
+            return Executor.Execute<int>(delegate
             {
                 int result;
                 try
@@ -166,46 +167,39 @@ namespace BVNetwork.NotFound.Core.Data
         public int Check404Version()
         {
 
-            return Database.Execute<int>(() =>
-    {
+            return Executor.Execute<int>(() =>
+            {
 
-        string sqlCommand = "dbo.bvn_notfoundversion";
-        int version = -1;
-        try
-        {
+                string sqlCommand = "dbo.bvn_notfoundversion";
+                int version = -1;
+                try
+                {
+                    DbCommand command = this.CreateCommand();
 
-            //  base.Database.Connection.Open();
-            DbCommand command = this.CreateCommand();
-
-            command.Parameters.Add(this.CreateReturnParameter());
-            command.CommandText = sqlCommand;
-            command.CommandType = CommandType.StoredProcedure;
-            //  command.Connection = base.Database.Connection;
-            command.ExecuteNonQuery();
-            version = Convert.ToInt32(this.GetReturnValue(command).ToString());
-        }
-        catch (SqlException)
-        {
-            Logger.Information("Stored procedure not found. Creating it.");
-            return version;
-        }
-        catch (Exception ex)
-        {
-            Logger.Error(string.Format("Error during NotFoundHandler version check:{0}", ex));
-        }
-        finally
-        {
-            // base.Database.Connection.Close();
-        }
-        return version;
-    });
+                    command.Parameters.Add(this.CreateReturnParameter());
+                    command.CommandText = sqlCommand;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.ExecuteNonQuery();
+                    version = Convert.ToInt32(this.GetReturnValue(command).ToString());
+                }
+                catch (SqlException)
+                {
+                    Logger.Information("Stored procedure not found. Creating it.");
+                    return version;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(string.Format("Error during NotFoundHandler version check:{0}", ex));
+                }
+                return version;
+            });
 
         }
 
 
         public void LogRequestToDb(string oldUrl, string referer, DateTime now)
         {
-            Database.Execute<bool>(() =>
+            Executor.Execute<bool>(() =>
                {
                    string sqlCommand = "INSERT INTO [dbo].[BVN.NotFoundRequests] (" +
                                        "Requested, OldUrl, " +
@@ -216,8 +210,6 @@ namespace BVNetwork.NotFound.Core.Data
                                        ")";
                    try
                    {
-                       //   base.Database.Connection.Open();
-                       // this.OpenConnection();
                        IDbCommand command = this.CreateCommand();
 
                        var requstedParam = this.CreateParameter("requested", DbType.DateTime, 0);
@@ -231,17 +223,12 @@ namespace BVNetwork.NotFound.Core.Data
                        command.Parameters.Add(oldUrlParam);
                        command.CommandText = sqlCommand;
                        command.CommandType = CommandType.Text;
-                       command.Connection = base.Database.Connection;
                        command.ExecuteNonQuery();
                    }
                    catch (Exception ex)
                    {
 
                        Logger.Error("An error occured while logging a 404 handler error. Ex:" + ex);
-                   }
-                   finally
-                   {
-                       //    base.Database.Connection.Close();
                    }
                    return true;
                });

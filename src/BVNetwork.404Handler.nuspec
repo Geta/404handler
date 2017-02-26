@@ -3,7 +3,7 @@
     <metadata>
         <id>BVN.404Handler</id>
         <title>404 Handler for EPiServer</title>
-        <version>10.0.0</version>
+        <version>10.1.1</version>
         <authors>BV Network</authors>
         <owners>BV Network</owners>
         <licenseUrl>https://www.coderesort.com/p/epicode/wiki/EpicodeLicense</licenseUrl>
@@ -15,7 +15,7 @@
         <language>en-US</language>
       <dependencies>
         <dependency id="EPiServer.CMS.UI.Core" version="[10.0.2, 11.0)" />
-        <dependency id="EPiServer.Framework" version="[10.0.1, 11.0)" />
+        <dependency id="EPiServer.Framework" version="[10.4.0, 11.0)" />
       </dependencies>
     </metadata>
     <files>
