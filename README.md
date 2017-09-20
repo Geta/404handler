@@ -1,7 +1,7 @@
 
 # Maintainers wanted!
 ![](https://img.shields.io/badge/maintainers-wanted-red.svg) 
-This project needs new maintainers to be continued. If you are interested in participating (or taking control) over this project, please respond to issue #44
+This project needs new maintainers to be continued. If you are interested in participating (or taking control) over this project, please respond to issue [#44](https://github.com/BVNetwork/404handler/issues/44)
 
 # 404 Handler for EPiServer
 **Build status:** 
