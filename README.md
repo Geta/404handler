@@ -1,4 +1,9 @@
-﻿# 404 Handler for EPiServer
+
+# Maintainers wanted!
+![](https://img.shields.io/badge/maintainers-wanted-red.svg) 
+This project needs new maintainers to be continued. If you are interested in participating (or taking control) over this project, please respond to issue #44
+
+# 404 Handler for EPiServer
 **Build status:** 
 [![Build status](https://ci.appveyor.com/api/projects/status/9v7mx552smrq6m8x?svg=true&passingText=CMS%2010%20OK&failingText=CMS%2010%20Failed)](https://ci.appveyor.com/project/evest/404handler) [![Build status](https://ci.appveyor.com/api/projects/status/x9actht09tn9m2aj?svg=true&passingText=CMS%209%20OK&failingText=CMS%209%20Failed)](https://ci.appveyor.com/project/evest/404handler) [![Build status](https://ci.appveyor.com/api/projects/status/lypciaqvdchet4xp?svg=true&passingText=CMS%208%20OK&failingText=CMS%208%20Failed)](https://ci.appveyor.com/project/evest/404handler-30u3b)
 
