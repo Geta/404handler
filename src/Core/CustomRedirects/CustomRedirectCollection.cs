@@ -201,7 +201,8 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 	                var url = urlNotFound.ToString();
 	                CustomRedirect redirCopy = new CustomRedirect(redirect);
 	                var urlFromRule = UrlStandardizer.Standardize(redirect.OldUrl);
-	                var append = url.Substring(urlFromRule.Length);
+
+                    var append = IsAbsoluteUrl(urlFromRule) ? url.Substring(urlFromRule.Length) : urlNotFound.PathAndQuery.Substring(urlFromRule.Length);
 
 	                if (append != string.Empty)
 	                {
@@ -212,6 +213,15 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             }
 
 	        return redirect;
+	    }
+
+	    private bool IsAbsoluteUrl(/*[NotNull]*/ string url)
+	    {
+	        if (url == null) throw new ArgumentNullException(nameof(url));
+
+            return url.StartsWith("//", StringComparison.InvariantCultureIgnoreCase)
+                || url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase)
+                || url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase);
 	    }
 
 	    /*[NotNull]*/

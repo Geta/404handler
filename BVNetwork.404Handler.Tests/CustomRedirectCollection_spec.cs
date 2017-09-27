@@ -227,5 +227,28 @@ namespace BVNetwork.NotFound
                 };
             };
         }
+
+        void describe_CustomRedirectCollection_wildcard_append_works_with_rule_for_relative_url()
+        {
+            context["Given the redirect rule is /test => http://mysite"] = () =>
+            {
+                before = () => redirects = new CustomRedirectCollection { new CustomRedirect("/test", "http://mysite", false, false, false) };
+
+                it["when url is https://mysite/test then it's redirected to http://mysite"] = () =>
+                {
+                    WhenUrlIs("http://mysite/test").ThenItRedirectsTo("http://mysite");
+                };
+
+                it["when url is https://mysite/testme then it's redirected to http://mysiteme"] = () =>
+                {
+                    WhenUrlIs("http://mysite/testme").ThenItRedirectsTo("http://mysiteme");
+                };
+
+                it["when url is https://mysite/test/me then it's redirected to http://mysite/me"] = () =>
+                {
+                    WhenUrlIs("http://mysite/test/me").ThenItRedirectsTo("http://mysite/me");
+                };
+            };
+        }
     }
 }
