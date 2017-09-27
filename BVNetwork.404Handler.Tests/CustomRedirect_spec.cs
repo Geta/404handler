@@ -17,27 +17,54 @@ namespace BVNetwork.NotFound
 
         protected RedirectsClause WhenUrlIs(string oldUrl)
         {
-            return new RedirectsClause(redirects.Find(new Uri(oldUrl)));
+            return new RedirectsClause(this, oldUrl);
         }
 
         public class RedirectsClause
         {
-            private CustomRedirect _customRedirect;
+            private string OldUrl { get; }
+            private CustomRedirect_spec Spec { get; }
 
-            public RedirectsClause(CustomRedirect customRedirect)
+            public RedirectsClause(CustomRedirect_spec spec, string oldUrl)
             {
-                _customRedirect = customRedirect;
+                OldUrl = oldUrl;
+                Spec = spec;
             }
 
             public void ThenItRedirectsTo(string newUrl)
             {
-                (_customRedirect?.NewUrl ?? "<no redirect>").Should().Be(newUrl);
+                Spec.CheckRedirect(OldUrl, newUrl);
             }
 
             public void ThenItDoesNotRedirect()
             {
-                _customRedirect.Should().Be(null, "it shouldn't redirect");
+                Spec.CheckNoRedirect(OldUrl);
             }
+        }
+
+        CustomRedirect FindRedirect(string oldUrl)
+        {
+            return redirects.Find(new Uri(oldUrl));
+        }
+
+        private void CheckRedirect(string oldUrl, string newUrl)
+        {
+            it[$"when url is '{oldUrl}' then it's redirected to '{newUrl}'"] = () =>
+            {
+                var customRedirect = FindRedirect(oldUrl);
+
+                (customRedirect?.NewUrl ?? "<no redirect>").Should().Be(newUrl);
+            };
+        }
+
+        private void CheckNoRedirect(string oldUrl)
+        {
+            it[$"when url is '{oldUrl}' then it does not redirect"] = () =>
+            {
+                var customRedirect = FindRedirect(oldUrl);
+
+                customRedirect.Should().BeNull("it shouldn't redirect");
+            };
         }
     }
 }
