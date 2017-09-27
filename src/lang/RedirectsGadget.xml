@@ -4,6 +4,21 @@
               id="en">
         <gadget>
             <redirects>
+                <tooltips>
+                    <exactmatch>
+                        Turn the flag off if you want this redirect rule handle all urls starting from the given 'Old Url'.
+
+                        Given that rule is 'http://my-site/old-url' => 'http://my-site/new-url', and Exact Match is not set,
+                            http://my-site/old-url/page redirects to
+                                - http://my-site/new-url/page when Wildcard is not set
+                                - http://my-site/new-url when Wildcard is set
+                        and http://my-site/old-url-page redirects to
+                                - http://my-site/new-url-page when Wildcard is not set
+                                - http://my-site/new-url when Wildcard is set
+                    </exactmatch>
+                    <wildcard>Wildcard </wildcard>
+                    <skipquerystring>Skip query string: when turned on, query string won't appear in the target url, otherwise it will be copied from the original url</skipquerystring>
+                </tooltips>
                 <ignored>Ignored</ignored>
                 <title>Custom Redirects</title>
                 <name>Custom Redirects Manager</name>
@@ -11,6 +26,8 @@
                 <count>Number of redirects:</count>
                 <oldurl>Old url</oldurl>
                 <newurl>New url</newurl>
+                <exactmatch>Exact match</exactmatch>
+                <skipquerystring>Skip query string</skipquerystring>
                 <info>
                     With the 404 Handler Redirect Gadget you can add new custom redirects, delete or search for existing redirects.
                     The "old URL" is unique, meaning that if you register two custom redirects with the same old URL, the latter will overwrite the first one.
