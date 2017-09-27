@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using EPiServer.Data.Dynamic;
@@ -79,12 +80,7 @@ namespace BVNetwork.NotFound.Core.Data
         {
             // TODO
         }
-
-
-
-
-
-
+        
         /// <summary>
         /// Delete CustomObject object from Data Store that has given "OldUrl" property
         /// </summary>
@@ -93,11 +89,19 @@ namespace BVNetwork.NotFound.Core.Data
         {
             // Get hold of the datastore
             DynamicDataStore store = DataStoreFactory.GetStore(typeof(CustomRedirect));
+            oldUrl = UrlStandardizer.Standardize(oldUrl);
 
             //find object with matching property "OldUrl"
-            CustomRedirect match = store.Find<CustomRedirect>(OLD_URL_PROPERTY_NAME, oldUrl.ToLower()).SingleOrDefault();
-            if (match != null)
-                store.Delete(match);
+            // CustomRedirect match = store.Find<CustomRedirect>(OLD_URL_PROPERTY_NAME, oldUrl.ToLower()).SingleOrDefault();
+            // todo: get a correct rule to delete
+            var matches = store.Items<CustomRedirect>().Where(x => x.OldUrl.StartsWith(oldUrl))
+                .ToList();
+
+            foreach (var match in matches)
+            {
+                if (string.Compare(UrlStandardizer.Standardize(match.OldUrl), oldUrl, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    store.Delete(match.Id);
+            }
         }
 
         /// <summary>

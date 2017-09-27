@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -16,6 +17,8 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         const string NEWURL = "new";
         const string OLDURL = "old";
         const string SKIPWILDCARD = "onWildCardMatchSkipAppend";
+        const string EXACTMATCH = "exactMatch";
+        const string SKIPQUERYSTRING = "skipQueryString";
 
         /// <summary>
         /// Reads the custom redirects information from the specified xml file
@@ -62,23 +65,33 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 XmlNodeList oldNodes = node.SelectNodes(OLDURL);
                 foreach (XmlNode oldNode in oldNodes)
                 {
-                    bool skipWildCardAppend = false;
-                    XmlAttribute skipWildCardAttr = oldNode.Attributes[SKIPWILDCARD];
-                    if (skipWildCardAttr != null)
-                    {
-                        // If value parsing fails, it will be false by default. We do
-                        // not really care to check if it fails, as we cannot do anything
-                        // about it (throwing an exception is not a good idea here)
-                        bool.TryParse(skipWildCardAttr.Value, out skipWildCardAppend);
-                    }
+                    bool skipWildCardAppend = ReadBoolean(oldNode, SKIPWILDCARD);
+                    bool exactMatch = ReadBoolean(oldNode, EXACTMATCH);
+                    bool skipQueryString = ReadBoolean(oldNode, SKIPQUERYSTRING);
 
                     // Create new custom redirect nodes
-                    CustomRedirect redirect = new CustomRedirect(oldNode.InnerText, newNode.InnerText, skipWildCardAppend);
+                    CustomRedirect redirect = new CustomRedirect(oldNode.InnerText, newNode.InnerText, skipWildCardAppend, exactMatch, skipQueryString);
                     redirects.Add(redirect);
                 }
             }
 
             return redirects;
+        }
+
+        private bool ReadBoolean(XmlNode node, string nodeName, bool @default = false)
+        {
+            if (node == null) throw new ArgumentNullException(nameof(node));
+            bool result = @default;
+            XmlAttribute attribute = node.Attributes?[nodeName];
+            if (attribute != null)
+            {
+                // If value parsing fails, it will be false by default. We do
+                // not really care to check if it fails, as we cannot do anything
+                // about it (throwing an exception is not a good idea here)
+                bool.TryParse(attribute.Value, out result);
+            }
+
+            return result;
         }
 
         public XmlDocument Export(List<CustomRedirect> redirects)
@@ -107,9 +120,17 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 oldElement.AppendChild(document.CreateTextNode(redirect.OldUrl.Trim()));
                 if (redirect.WildCardSkipAppend)
                 {
-                    XmlAttribute wildCardAttribute = document.CreateAttribute(string.Empty, SKIPWILDCARD, string.Empty);
-                    wildCardAttribute.Value = "true";
-                    oldElement.Attributes.Append(wildCardAttribute);
+                    WriteFlag(oldElement, SKIPWILDCARD);
+                }
+
+                if (redirect.ExactMatch)
+                {
+                    WriteFlag(oldElement, EXACTMATCH);
+                }
+
+                if (redirect.SkipQueryString)
+                {
+                    WriteFlag(oldElement, SKIPQUERYSTRING);
                 }
 
                 XmlElement newElement = document.CreateElement(string.Empty, NEWURL, string.Empty);
@@ -122,6 +143,18 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             }
 
             return document;
+        }
+
+        private void WriteFlag(/*[NotNull]*/ XmlElement element, string name, bool value = true)
+        {
+            if (element == null) throw new ArgumentNullException(nameof(element));
+            var document = element.OwnerDocument;
+            if (document == null)
+                throw new ArgumentException("The given '{0}' should be a part of a document", nameof(element));
+
+            XmlAttribute attribute = document.CreateAttribute(string.Empty, name, string.Empty);
+            attribute.Value = value.ToString();
+            element.Attributes.Append(attribute);
         }
     }
 }

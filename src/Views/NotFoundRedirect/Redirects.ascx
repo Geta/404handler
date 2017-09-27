@@ -49,6 +49,14 @@
                     </th>
                     <th style="text-align: center">
                         <label>
+                            <%= Html.Translate("/gadget/redirects/exactmatch") %></label>
+                    </th>
+                    <th style="text-align: center">
+                        <label>
+                            <%= Html.Translate("/gadget/redirects/skipquerystring") %></label>
+                    </th>
+                    <th style="text-align: center">
+                        <label>
                             <%= Html.Translate("/gadget/redirects/wildcard")%></label>
                     </th>
                     <th>
@@ -64,7 +72,13 @@
                     <input name="newUrl" class="required redirect-longer" />
                 </td>
                 <td class="shorter delete">
-                    <input name="skipWildCardAppend" type="checkbox" />
+                    <input name="exactMatch" type="checkbox" checked="checked" title="<%= Html.Translate("/gadget/redirects/tooltips/exactmatch") %>" />
+                </td>
+                <td class="shorter delete">
+                    <input name="skipQueryString" type="checkbox" title="<%= Html.Translate("/gadget/redirects/tooltips/skipquerystring") %>" />
+                </td>
+                <td class="shorter delete">
+                    <input name="skipWildCardAppend" type="checkbox" title="<%= Html.Translate("/gadget/redirects/tooltips/wildcard") %>" />
                 </td>
                 <td class="shorter delete">
                      <button type="submit" class="notfoundbutton">Add</button>
@@ -91,7 +105,13 @@
                     <% } %>
                 </td>
                 <td class="shorter delete">
-                    <img src="/App_Themes/Default/Images/Tools/<%=m.WildCardSkipAppend ? "CheckBoxOn.gif" : "CheckBoxOff.gif" %>" />
+                    <img src="/App_Themes/Default/Images/Tools/<%= m.ExactMatch ? "CheckBoxOn.gif" : "CheckBoxOff.gif" %>" />
+                </td>
+                <td class="shorter delete">
+                    <img src="/App_Themes/Default/Images/Tools/<%= m.SkipQueryString ? "CheckBoxOn.gif" : "CheckBoxOff.gif" %>" />
+                </td>
+                <td class="shorter delete">
+                    <img src="/App_Themes/Default/Images/Tools/<%= m.WildCardSkipAppend ? "CheckBoxOn.gif" : "CheckBoxOff.gif" %>" />
                 </td>
                 <td class="shorter delete">
                     <%= Html.ViewLink(
