@@ -10,7 +10,16 @@ namespace BVNetwork.NotFound.Core.Data
 {
     public class DataAccessBaseEx  : EPiServer.DataAccess.DataAccessBase
     {
+#if CMS10
         public DataAccessBaseEx(EPiServer.Data.IDatabaseExecutor handler)
+#else
+        private IDatabaseHandler Executor
+        {
+            get { return Database; }
+            set { Database = value; }
+        }
+        public DataAccessBaseEx(EPiServer.Data.IDatabaseHandler handler)
+#endif
             : base(handler)
         {
             Executor = handler;
@@ -77,8 +86,6 @@ namespace BVNetwork.NotFound.Core.Data
                 return success;
 
             });
-
-
         }
 
         public int ExecuteScalar(string sqlCommand)
@@ -162,8 +169,6 @@ namespace BVNetwork.NotFound.Core.Data
             return ExecuteSQL(sqlCommand, null);
         }
 
-
-
         public int Check404Version()
         {
 
@@ -195,7 +200,6 @@ namespace BVNetwork.NotFound.Core.Data
             });
 
         }
-
 
         public void LogRequestToDb(string oldUrl, string referer, DateTime now)
         {
@@ -233,9 +237,5 @@ namespace BVNetwork.NotFound.Core.Data
                    return true;
                });
         }
-
-
-
-
     }
 }

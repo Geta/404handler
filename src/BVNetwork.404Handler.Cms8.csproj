@@ -97,6 +97,7 @@
     <Compile Include="Core\Upgrade\Upgrader.cs" />
     <Compile Include="Core\ColorHelper.cs" />
     <Compile Include="Controllers\NotFoundRedirectController.cs" />
+    <Compile Include="Core\UrlStandardizer.cs" />
     <Compile Include="Models\RedirectIndexViewData.cs" />
     <Compile Include="Models\Suggestion.cs" />
     <Content Include="NotFound.aspx">
@@ -350,7 +351,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-   <PropertyGroup>
+  <PropertyGroup>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup>
@@ -373,11 +374,11 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- This holds the version of the package -->
   <Import Project="$(SolutionDir)\$(ProjectName).Version.targets" Condition="Exists('$(SolutionDir)\$(ProjectName).Version.targets')" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />  
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <Import Project="$(ProjectDir)\packageTools.targets" />
   <!-- Pack -->
   <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
-    <Message Text="Creating Nuget Package"/>
+    <Message Text="Creating Nuget Package" />
     <!-- Create the Versioned out dir for the client resources-->
     <!-- Copy -->
     <ItemGroup>
