@@ -135,6 +135,7 @@
             <div class="notfoundbox">
                 <%= HttpUtility.HtmlEncode(UrlNotFound.ToString()) %>
                 <%= Referer.Length > 0 ? Content.CameFrom : "" %>
+                <%= Referer.Length > 0 ? HttpUtility.HtmlEncode(Referer) : "" %>
             </div>
             <%= Content.BottomText %>
         </div>
