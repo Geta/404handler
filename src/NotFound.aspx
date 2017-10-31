@@ -133,9 +133,8 @@
             <%= Content.TopText %>
             <%= Content.LookingFor %>
             <div class="notfoundbox">
-                <%= UrlNotFound %>
+                <%= HttpUtility.HtmlEncode(UrlNotFound.ToString()) %>
                 <%= Referer.Length > 0 ? Content.CameFrom : "" %>
-                <%= Referer.Length > 0 ? Referer : "" %>
             </div>
             <%= Content.BottomText %>
         </div>
