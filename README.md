@@ -1,7 +1,6 @@
 
-# Maintainers wanted!
-![](https://img.shields.io/badge/maintainers-wanted-red.svg) 
-This project needs new maintainers to be continued. If you are interested in participating (or taking control) over this project, please respond to issue [#44](https://github.com/BVNetwork/404handler/issues/44)
+## Important Security Notice!
+The default [notfound.aspx](https://github.com/BVNetwork/404handler/blob/master/src/NotFound.aspx) page has an XSS vulnerability. If you are using this page, please change it according to [this commit](https://github.com/BVNetwork/404handler/commit/02419c904db096a607ba6775b04db7fdf042002a#diff-4cf2534cd91830ac43ef09100c7a18d8).
 
 # 404 Handler for EPiServer
 **Build status:** 
