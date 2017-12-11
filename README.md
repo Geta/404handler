@@ -4,7 +4,9 @@ The default [notfound.aspx](https://github.com/BVNetwork/404handler/blob/master/
 
 # 404 Handler for EPiServer
 **Build status:** 
-[![Build status](https://ci.appveyor.com/api/projects/status/9v7mx552smrq6m8x?svg=true&passingText=CMS%2010%20OK&failingText=CMS%2010%20Failed)](https://ci.appveyor.com/project/evest/404handler)
+![Build status](http://tc.geta.no/app/rest/builds/buildType:(id:TeamFrederik_404handler_RestoreBuildPackagePublish)/statusIcon)
+[![Platform](https://img.shields.io/badge/Platform-.NET%204.6.1-blue.svg?style=flat)](https://msdn.microsoft.com/en-us/library/w0x726c2%28v=vs.110%29.aspx)
+[![Platform](https://img.shields.io/badge/Episerver%20-%2011-orange.svg?style=flat)](https://world.episerver.com/cms/)
 
 The popular 404 handler for EPiServer, enabling better control over your 404 page in addition to allowing redirects for old urls that no longer works.
 
