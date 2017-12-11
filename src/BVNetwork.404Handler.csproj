@@ -46,7 +46,7 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CMS10</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
@@ -97,6 +97,7 @@
     <Compile Include="Core\Upgrade\Upgrader.cs" />
     <Compile Include="Core\ColorHelper.cs" />
     <Compile Include="Controllers\NotFoundRedirectController.cs" />
+    <Compile Include="Core\UrlStandardizer.cs" />
     <Compile Include="Models\RedirectIndexViewData.cs" />
     <Compile Include="Models\Suggestion.cs" />
     <Content Include="NotFound.aspx">

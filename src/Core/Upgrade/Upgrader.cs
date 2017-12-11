@@ -90,7 +90,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
                     DataStoreHandler dsHandler = new DataStoreHandler();
                     foreach (var oldCustomRedirect in oldCustomRedirects)
                     {
-                        var newRedirect = new CustomRedirect(oldCustomRedirect.OldUrl, oldCustomRedirect.NewUrl, oldCustomRedirect.WildCardSkipAppend);
+                        var newRedirect = new CustomRedirect(oldCustomRedirect.OldUrl, oldCustomRedirect.NewUrl, oldCustomRedirect.WildCardSkipAppend, false, false);
                         dsHandler.SaveCustomRedirect(newRedirect);
                     }
                     // oldCustomrRedirectStore.DeleteAll();

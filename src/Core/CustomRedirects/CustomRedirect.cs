@@ -40,11 +40,11 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 		{
 			get
 			{
-				return _oldUrl.ToLower(); 
+				return UrlStandardizer.Standardize(_oldUrl); 
 			}
 			set
 			{
-				_oldUrl = value;
+				_oldUrl = UrlStandardizer.Standardize(value);
 			}
 		}
 
@@ -75,12 +75,15 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             }
         }
 
-		/// <summary>
-		/// Tells if the new url is a virtual url, not containing
-		/// the base root url to redirect to. All urls starting with
-		/// "/" is determined to be virtuals.
-		/// </summary>
-		public bool IsVirtual
+	    public bool ExactMatch { get; set; }
+	    public bool SkipQueryString { get; set; }
+
+        /// <summary>
+        /// Tells if the new url is a virtual url, not containing
+        /// the base root url to redirect to. All urls starting with
+        /// "/" is determined to be virtuals.
+        /// </summary>
+        public bool IsVirtual
 		{
 			get
 			{
@@ -100,7 +103,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 		{
           
             //TODO: should not have to check for null
-			return _oldUrl != null ? _oldUrl.GetHashCode() : 0;
+			return OldUrl != null ? OldUrl.GetHashCode() : 0;
 		}
 
         public Identity Id { get; set; }
@@ -112,32 +115,36 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
 		}
 
-        public CustomRedirect(string oldUrl, string newUrl, bool skipWildCardAppend)
-            : this(oldUrl, newUrl) 
+        public CustomRedirect(string oldUrl, string newUrl,
+            bool skipWildCardAppend, bool exactMatch, bool skipQueryString)
         {
-            _wildCardSkipAppend = skipWildCardAppend;
+            WildCardSkipAppend = skipWildCardAppend;
+            OldUrl = UrlStandardizer.Standardize(oldUrl);
+            NewUrl = newUrl;
+            ExactMatch = exactMatch;
+            SkipQueryString = skipQueryString;
         }
 
 		public CustomRedirect(string oldUrl, string newUrl)
-		{
-			_oldUrl = oldUrl;
-			_newUrl = newUrl;
+            : this(oldUrl, newUrl, false, false, false)
+        {
 		}
 
 
         public CustomRedirect(string oldUrl, int state, int count)
         {
-            _oldUrl = oldUrl;
+            OldUrl = oldUrl;
             State = state;
             NotfoundErrorCount = count;
-            
         }
 
         public CustomRedirect(CustomRedirect redirect)
         {
-            _oldUrl = redirect._oldUrl;
-            _newUrl = redirect._newUrl;
-            _wildCardSkipAppend = redirect._wildCardSkipAppend;
+            OldUrl = redirect.OldUrl;
+            NewUrl = redirect.NewUrl;
+            WildCardSkipAppend = redirect.WildCardSkipAppend;
+            ExactMatch = redirect.ExactMatch;
+            SkipQueryString = redirect.SkipQueryString;
         }
 		#endregion
 		
