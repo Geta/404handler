@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using BVNetwork.NotFound.Core.Data;
 using EPiServer.Logging;
@@ -13,11 +12,8 @@ namespace BVNetwork.NotFound.Core.Logging
 
         internal static RequestLogger InternalInstance { get; } = new RequestLogger();
 
-        private RequestLogger()
-        {
+        private RequestLogger() { }
 
-            LogQueue = new List<LogEvent>();
-        }
         private static readonly ILogger Logger = LogManager.GetLogger();
 
         public void LogRequest(string oldUrl, string referrer)
@@ -32,20 +28,18 @@ namespace BVNetwork.NotFound.Core.Logging
                         if (LogQueue.Count >= bufferSize)
                         {
                             LogRequests(LogQueue);
-                        LogQueue = new List<LogEvent>();
                         }
                     }
                     catch (Exception ex)
                     {
                         Logger.Error("An error occured while trying to log 404 errors. ", ex);
-                        LogQueue = new List<LogEvent>();
                     }
                 }
             }
-            LogQueue.Add(new LogEvent(oldUrl, DateTime.Now, referrer));
+            LogQueue.Enqueue(new LogEvent(oldUrl, DateTime.UtcNow, referrer));
         }
 
-        private void LogRequests(List<LogEvent> logEvents)
+        private void LogRequests(ConcurrentQueue<LogEvent> logEvents)
         {
             Logger.Debug("Logging 404 errors to database");
             var bufferSize = Configuration.Configuration.BufferSize;
@@ -58,9 +52,12 @@ namespace BVNetwork.NotFound.Core.Logging
                 || bufferSize == 0)
             {
                 var dba = DataAccessBaseEx.GetWorker();
-                foreach (LogEvent logEvent in logEvents)
+                while (logEvents.Count > 0)
                 {
-                    dba.LogRequestToDb(logEvent.OldUrl, logEvent.Referer, logEvent.Requested);
+                    if (logEvents.TryDequeue(out var logEvent))
+                    {
+                        dba.LogRequestToDb(logEvent.OldUrl, logEvent.Referer, logEvent.Requested);
+                    }
                 }
                 Logger.Debug($"{bufferSize} 404 request(s) has been stored to the database.");
             }
@@ -69,8 +66,8 @@ namespace BVNetwork.NotFound.Core.Logging
                 Logger.Warning("404 requests have been made too frequents (exceeded the threshold). Requests not logged to database.");
             }
         }
-        private List<LogEvent> LogQueue { get; set; }
 
+        private static ConcurrentQueue<LogEvent> LogQueue { get; } = new ConcurrentQueue<LogEvent>();
     }
 
 }
