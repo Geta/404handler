@@ -7,7 +7,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 {
     /// <summary>
     /// Handler for custom redirects. Loads and caches the list of custom redirects
-    /// to ensure performance. 
+    /// to ensure performance.
     /// </summary>
     public class CustomRedirectHandler
     {
@@ -42,14 +42,14 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             DataStoreHandler dynamicHandler = new DataStoreHandler();
             foreach (CustomRedirect redirect in redirects)
             {
-                // Add redirect 
+                // Add redirect
                 dynamicHandler.SaveCustomRedirect(redirect);
             }
             DataStoreEventHandlerHook.DataStoreUpdated();
         }
 
         /// <summary>
-        /// Read the custom redirects from the dynamic data store, and 
+        /// Read the custom redirects from the dynamic data store, and
         /// stores them in the CustomRedirect property
         /// </summary>
         protected void LoadCustomRedirects()
@@ -140,6 +140,15 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         }
 
         public static string CustomRedirectHandlerException { get; set; }
+
+        /// <summary>
+        /// Reload handler in case if it has error and handler was not created properly.
+        /// </summary>
+        public static void ReloadCustomRedirectHandler()
+        {
+            CustomRedirectHandlerException = string.Empty;
+            var temp = Current;
+        }
 
 
     }

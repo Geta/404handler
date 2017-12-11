@@ -38,7 +38,7 @@ namespace BVNetwork.NotFound.Controllers
         {
 
             CheckAccess();
-
+            CustomRedirectHandler.ReloadCustomRedirectHandler();
             if (!string.IsNullOrEmpty(CustomRedirectHandler.CustomRedirectHandlerException))
             {
                 return Content("An error has occured in the dynamic data store: " + CustomRedirectHandler.CustomRedirectHandlerException);
