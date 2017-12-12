@@ -328,9 +328,7 @@
     </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Bvn\FileNotFound\Configuration\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <SolutionDir>$(ProjectDir)</SolutionDir>
   </PropertyGroup>
