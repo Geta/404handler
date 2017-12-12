@@ -29,7 +29,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
             var dba = DataAccessBaseEx.GetWorker();
 
             Log.Information("Create 404 handler redirects table START");
-            string createTableScript = @"CREATE TABLE [dbo].[BVN.NotFoundRequests](
+            var createTableScript = @"CREATE TABLE [dbo].[BVN.NotFoundRequests](
 	                                    [ID] [int] IDENTITY(1,1) NOT NULL,
 	                                    [OldUrl] [nvarchar](2000) NOT NULL,
 	                                    [Requested] [datetime] NULL,

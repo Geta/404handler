@@ -18,7 +18,7 @@ namespace BVNetwork.NotFound.Core
     public class Custom404Handler
     {
 
-        private static readonly List<string> _ignoredResourceExtensions = Configuration.Configuration.IgnoredResourceExtensions;
+        private static readonly List<string> IgnoredResourceExtensions = Configuration.Configuration.IgnoredResourceExtensions;
 
         private static readonly ILogger Logger = LogManager.GetLogger();
 
@@ -26,9 +26,9 @@ namespace BVNetwork.NotFound.Core
         {
             // Try to match the requested url my matching it
             // to the static list of custom redirects
-            CustomRedirectHandler fnfHandler = CustomRedirectHandler.Current;
-            CustomRedirect redirect = fnfHandler.CustomRedirects.Find(urlNotFound);
-            string pathAndQuery = urlNotFound.PathAndQuery;
+            var fnfHandler = CustomRedirectHandler.Current;
+            var redirect = fnfHandler.CustomRedirects.Find(urlNotFound);
+            var pathAndQuery = urlNotFound.PathAndQuery;
             foundRedirect = null;
             if (redirect == null)
             {
@@ -70,9 +70,9 @@ namespace BVNetwork.NotFound.Core
 
         public static void FileNotFoundExceptionHandler(object sender, EventArgs e)
         {
-            HttpContext context = GetContext();
-            if (context == null)
-                return;
+            var context = GetContext();
+            if (context == null) return;
+
             if (CheckForException(context, context.Request.Url))
             {
                 context.Response.Clear();
@@ -95,20 +95,19 @@ namespace BVNetwork.NotFound.Core
         {
             // Check if this should be enabled
             if (Configuration.Configuration.FileNotFoundHandlerMode == FileNotFoundMode.Off)
+            {
                 return;
+            }
 
-            HttpContext context = GetContext();
-            if (context == null)
-                return;
+            var context = GetContext();
 
-            if (context.Response.StatusCode != 404)
-                return;
+            if (context?.Response.StatusCode != 404) return;
 
             // If we're only doing this for remote users, we need to test for local host
             if (Configuration.Configuration.FileNotFoundHandlerMode == FileNotFoundMode.RemoteOnly)
             {
                 // Determine if we're on localhost
-                bool localHost = IsLocalhost();
+                var localHost = IsLocalhost();
                 if (localHost)
                 {
                     Logger.Debug("Determined to be localhost, returning");
@@ -119,22 +118,19 @@ namespace BVNetwork.NotFound.Core
 
             Logger.Debug("FileNotFoundHandler called");
 
-            Uri notFoundUri = context.Request.Url;
+            var notFoundUri = context.Request.Url;
 
-            // Skip resource files
-            if (IsResourceFile(notFoundUri))
-                return;
+            if (IsResourceFile(notFoundUri)) return;
 
-            string query = context.Request.ServerVariables["QUERY_STRING"];
+            var query = context.Request.ServerVariables["QUERY_STRING"];
 
             // avoid duplicate log entries
-            if ((query != null) && query.StartsWith("404;"))
+            if (query != null && query.StartsWith("404;"))
             {
                 return;
             }
 
-            CustomRedirect newUrl;
-            var canHandleRedirect = HandleRequest(GetReferer(context.Request.UrlReferrer), notFoundUri, out newUrl);
+            var canHandleRedirect = HandleRequest(GetReferer(context.Request.UrlReferrer), notFoundUri, out var newUrl);
             if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Saved)
             {
                 context.Response.Clear();
@@ -149,13 +145,12 @@ namespace BVNetwork.NotFound.Core
             }
             else
             {
-                SetStatusCodeAndShow404(context, 404);
+                SetStatusCodeAndShow404(context);
             }
         }
 
         protected static void SetStatusCodeAndShow404(HttpContext context, int statusCode = 404)
         {
-
             context.Response.TrySkipIisCustomErrors = true;
             context.Server.ClearError();
             context.Response.StatusCode = statusCode;
@@ -167,40 +162,36 @@ namespace BVNetwork.NotFound.Core
             try
             {
                 var exception = context.Server.GetLastError();
-                if (exception != null)
+                if (exception == null) return false;
+
+                var innerEx = exception.GetBaseException();
+                switch (innerEx)
                 {
-                    Exception innerEx = exception.GetBaseException();
-                    if (innerEx is ContentNotFoundException)
-                    {
+                    case ContentNotFoundException _:
                         // Should be a normal 404 handler
                         Logger.Information("404 PageNotFoundException - Url: {0}", notFoundUri.ToString());
                         Logger.Debug("404 PageNotFoundException - Exception: {0}", innerEx.ToString());
                         return true;
-                    }
-
-                    // IO File not Found exceptions means the .aspx file cannot
-                    // be found. We'll handle this as a standard 404 error
-                    if (innerEx is FileNotFoundException)
-                    {
+                    case FileNotFoundException _:
                         Logger.Information("404 FileNotFoundException - Url: {0}", notFoundUri.ToString());
                         Logger.Debug("404 FileNotFoundException - Exception: {0}", innerEx.ToString());
                         return true;
-                    }
-
-                    // Not all exceptions we need to handle are specific exception types.
-                    // We need to handle file not founds, for .aspx pages in directories
-                    // that does not exists. However, an 404 error will be returned by the
-                    // HttpException class.
-                    HttpException httpEx = innerEx as HttpException;
-                    if (httpEx != null)
-                    {
+                    case HttpException httpEx:
                         if (httpEx.GetHttpCode() == 404)
                         {
                             Logger.Information("404 HttpException - Url: {0}", notFoundUri.ToString());
                             Logger.Debug("404 HttpException - Exception: {0}", httpEx.ToString());
                             return true;
                         }
-                    }
+                        break;
+
+                    // IO File not Found exceptions means the .aspx file cannot
+                    // be found. We'll handle this as a standard 404 error
+
+                    // Not all exceptions we need to handle are specific exception types.
+                    // We need to handle file not founds, for .aspx pages in directories
+                    // that does not exists. However, an 404 error will be returned by the
+                    // HttpException class.
                 }
             }
             catch (Exception ex)
@@ -215,21 +206,21 @@ namespace BVNetwork.NotFound.Core
         /// </summary>
         /// <param name="notFoundUri">The not found URI.</param>
         /// <returns>
-        /// 	<c>true</c> if it is a resource file; otherwise, <c>false</c>.
+        /// <c>true</c> if it is a resource file; otherwise, <c>false</c>.
         /// </returns>
         private static bool IsResourceFile(Uri notFoundUri)
         {
-            string extension = notFoundUri.AbsolutePath;
-            int extPos = extension.LastIndexOf('.');
-            if (extPos > 0)
+            var extension = notFoundUri.AbsolutePath;
+            var extPos = extension.LastIndexOf('.');
+
+            if (extPos <= 0) return false;
+
+            extension = extension.Substring(extPos + 1);
+            if (IgnoredResourceExtensions.Contains(extension))
             {
-                extension = extension.Substring(extPos + 1);
-                if (_ignoredResourceExtensions.Contains(extension))
-                {
-                    // Ignoring 404 rewrite of known resource extension
-                    Logger.Debug("Ignoring rewrite of '{0}'. '{1}' is a known resource extension", notFoundUri.ToString(), extension);
-                    return true;
-                }
+                // Ignoring 404 rewrite of known resource extension
+                Logger.Debug("Ignoring rewrite of '{0}'. '{1}' is a known resource extension", notFoundUri.ToString(), extension);
+                return true;
             }
             return false;
         }
@@ -238,41 +229,39 @@ namespace BVNetwork.NotFound.Core
         /// Determines whether the current request is on localhost.
         /// </summary>
         /// <returns>
-        /// 	<c>true</c> if current request is localhost; otherwise, <c>false</c>.
+        /// <c>true</c> if current request is localhost; otherwise, <c>false</c>.
         /// </returns>
         private static bool IsLocalhost()
         {
-            bool localHost = false;
             try
             {
-                System.Net.IPAddress address = System.Net.IPAddress.Parse(HttpContext.Current.Request.UserHostAddress);
+                var hostAddress = HttpContext.Current.Request.UserHostAddress ?? string.Empty;
+                var address = IPAddress.Parse(hostAddress);
                 Debug.WriteLine("IP Address of user: " + address, "404Handler");
 
-                IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+                var host = Dns.GetHostEntry(Dns.GetHostName());
                 Debug.WriteLine("Host Entry of local computer: " + host.HostName, "404Handler");
-                localHost = address.Equals(IPAddress.Loopback) || (Array.IndexOf(host.AddressList, address) >= 0);
+                return address.Equals(IPAddress.Loopback) || (Array.IndexOf(host.AddressList, address) >= 0);
             }
             catch
             {
-                // localhost is false
+                return false;
             }
-            return localHost;
         }
 
         public static string GetReferer(Uri referer)
         {
-            string refererUrl = "";
-            if (referer != null)
-            {
-                refererUrl = referer.AbsolutePath;
-                if (!string.IsNullOrEmpty(refererUrl))
-                {
-                    // Strip away host name in front, if local redirect
+            var refererUrl = "";
+            if (referer == null) return refererUrl;
 
-                    string hostUrl = SiteDefinition.Current.SiteUrl.ToString();
-                    if (refererUrl.StartsWith(hostUrl))
-                        refererUrl = refererUrl.Remove(0, hostUrl.Length);
-                }
+            refererUrl = referer.AbsolutePath;
+            if (string.IsNullOrEmpty(refererUrl)) return refererUrl;
+
+            // Strip away host name in front, if local redirect
+            var hostUrl = SiteDefinition.Current.SiteUrl.ToString();
+            if (refererUrl.StartsWith(hostUrl))
+            {
+                refererUrl = refererUrl.Remove(0, hostUrl.Length);
             }
             return refererUrl;
         }
