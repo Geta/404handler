@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using BVNetwork.NotFound.Core.CustomRedirects;
-using BVNetwork.NotFound.Core.Data;
+﻿using BVNetwork.NotFound.Core.Data;
 
 using EPiServer.Logging;
 
@@ -75,32 +72,6 @@ namespace BVNetwork.NotFound.Core.Upgrade
             }
 
             Valid = create;
-
-            // copy dds items, if there are any.
-            try
-            {
-                // the old redirect class is obsolete, and should only be used for this upgrade
-#pragma warning disable CS0618
-                var oldCustomrRedirectStore = DataStoreFactory.GetStore(typeof(FileNotFound.CustomRedirects.CustomRedirect));
-                var oldCustomRedirects = oldCustomrRedirectStore.Items<FileNotFound.CustomRedirects.CustomRedirect>().ToList();
-#pragma warning restore CS0618
-                if (oldCustomRedirects.Count > 0)
-                {
-                    var newCustomrRedirectStore = DataStoreFactory.GetStore(typeof(CustomRedirect));
-                    DataStoreHandler dsHandler = new DataStoreHandler();
-                    foreach (var oldCustomRedirect in oldCustomRedirects)
-                    {
-                        var newRedirect = new CustomRedirect(oldCustomRedirect.OldUrl, oldCustomRedirect.NewUrl, oldCustomRedirect.WildCardSkipAppend);
-                        dsHandler.SaveCustomRedirect(newRedirect);
-                    }
-                    // oldCustomrRedirectStore.DeleteAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                _log.Error("Error during DDS upgrade: " + ex);
-            }
-
         }
 
         private static void Upgrade()
