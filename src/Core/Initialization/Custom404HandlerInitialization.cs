@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Web;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
@@ -9,6 +8,7 @@ using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.Initialization
 {
+    /// <inheritdoc />
     /// <summary>
     /// Global File Not Found Handler, for handling Asp.net exceptions
     /// </summary>
@@ -16,29 +16,31 @@ namespace BVNetwork.NotFound.Core.Initialization
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]
     public class Custom404HandlerInitialization : IInitializableHttpModule
     {
-        private static readonly ILogger _log = LogManager.GetLogger(typeof(Custom404HandlerInitialization));
+        private static readonly ILogger Log = LogManager.GetLogger(typeof(Custom404HandlerInitialization));
 
         public void Initialize(InitializationEngine context)
         {
 
-            _log.Debug("Initializing 404 handler version check");
-            DataAccessBaseEx dba = DataAccessBaseEx.GetWorker();
-            int version = dba.Check404Version();
+            Log.Debug("Initializing 404 handler version check");
+            var dba = DataAccessBaseEx.GetWorker();
+            var version = dba.Check404Version();
             if (version != Configuration.Configuration.CurrentVersion)
             {
-                _log.Debug("Older version found. Version nr. :" + version);
+                Log.Debug("Older version found. Version nr. :" + version);
                 Upgrader.Start(version);
             }
             else
+            {
                 Upgrader.Valid = true;
+            }
 
             // Load all custom redirects into memory
-            CustomRedirectHandler handler = CustomRedirectHandler.Current;
+            // TODO: create better load of the cache
+            var handler = CustomRedirectHandler.Current;
         }
 
         public void Uninitialize(InitializationEngine context)
         {
-
         }
 
         public void Preload(string[] parameters)
