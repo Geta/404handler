@@ -4,7 +4,7 @@ using System.Reflection;
 [assembly: AssemblyDescription("Custom 404 Handler for EPiServer. See https://github.com/BVNetwork/404handler")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BV Network AS and Geta")]
-[assembly: AssemblyProduct("")]
+[assembly: AssemblyProduct("BVNetwork.404Handler")]
 [assembly: AssemblyCopyright("BV Network AS and Geta 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
