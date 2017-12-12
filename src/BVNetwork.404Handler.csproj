@@ -376,13 +376,12 @@
     <Copy SourceFiles="$(ProjectDir)\module.config" DestinationFolder="$(TmpOutDir)\content" />
     <Copy SourceFiles="@(ClientResources)" DestinationFiles="@(ClientResources -> '$(TmpOutDir)\content\ClientResources\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(Views)" DestinationFiles="@(Views -> '$(TmpOutDir)\content\Views\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <!-- Delete old Zip file -->
+    <Delete Files="$(zipFile)" />
     <!-- Create the Zip file -->
     <ZipDirectory InputPath="$(TmpOutDir)\content" OutputFileName="$(zipFile)" OverwriteExistingFile="true" />
-    <!-- Create the package -->
-    <Exec Command="$(NugetCommand)" />
     <!-- Cleanup -->
     <RemoveDir Directories="$(TmpOutDir)" />
-    <Delete Files="$(zipFile)" />
   </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
