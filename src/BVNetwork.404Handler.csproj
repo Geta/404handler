@@ -92,7 +92,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.Cms11.cs" />
     <Compile Include="Core\CustomRedirects\XmlActionResult.cs" />
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
     <Compile Include="Core\Logging\LogEvent.cs" />
