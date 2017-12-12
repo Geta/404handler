@@ -22,16 +22,16 @@
 
 </script>
 <div>
-   
+
     <div class="epi-formArea">
         <fieldset>
             <%=Model.ActionInformation as string %>
         </fieldset>
     </div>
-   
+
     <input type="hidden" name="pageSize" value='<%=Model.PageSize %>' />
     <% Html.RenderPartial("Menu", "Suggestions"); %>
-      
+
     <table class="epi-default">
         <thead>
             <tr>
@@ -43,17 +43,17 @@
                     <label>
                         <%= Html.Translate("/gadget/redirects/newurl")%></label>
                 </th>
-                
+
                 <th style="text-align: center">
                     <label>
                         <%= Html.Translate("/gadget/redirects/ignore")%></label>
                 </th>
             </tr>
         </thead>
-        
+
         <tr>
              <td class="longer" style="display: none">
-                 
+
                  <%--fix to avoid double input validation in table--%>
               <% Html.BeginGadgetForm(""); %>
               <% Html.EndForm(); %>
@@ -65,18 +65,18 @@
                int i = 0;
                foreach (CustomRedirect m in Model.CustomRedirectList)
                {
-                      
+
         %>
-       
+
         <%  var referers = DataHandler.GetReferers(m.OldUrl);
             bool showReferers = true;
 
             if (referers.Count == 1 && referers.First().Key == DataHandler.UknownReferer)
-                showReferers = false; 
-                        
+                showReferers = false;
+
         %>
         <tr>
-            
+
             <td class="longer">
                 <span style="color: #<%=ColorHelper.GetRedTone(Model.HighestSuggestionValue, Model.LowestSuggestionValue, m.NotfoundErrorCount)%>0000">
                     <%= Html.Encode(m.OldUrl) + string.Format("<i> ({0} errors)</i>", m.NotfoundErrorCount)%></span>
@@ -86,12 +86,12 @@
                 <br />
                 <span id="referer<%=i %>" style="display: none;" />
                     <ul class="notfound refererlist">
-                        <%   
+                        <%
                    int j = 0;
                    foreach (var referer in referers)
                    {
                        if (j < 10)
-                       {  
+                       {
                         %>
                         <li>
                             <%if (referer.Key != DataHandler.UknownReferer)
@@ -118,24 +118,24 @@
                                             new { url = Uri.EscapeDataString(m.OldUrl) })%>
                         <%} %>
                     </ul>
-                
+
             </td>
-           
+
           <td class="longer">
               <% Html.BeginGadgetForm("SaveSuggestion"); %>
 
-          
+
             <div class="longer">
-                  
-                <input name="newUrl" class="required redirect-longer" /> 
-           
+
+                <input name="newUrl" class="required redirect-longer" />
+
             </div>
             <div class="shorter delete">
                   <input value="<%=m.OldUrl %>" name="oldUrl" class="redirect-longer" style="display: none" />
                 <button class="notfoundbutton" name="submit" type="submit">Add</button>
-              
-               
-                 
+
+
+
             </div>
                 <% Html.EndForm(); %>
 
@@ -149,14 +149,14 @@
                                 "Index",
                                 new { oldUrl = Uri.EscapeDataString(m.OldUrl), pageNumber = Model.PageNumber, searchWord = Model.SearchWord, pageSize = Model.PageSize })%>
             </td>
-     
-         
+
+
         </tr>
-        <% 
+        <%
                i++;
                }
 
            } %>
     </table>
-     
+
 </div>

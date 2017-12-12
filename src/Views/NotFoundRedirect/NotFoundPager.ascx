@@ -14,7 +14,7 @@
        <%} %>
     </div>
     <div class="pagercenter">
-   
+
      <% if (Model.PageNumber > 1)
            { %>
         <%= Html.ViewLink(
@@ -64,9 +64,9 @@
                                        new { pageNumber = Model.PageNumber + 1, searchWord = Model.SearchWord, pageSize = Model.PageSize, isSuggestions = Model.IsSuggestions, showRedirects = true })%>
      <% } %>
     </div>
-  
 
-   
+
+
       <div class="pagerright">
         <% Html.BeginGadgetForm("Index"); %>
         <input type="submit" class="refresh" value="" />

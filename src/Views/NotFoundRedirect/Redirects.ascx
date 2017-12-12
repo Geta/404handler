@@ -7,7 +7,7 @@
 <%@ Import Namespace="EPiServer.Shell.Web.Mvc.Html" %>
 
 
-    <!-- <div class="notfound about"> 
+    <!-- <div class="notfound about">
     </div>
     -->
     <div>
@@ -32,7 +32,7 @@
             </fieldset>
         </div>
         <% Html.EndForm(); %>
-       
+
         <input type="hidden" name="pageSize" value='<%=Model.PageSize %>' />
         <% Html.RenderPartial("Menu", "Index"); %>
         <% Html.BeginGadgetForm("Save"); %>
@@ -55,7 +55,7 @@
                     </th>
                 </tr>
             </thead>
-          
+
             <tr>
                 <td class="longer">
                     <input style="word-wrap: break-word" name="oldUrl" class="required redirect-longer" />
@@ -70,7 +70,7 @@
                      <button type="submit" class="notfoundbutton">Add</button>
                 </td>
             </tr>
-         
+
             <% if (Model.CustomRedirectList.Count > 0)
                {
                    foreach (CustomRedirect m in Model.CustomRedirectList)
@@ -104,7 +104,7 @@
                 </td>
             </tr>
             <%} %>
-            <% 
+            <%
                } %>
         </table>
         <% Html.EndForm(); %>

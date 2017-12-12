@@ -6,7 +6,7 @@
        <div class="epi-formArea">
             <fieldset>
                <%=string.Format(LocalizationService.Current.GetString("/gadget/redirects/deletedurls"), Model.Count)%>
-         
+
             </fieldset>
         </div>
 
@@ -24,7 +24,7 @@
                 <th>&nbsp;</th>
             </tr>
         </thead>
-          
+
         <tr>
             <td class="longer">
                 <input style="word-wrap: break-word" name="oldUrl" class="required redirect-longer" />
@@ -32,7 +32,7 @@
             <td class="shorter delete">
                     <button type="submit" class="notfoundbutton">Add</button>
             </td>
-        </tr>        
+        </tr>
 
         <%foreach (CustomRedirect m in Model) { %>
         <tr>
