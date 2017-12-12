@@ -14,12 +14,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         public XmlActionResult(XmlDocument document)
         {
-            if (document == null)
-            { 
-                throw new ArgumentNullException(nameof(document));
-            }
-
-            _document = document;
+            _document = document ?? throw new ArgumentNullException(nameof(document));
 
             MimeType = "text/xml";
             Formatting = Formatting.Indented;

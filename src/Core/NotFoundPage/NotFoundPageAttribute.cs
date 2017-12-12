@@ -11,28 +11,26 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!PageEditing.PageIsInEditMode)
+            if (PageEditing.PageIsInEditMode) return;
+
+            Log.Debug("Starting 404 handler action filter");
+            var request = filterContext.HttpContext.Request;
+            filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
+            var statusCode = NotFoundPageUtil.GetStatusCode(request);
+            filterContext.HttpContext.Response.StatusCode = statusCode;
+            var status = NotFoundPageUtil.GetStatus(statusCode);
+            if (!string.IsNullOrEmpty(status))
             {
-                Log.Debug("Starting 404 handler action filter");
-                var request = filterContext.HttpContext.Request;
-                filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
-                int statusCode = NotFoundPageUtil.GetStatusCode(request);
-                filterContext.HttpContext.Response.StatusCode = statusCode;
-                string status = NotFoundPageUtil.GetStatus(statusCode);
-                if (!string.IsNullOrEmpty(status))
-                {
-                    filterContext.HttpContext.Response.Status = status;
-                }
-                NotFoundPageUtil.SetCurrentLanguage(filterContext.HttpContext);
-                filterContext.Controller.ViewBag.Referrer = NotFoundPageUtil.GetReferer(request);
-                filterContext.Controller.ViewBag.NotFoundUrl = NotFoundPageUtil.GetUrlNotFound(request);
-                filterContext.Controller.ViewBag.StatusCode = statusCode;
+                filterContext.HttpContext.Response.Status = status;
             }
+            NotFoundPageUtil.SetCurrentLanguage(filterContext.HttpContext);
+            filterContext.Controller.ViewBag.Referrer = NotFoundPageUtil.GetReferer(request);
+            filterContext.Controller.ViewBag.NotFoundUrl = NotFoundPageUtil.GetUrlNotFound(request);
+            filterContext.Controller.ViewBag.StatusCode = statusCode;
         }
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-    
         }
     }
 }

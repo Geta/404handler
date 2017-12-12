@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using EPiServer.Data;
 using EPiServer.Logging;
@@ -10,7 +9,7 @@ namespace BVNetwork.NotFound.Core.Data
 {
     public class DataAccessBaseEx  : EPiServer.DataAccess.DataAccessBase
     {
-        public DataAccessBaseEx(EPiServer.Data.IDatabaseExecutor handler)
+        public DataAccessBaseEx(IDatabaseExecutor handler)
             : base(handler)
         {
             Executor = handler;
@@ -20,34 +19,35 @@ namespace BVNetwork.NotFound.Core.Data
         {
             return EPiServer.ServiceLocation.ServiceLocator.Current.GetInstance<DataAccessBaseEx>();
         }
-        private const string REDIRECTSTABLE = "[dbo].[BVN.NotFoundRequests]";
+
+        private const string Redirectstable = "[dbo].[BVN.NotFoundRequests]";
 
         private static readonly ILogger Logger = LogManager.GetLogger();
 
-        public DataSet ExecuteSQL(string sqlCommand, List<IDbDataParameter> parameters)
+        public DataSet ExecuteSql(string sqlCommand, List<IDbDataParameter> parameters)
         {
-
-
-            return Executor.Execute<DataSet>(delegate
+            return Executor.Execute(delegate
             {
-                using (DataSet ds = new DataSet())
+                using (var ds = new DataSet())
                 {
                     try
                     {
-                        DbCommand command = CreateCommand(sqlCommand);
+                        var command = CreateCommand(sqlCommand);
                         if (parameters != null)
                         {
-                            foreach (SqlParameter parameter in parameters)
+                            foreach (var dbDataParameter in parameters)
                             {
+                                var parameter = (SqlParameter) dbDataParameter;
                                 command.Parameters.Add(parameter);
                             }
                         }
                         command.CommandType = CommandType.Text;
-                        base.CreateDataAdapter(command).Fill(ds);
+                        CreateDataAdapter(command).Fill(ds);
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(string.Format("An error occureding in the ExecuteSQL method with the following sql{0}. Exception:{1}", sqlCommand, ex));
+                        Logger.Error(
+                            $"An error occureding in the ExecuteSQL method with the following sql{sqlCommand}. Exception:{ex}");
                     }
 
                     return ds;
@@ -58,9 +58,9 @@ namespace BVNetwork.NotFound.Core.Data
 
         public bool ExecuteNonQuery(string sqlCommand)
         {
-            return Executor.Execute<bool>(delegate
+            return Executor.Execute(delegate
             {
-                bool success = true;
+                var success = true;
 
                 try
                 {
@@ -71,24 +71,21 @@ namespace BVNetwork.NotFound.Core.Data
                 catch (Exception ex)
                 {
                     success = false;
-                    Logger.Error(string.Format("An error occureding in the ExecuteSQL method with the following sql{0}. Exception:{1}", sqlCommand, ex));
-
+                    Logger.Error(
+                        $"An error occureding in the ExecuteSQL method with the following sql{sqlCommand}. Exception:{ex}");
                 }
                 return success;
-
             });
-
-
         }
 
         public int ExecuteScalar(string sqlCommand)
         {
-            return Executor.Execute<int>(delegate
+            return Executor.Execute(delegate
             {
                 int result;
                 try
                 {
-                    IDbCommand dbCommand = this.CreateCommand(sqlCommand);
+                    IDbCommand dbCommand = CreateCommand(sqlCommand);
                     dbCommand.CommandType = CommandType.Text;
                     result = (int)dbCommand.ExecuteScalar();
                 }
@@ -96,11 +93,7 @@ namespace BVNetwork.NotFound.Core.Data
                 {
                     result = 0;
                     Logger.Error(
-                        string.Format(
-                            "An error occureding in the ExecuteScalar method with the following sql{0}. Exception:{1}",
-                            sqlCommand,
-                            ex));
-
+                        $"An error occureding in the ExecuteScalar method with the following sql{sqlCommand}. Exception:{ex}");
                 }
                 return result;
             });
@@ -108,79 +101,73 @@ namespace BVNetwork.NotFound.Core.Data
 
         public DataSet GetAllClientRequestCount()
         {
-            string sqlCommand = string.Format("SELECT [OldUrl], COUNT(*) as Requests FROM {0} GROUP BY [OldUrl] order by Requests desc", REDIRECTSTABLE);
-            return ExecuteSQL(sqlCommand, null);
+            var sqlCommand =
+                $"SELECT [OldUrl], COUNT(*) as Requests FROM {Redirectstable} GROUP BY [OldUrl] order by Requests desc";
+            return ExecuteSql(sqlCommand, null);
         }
 
         public void DeleteRowsForRequest(string oldUrl)
         {
-            string sqlCommand = string.Format("DELETE FROM {0} WHERE [OldUrl] = @oldurl", REDIRECTSTABLE);
-            var oldUrlParam = this.CreateParameter("oldurl", DbType.String, 4000);
+            var sqlCommand = $"DELETE FROM {Redirectstable} WHERE [OldUrl] = @oldurl";
+            var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
             oldUrlParam.Value = oldUrl;
-            var parameters = new List<IDbDataParameter>();
-            parameters.Add(oldUrlParam);
-            ExecuteSQL(sqlCommand, parameters);
+            var parameters = new List<IDbDataParameter> {oldUrlParam};
+            ExecuteSql(sqlCommand, parameters);
         }
 
         public void DeleteSuggestions(int maxErrors, int minimumDaysOld)
         {
-            string sqlCommand = string.Format(@"delete from {0}
+            var sqlCommand = $@"delete from {Redirectstable}
                                                 where [OldUrl] in (
                                                 select [OldUrl]
                                                   from (
                                                       select [OldUrl]
-                                                      from {0}
-                                                      Where DATEDIFF(day, [Requested], getdate()) >= {1}
+                                                      from {Redirectstable}
+                                                      Where DATEDIFF(day, [Requested], getdate()) >= {minimumDaysOld}
                                                       group by [OldUrl]
-                                                      having count(*) <= {2}
+                                                      having count(*) <= {maxErrors}
                                                       ) t
-                                                )",REDIRECTSTABLE, minimumDaysOld, maxErrors);
-            ExecuteSQL(sqlCommand, null);
+                                                )";
+            ExecuteSql(sqlCommand, null);
         }
         public void DeleteAllSuggestions()
         {
-            string sqlCommand = string.Format(@"delete from {0}", REDIRECTSTABLE);
-            ExecuteSQL(sqlCommand, null);
+            var sqlCommand = $@"delete from {Redirectstable}";
+            ExecuteSql(sqlCommand, null);
         }
 
         public DataSet GetRequestReferers(string url)
         {
-            string sqlCommand = string.Format("SELECT [Referer], COUNT(*) as Requests FROM {0} where [OldUrl] = @oldurl  GROUP BY [Referer] order by Requests desc", REDIRECTSTABLE);
-            var oldUrlParam = this.CreateParameter("oldurl", DbType.String, 4000);
+            var sqlCommand =
+                $"SELECT [Referer], COUNT(*) as Requests FROM {Redirectstable} where [OldUrl] = @oldurl  GROUP BY [Referer] order by Requests desc";
+            var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
             oldUrlParam.Value = url;
 
-            var parameters = new List<IDbDataParameter>();
-            parameters.Add(oldUrlParam);
-            return ExecuteSQL(sqlCommand, parameters);
-
+            var parameters = new List<IDbDataParameter> {oldUrlParam};
+            return ExecuteSql(sqlCommand, parameters);
         }
 
         public DataSet GetTotalNumberOfSuggestions()
         {
-
-            string sqlCommand = string.Format("SELECT COUNT(DISTINCT [OldUrl]) FROM {0}", REDIRECTSTABLE);
-            return ExecuteSQL(sqlCommand, null);
+            var sqlCommand = $"SELECT COUNT(DISTINCT [OldUrl]) FROM {Redirectstable}";
+            return ExecuteSql(sqlCommand, null);
         }
-
-
 
         public int Check404Version()
         {
-
-            return Executor.Execute<int>(() =>
+            return Executor.Execute(() =>
             {
-
-                string sqlCommand = "dbo.bvn_notfoundversion";
-                int version = -1;
+                var sqlCommand = "dbo.bvn_notfoundversion";
+                var version = -1;
                 try
                 {
-                    DbCommand command = this.CreateCommand();
+                    var command = CreateCommand();
 
-                    command.Parameters.Add(this.CreateReturnParameter());
+                    command.Parameters.Add(CreateReturnParameter());
                     command.CommandText = sqlCommand;
                     command.CommandType = CommandType.StoredProcedure;
                     command.ExecuteNonQuery();
-                    version = Convert.ToInt32(this.GetReturnValue(command).ToString());
+                    version = Convert.ToInt32(GetReturnValue(command).ToString());
                 }
                 catch (SqlException)
                 {
@@ -189,34 +176,29 @@ namespace BVNetwork.NotFound.Core.Data
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(string.Format("Error during NotFoundHandler version check:{0}", ex));
+                    Logger.Error($"Error during NotFoundHandler version check:{ex}");
                 }
                 return version;
             });
-
         }
-
 
         public void LogRequestToDb(string oldUrl, string referer, DateTime now)
         {
-            Executor.Execute<bool>(() =>
+            Executor.Execute(() =>
                {
-                   string sqlCommand = "INSERT INTO [dbo].[BVN.NotFoundRequests] (" +
-                                       "Requested, OldUrl, " +
-                                       "Referer" +
-                                       ") VALUES (" +
-                                       "@requested, @oldurl, " +
-                                       "@referer" +
-                                       ")";
+                   var sqlCommand = @"INSERT INTO [dbo].[BVN.NotFoundRequests]
+                                    (Requested, OldUrl, Referer)
+                                    VALUES
+                                    (@requested, @oldurl, @referer)";
                    try
                    {
-                       IDbCommand command = this.CreateCommand();
+                       IDbCommand command = CreateCommand();
 
-                       var requstedParam = this.CreateParameter("requested", DbType.DateTime, 0);
+                       var requstedParam = CreateParameter("requested", DbType.DateTime, 0);
                        requstedParam.Value = now;
-                       var refererParam = this.CreateParameter("referer", DbType.String, 4000);
+                       var refererParam = CreateParameter("referer", DbType.String, 4000);
                        refererParam.Value = referer;
-                       var oldUrlParam = this.CreateParameter("oldurl", DbType.String, 4000);
+                       var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
                        oldUrlParam.Value = oldUrl;
                        command.Parameters.Add(requstedParam);
                        command.Parameters.Add(refererParam);
@@ -233,9 +215,5 @@ namespace BVNetwork.NotFound.Core.Data
                    return true;
                });
         }
-
-
-
-
     }
 }

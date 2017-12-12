@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using EPiServer.Framework;
-using EPiServer.Logging;
 using EPiServer.ServiceLocation;
 using EPiServer.Web;
 using EPiServer.Web.Routing.Segments;
@@ -13,8 +12,6 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
 {
     public static class NotFoundPageUtil
     {
-        private static readonly ILogger _log = LogManager.GetLogger(typeof(NotFoundPageUtil));
-
         /// <summary>
         /// Gets the content for the 404 page from the language files.
         /// </summary>
@@ -32,17 +29,19 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         public static string GetUrlNotFound(HttpRequestBase request)
         {
             string urlNotFound = null;
-            string query = request.ServerVariables["QUERY_STRING"];
-            if ((query != null) && query.StartsWith("4"))
+            var query = request.ServerVariables["QUERY_STRING"];
+            if (query != null && query.StartsWith("4"))
             {
-                string url = query.Split(';')[1];
+                var url = query.Split(';')[1];
                 urlNotFound = HttpUtility.UrlDecode(url);
             }
             if (urlNotFound == null)
             {
-                if (query.StartsWith("aspxerrorpath="))
+                if (query != null
+                    && query.StartsWith("aspxerrorpath=")
+                    && request.Url != null)
                 {
-                    string[] parts = query.Split('=');
+                    var parts = query.Split('=');
                     urlNotFound = request.Url.GetLeftPart(UriPartial.Authority) + HttpUtility.UrlDecode(parts[1]);
                 }
             }
@@ -54,16 +53,20 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         /// </summary>
         public static string GetReferer(HttpRequestBase request)
         {
-            string referer = request.ServerVariables["HTTP_REFERER"];
+            var referer = request.ServerVariables["HTTP_REFERER"];
             if (referer != null)
             {
                 // Strip away host name in front, if local redirect
-                string hostUrl = SiteDefinition.Current.SiteUrl.ToString();
+                var hostUrl = SiteDefinition.Current.SiteUrl.ToString();
                 if (referer.StartsWith(hostUrl))
+                {
                     referer = referer.Remove(0, hostUrl.Length);
+                }
             }
             else
+            {
                 referer = ""; // Can't have null
+            }
             return referer;
         }
 
@@ -78,21 +81,20 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
 
         public static int GetStatusCode(HttpRequestBase request)
         {
-            int code = 404;
-            string queryString = GetQueryString(request);
-            if (!string.IsNullOrEmpty(queryString))
+            var code = 404;
+            var queryString = GetQueryString(request);
+
+            if (string.IsNullOrEmpty(queryString)) return code;
+
+            var regex = new Regex(@"(?:[0-9]{3}\;)");
+            var match = regex.Match(queryString);
+            if (match.Success)
             {
-                Regex regex = new Regex(@"(?:[0-9]{3}\;)");
-                Match match = regex.Match(queryString);
-                if (match.Success)
-                {
-                    string[] queryStrings = queryString.Split(';');
-                    if (queryStrings.Length > 0)
-                    {
-                        if (int.TryParse(queryStrings[0], out code))
-                            return code;
-                    }
-                }
+                var queryStrings = queryString.Split(';');
+
+                if (queryStrings.Length <= 0) return code;
+
+                if (int.TryParse(queryStrings[0], out code)) return code;
             }
             return code;
         }
@@ -105,45 +107,42 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         public static void SetCurrentLanguage(string url)
         {
             url = url.Substring(1);
-            if (url.Contains("/"))
+
+            if (!url.Contains("/")) return;
+
+            var languageSegment = url.Substring(0, url.IndexOf('/'));
+
+            if (string.IsNullOrEmpty(languageSegment)) return;
+
+            var languageMatcher = ServiceLocator.Current.GetInstance<ILanguageSegmentMatcher>();
+            languageMatcher.TryGetLanguageId(languageSegment, out var languageId);
+            if (languageId != null)
             {
-                string languageSegment = url.Substring(0, url.IndexOf('/'));
-                if (!string.IsNullOrEmpty(languageSegment))
-                {
-                    var languageMatcher = ServiceLocator.Current.GetInstance<ILanguageSegmentMatcher>();
-                    string languageId;
-                    languageMatcher.TryGetLanguageId(languageSegment, out languageId);
-                    if (languageId != null)
-                    {
-                        SetContextLanguage(new CultureInfo(languageId));
-                    }
-                }
+                SetContextLanguage(new CultureInfo(languageId));
             }
         }
 
         private static void SetContextLanguage(CultureInfo culture)
         {
-#if CMS8
-            EPiServer.BaseLibrary.Context.Current["EPiServer:ContentLanguage"] = culture;
-#else
             ContextCache.Current["EPiServer:ContentLanguage"] = culture;
-#endif
         }
 
         public static void SetCurrentLanguage(HttpContextBase context)
         {
-            Uri urlNotFound = new Uri(SiteDefinition.Current.SiteUrl + GetUrlNotFound(context.Request));
+            var urlNotFound = new Uri($"{SiteDefinition.Current.SiteUrl}{GetUrlNotFound(context.Request)}");
             SetCurrentLanguage(urlNotFound.ToString());
         }
 
         public static string GetStatus(int statusCode)
         {
-            string status = "";
-            if (statusCode == 404)
-                status =  "404 File not found";
-            else if (statusCode == 410)
-                status = "410 Deleted";
-            return status;
+            switch (statusCode)
+            {
+                case 404:
+                    return  "404 File not found";
+                case 410:
+                    return "410 Deleted";
+            }
+            return string.Empty;
         }
     }
 }

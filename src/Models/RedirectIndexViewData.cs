@@ -7,9 +7,9 @@ namespace BVNetwork.NotFound.Models
     {
         public List<CustomRedirect> CustomRedirectList { get; set; }
 
-        public int PageSize {  get; set; }
+        public int PageSize { get; set; }
         public int PageNumber { get; set; }
-        public int PagerSize {  get;  set; }
+        public int PagerSize { get; set; }
         public int TotalItemsCount { get; set; }
         public string ActionInformation { get; set; }
         public string SearchWord { get; set; }
@@ -23,50 +23,40 @@ namespace BVNetwork.NotFound.Models
         {
             get
             {
-                List<int> list2 = new List<int>();
-                list2.Add(1);
-                List<int> list = list2;
-                if (((this.PageNumber - this.PagerSize) - 1) > 1)
+                var list2 = new List<int> {1};
+                var list = list2;
+                if (PageNumber - PagerSize - 1 > 1)
                 {
                     list.Add(0);
                 }
-                for (int i = this.PageNumber - this.PagerSize; i <= (this.PageNumber + this.PagerSize); i++)
+                for (var i = PageNumber - PagerSize; i <= PageNumber + PagerSize; i++)
                 {
-                    if ((i > 1) && (i < this.TotalPagesCount))
+                    if (i > 1 && i < TotalPagesCount)
                     {
                         list.Add(i);
                     }
                 }
-                if (((this.PageNumber + this.PagerSize) + 1) < this.TotalPagesCount)
+                if (PageNumber + PagerSize + 1 < TotalPagesCount)
                 {
                     list.Add(0);
                 }
-                if (this.TotalPagesCount > 1)
+                if (TotalPagesCount > 1)
                 {
-                    list.Add(this.TotalPagesCount);
+                    list.Add(TotalPagesCount);
                 }
                 return list;
             }
         }
 
 
-        public int TotalPagesCount
-        {
-            get
-            {
-                return (((this.TotalItemsCount - 1) / this.PageSize) + 1);
-            }
-        }
+        public int TotalPagesCount => (TotalItemsCount - 1) / PageSize + 1;
 
         public int MaxIndexOfItem
         {
             get
             {
-                if ((this.PageNumber * this.PageSize) <= this.TotalItemsCount)
-                {
-                    return (this.PageNumber * this.PageSize);
-                }
-                return this.TotalItemsCount;
+                if (PageNumber * PageSize <= TotalItemsCount) return PageNumber * PageSize;
+                return TotalItemsCount;
             }
         }
 
@@ -74,15 +64,9 @@ namespace BVNetwork.NotFound.Models
         {
             get
             {
-                if (this.TotalItemsCount <= 0)
-                {
-                    return 0;
-                }
-                return (((this.PageNumber - 1) * this.PageSize) + 1);
+                if (TotalItemsCount <= 0) return 0;
+                return (PageNumber - 1) * PageSize + 1;
             }
         }
-
-
-
-    }   
+    }
 }

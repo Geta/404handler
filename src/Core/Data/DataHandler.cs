@@ -11,24 +11,19 @@ namespace BVNetwork.NotFound.Core.Data
         public static Dictionary<string, int> GetRedirects()
         {
             var keyCounts = new Dictionary<string, int>();
-            var keyList = new List<string>();
-            DataAccessBaseEx dabe = DataAccessBaseEx.GetWorker();
+            var dabe = DataAccessBaseEx.GetWorker();
             var allkeys = dabe.GetAllClientRequestCount();
 
-            string oldUrl;
             foreach (DataTable table in allkeys.Tables)
             {
                 foreach (DataRow row in table.Rows)
                 {
-                    oldUrl = row[0].ToString();
-
-
+                    var oldUrl = row[0].ToString();
                     keyCounts.Add(oldUrl, Convert.ToInt32(row[1]));
                 }
             }
 
             return keyCounts;
-
         }
 
         public static Dictionary<string, int> GetReferers(string url)
@@ -36,28 +31,31 @@ namespace BVNetwork.NotFound.Core.Data
             var dataAccess = DataAccessBaseEx.GetWorker();
             var referersDs = dataAccess.GetRequestReferers(url);
 
-            Dictionary<string, int> referers = new Dictionary<string, int>();
-            if (referersDs.Tables[0] != null)
-            {
-                int unknownReferers = 0;
-                for (int i = 0; i < referersDs.Tables[0].Rows.Count; i++)
-                {
-                   
-                    var referer = referersDs.Tables[0].Rows[i][0].ToString();
-                    int count = Convert.ToInt32(referersDs.Tables[0].Rows[i][1].ToString());
-                    if (referer.Trim() != string.Empty && !referer.Contains("(null)"))
-                    {
-                        if (!referer.Contains("://"))
-                            referer = referer.Insert(0, "/");
-                        referers.Add(referer, count);
-                    }
-                    else
-                        unknownReferers += count;
-                    
+            var referers = new Dictionary<string, int>();
 
+            if (referersDs.Tables[0] == null) return referers;
+
+            var unknownReferers = 0;
+            for (var i = 0; i < referersDs.Tables[0].Rows.Count; i++)
+            {
+
+                var referer = referersDs.Tables[0].Rows[i][0].ToString();
+                var count = Convert.ToInt32(referersDs.Tables[0].Rows[i][1].ToString());
+                if (referer.Trim() != string.Empty
+                    && !referer.Contains("(null)"))
+                {
+                    if (!referer.Contains("://")) referer = referer.Insert(0, "/");
+                    referers.Add(referer, count);
                 }
-                if (unknownReferers > 0)
-                    referers.Add(UknownReferer, unknownReferers);
+                else
+                {
+                    unknownReferers += count;
+                }
+
+            }
+            if (unknownReferers > 0)
+            {
+                referers.Add(UknownReferer, unknownReferers);
             }
             return referers;
         }
@@ -66,14 +64,12 @@ namespace BVNetwork.NotFound.Core.Data
         {
             var dataAccess = DataAccessBaseEx.GetWorker();
             var totalSuggestionCountDs = dataAccess.GetTotalNumberOfSuggestions();
-            if (totalSuggestionCountDs != null && totalSuggestionCountDs.Tables != null && totalSuggestionCountDs.Tables.Count > 0)
+            if (totalSuggestionCountDs?.Tables != null
+                && totalSuggestionCountDs.Tables.Count > 0)
+            {
                 return Convert.ToInt32(totalSuggestionCountDs.Tables[0].Rows[0][0]);
-            else
-                return 0;
-
-
+            }
+            return 0;
         }
-
-
     }
 }

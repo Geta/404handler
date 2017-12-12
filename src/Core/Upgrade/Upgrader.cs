@@ -29,7 +29,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
             var dba = DataAccessBaseEx.GetWorker();
 
             Log.Information("Create 404 handler redirects table START");
-            string createTableScript = @"CREATE TABLE [dbo].[BVN.NotFoundRequests](
+            var createTableScript = @"CREATE TABLE [dbo].[BVN.NotFoundRequests](
 	                                    [ID] [int] IDENTITY(1,1) NOT NULL,
 	                                    [OldUrl] [nvarchar](2000) NOT NULL,
 	                                    [Requested] [datetime] NULL,
@@ -43,7 +43,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
             if (create)
             {
                 Log.Information("Create 404 handler version SP START");
-                var versionSp = @"CREATE PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
+                var versionSp = @"CREATE PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CurrentVersion;
 
                 if (!dba.ExecuteNonQuery(versionSp))
                 {
@@ -91,7 +91,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
             }
             if (Valid)
             {
-                var versionSp = @"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
+                var versionSp = @"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CurrentVersion;
                 Valid = dba.ExecuteNonQuery(versionSp);
             }
         }

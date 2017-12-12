@@ -7,7 +7,7 @@
        <div class="epi-formArea">
             <fieldset>
                <%=string.Format(LocalizationService.Current.GetString("/gadget/redirects/ignoredsuggestions"), Model.Count)%>
-         
+
             </fieldset>
         </div>
 

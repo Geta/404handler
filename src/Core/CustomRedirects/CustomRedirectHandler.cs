@@ -7,31 +7,23 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 {
     /// <summary>
     /// Handler for custom redirects. Loads and caches the list of custom redirects
-    /// to ensure performance. 
+    /// to ensure performance.
     /// </summary>
     public class CustomRedirectHandler
     {
         private static readonly ILogger Logger = LogManager.GetLogger();
-        private const string CACHE_KEY_CUSTOM_REDIRECT_HANDLER_INSTANCE = "BvnCustomRedirectHandler";
-        private CustomRedirectCollection _customRedirects = null;
+        private const string CacheKeyCustomRedirectHandlerInstance = "BvnCustomRedirectHandler";
+        private CustomRedirectCollection _customRedirects;
 
-        #region constructors...
         // Should only be instanciated by the static Current method
         protected CustomRedirectHandler()
         {
         }
-        #endregion
 
         /// <summary>
         /// The collection of custom redirects
         /// </summary>
-        public CustomRedirectCollection CustomRedirects
-        {
-            get
-            {
-                return _customRedirects;
-            }
-        }
+        public CustomRedirectCollection CustomRedirects => _customRedirects;
 
         /// <summary>
         /// Save a collection of redirects, and call method to raise an event in order to clear cache on all servers.
@@ -39,26 +31,28 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// <param name="redirects"></param>
         public void SaveCustomRedirects(CustomRedirectCollection redirects)
         {
-            DataStoreHandler dynamicHandler = new DataStoreHandler();
+            var dynamicHandler = new DataStoreHandler();
             foreach (CustomRedirect redirect in redirects)
             {
-                // Add redirect 
+                // Add redirect
                 dynamicHandler.SaveCustomRedirect(redirect);
             }
             DataStoreEventHandlerHook.DataStoreUpdated();
         }
 
         /// <summary>
-        /// Read the custom redirects from the dynamic data store, and 
+        /// Read the custom redirects from the dynamic data store, and
         /// stores them in the CustomRedirect property
         /// </summary>
         protected void LoadCustomRedirects()
         {
-            DataStoreHandler dynamicHandler = new DataStoreHandler();
+            var dynamicHandler = new DataStoreHandler();
             _customRedirects = new CustomRedirectCollection();
 
-            foreach (CustomRedirect redirect in dynamicHandler.GetCustomRedirects(false))
+            foreach (var redirect in dynamicHandler.GetCustomRedirects(false))
+            {
                 _customRedirects.Add(redirect);
+            }
         }
 
         /// <summary>
@@ -89,9 +83,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 Logger.Debug("Begin: Load custom redirects from dynamic data store");
                 try
                 {
-
-
-
                     handler.LoadCustomRedirects();
                 }
                 catch (Exception ex)
@@ -115,7 +106,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// </summary>
         public static void ClearCache()
         {
-            EPiServer.CacheManager.Remove(CACHE_KEY_CUSTOM_REDIRECT_HANDLER_INSTANCE);
+            EPiServer.CacheManager.Remove(CacheKeyCustomRedirectHandlerInstance);
         }
 
         /// <summary>
@@ -124,23 +115,17 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// <returns>An instanciated CustomRedirectHandler if found in the cache, null if not found</returns>
         private static CustomRedirectHandler GetHandlerFromCache()
         {
-            CustomRedirectHandler handler = null;
-            handler = EPiServer.CacheManager.Get(CACHE_KEY_CUSTOM_REDIRECT_HANDLER_INSTANCE) as CustomRedirectHandler;
-            return handler;
+            return EPiServer.CacheManager.Get(CacheKeyCustomRedirectHandlerInstance) as CustomRedirectHandler;
         }
-
 
         /// <summary>
         /// Stores the redirect handler in the cache
         /// </summary>
         private static void StoreHandlerInCache(CustomRedirectHandler handler)
         {
-            EPiServer.CacheManager.Insert(CACHE_KEY_CUSTOM_REDIRECT_HANDLER_INSTANCE,
-                                                handler);
+            EPiServer.CacheManager.Insert(CacheKeyCustomRedirectHandlerInstance, handler);
         }
 
         public static string CustomRedirectHandlerException { get; set; }
-
-
     }
 }
