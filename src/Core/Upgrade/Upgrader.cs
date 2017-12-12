@@ -6,7 +6,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
 {
     public static class Upgrader
     {
-        private static readonly ILogger _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public static bool Valid { get; set; }
 
@@ -26,49 +26,47 @@ namespace BVNetwork.NotFound.Core.Upgrade
         /// </summary>
         private static void Create()
         {
-            bool create = true;
-
             var dba = DataAccessBaseEx.GetWorker();
 
-            _log.Information("Create 404 handler redirects table START");
+            Log.Information("Create 404 handler redirects table START");
             string createTableScript = @"CREATE TABLE [dbo].[BVN.NotFoundRequests](
 	                                    [ID] [int] IDENTITY(1,1) NOT NULL,
 	                                    [OldUrl] [nvarchar](2000) NOT NULL,
 	                                    [Requested] [datetime] NULL,
 	                                    [Referer] [nvarchar](2000) NULL
                                         ) ON [PRIMARY]";
-            create = dba.ExecuteNonQuery(createTableScript);
+            var create = dba.ExecuteNonQuery(createTableScript);
 
-            _log.Information("Create 404 handler redirects table END");
+            Log.Information("Create 404 handler redirects table END");
 
 
             if (create)
             {
-                _log.Information("Create 404 handler version SP START");
-                string versionSP = @"CREATE PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
+                Log.Information("Create 404 handler version SP START");
+                var versionSp = @"CREATE PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
 
-                if (!dba.ExecuteNonQuery(versionSP))
+                if (!dba.ExecuteNonQuery(versionSp))
                 {
                     create = false;
-                    _log.Error("An error occured during the creation of the 404 handler version stored procedure. Canceling.");
+                    Log.Error("An error occured during the creation of the 404 handler version stored procedure. Canceling.");
                 }
 
-                _log.Information("Create 404 handler version SP END");
+                Log.Information("Create 404 handler version SP END");
             }
 
             if (create)
             {
-                _log.Information("Create Clustered index START");
-                string clusteredIndex =
+                Log.Information("Create Clustered index START");
+                var clusteredIndex =
                     "CREATE CLUSTERED INDEX NotFoundRequests_ID ON [dbo].[BVN.NotFoundRequests] (ID)";
 
                 if (!dba.ExecuteNonQuery(clusteredIndex))
                 {
                     create = false;
-                    _log.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
+                    Log.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
                 }
 
-                _log.Information("Create Clustered index END");
+                Log.Information("Create Clustered index END");
             }
 
             Valid = create;
@@ -78,24 +76,23 @@ namespace BVNetwork.NotFound.Core.Upgrade
         {
             var dba = DataAccessBaseEx.GetWorker();
 
-            string indexCheck =
+            var indexCheck =
                 "SELECT COUNT(*) FROM sys.indexes WHERE name='NotFoundRequests_ID' AND object_id = OBJECT_ID('[dbo].[BVN.NotFoundRequests]')";
 
-            int num = dba.ExecuteScalar(indexCheck);
+            var num = dba.ExecuteScalar(indexCheck);
             if (num == 0)
             {
                 if (!dba.ExecuteNonQuery("CREATE CLUSTERED INDEX NotFoundRequests_ID ON [dbo].[BVN.NotFoundRequests] (ID)"))
                 {
                     Valid = false;
-                    _log.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
+                    Log.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
                 }
-                _log.Information("Create Clustered index END");
+                Log.Information("Create Clustered index END");
             }
             if (Valid)
             {
-                string versionSP = @"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
-                Valid = dba.ExecuteNonQuery(versionSP);
-                // TODO: Alter table if necessary
+                var versionSp = @"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CURRENT_VERSION;
+                Valid = dba.ExecuteNonQuery(versionSp);
             }
         }
     }
