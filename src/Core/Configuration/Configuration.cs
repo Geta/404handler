@@ -8,15 +8,15 @@ namespace BVNetwork.NotFound.Core.Configuration
     public enum FileNotFoundMode
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         On,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Off,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         RemoteOnly
     };
@@ -32,23 +32,22 @@ namespace BVNetwork.NotFound.Core.Configuration
     /// </summary>
     public class Configuration
     {
-        private const string DEF_REDIRECTS_XML_FILE = "~/CustomRedirects.config";
-        private const string DEF_NOTFOUND_PAGE = "~/bvn/filenotfound/notfound.aspx";
-        private const LoggerMode DEF_LOGGING = LoggerMode.On;
-        private static LoggerMode _logging = DEF_LOGGING;
-        private const int DEF_BUFFER_SIZE = 30;
-        private const int DEF_THRESHHOLD = 5;
-        private const string KEY_ERROR_FALLBACK = "EPfBVN404UseStdErrorHandlerAsFallback";
-        private const FileNotFoundMode DEF_NOTFOUND_MODE = FileNotFoundMode.On;
-        private static FileNotFoundMode _handlerMode = DEF_NOTFOUND_MODE;
-        private static bool _handlerMode_IsRead = false;
-        private static bool _fallbackToEPiServerError = false;
-        private static bool _fallbackToEPiServerError_IsRead = false;
-        private const string DEF_IGNORED_EXTENSIONS = "jpg,gif,png,css,js,ico,swf,woff";
+        private const string DefRedirectsXmlFile = "~/CustomRedirects.config";
+        private const string DefNotfoundPage = "~/bvn/filenotfound/notfound.aspx";
+        private const LoggerMode DefLogging = LoggerMode.On;
+        private static LoggerMode _logging = DefLogging;
+        private const int DefBufferSize = 30;
+        private const int DefThreshhold = 5;
+        private const string KeyErrorFallback = "EPfBVN404UseStdErrorHandlerAsFallback";
+        private const FileNotFoundMode DefNotfoundMode = FileNotFoundMode.On;
+        private static FileNotFoundMode _handlerMode = DefNotfoundMode;
+        private static bool _handlerModeIsRead;
+        private static bool _fallbackToEPiServerError;
+        private static bool _fallbackToEPiServerErrorIsRead;
+        private const string DefIgnoredExtensions = "jpg,gif,png,css,js,ico,swf,woff";
         private static List<string> _ignoredResourceExtensions;
 
-        public const int CURRENT_VERSION = 3;
-
+        public const int CurrentVersion = 3;
 
 
         // Only contains static methods for reading configuration values
@@ -66,11 +65,11 @@ namespace BVNetwork.NotFound.Core.Configuration
         {
             get
             {
-                if (_fallbackToEPiServerError_IsRead == false)
+                if (_fallbackToEPiServerErrorIsRead == false)
                 {
-                    _fallbackToEPiServerError_IsRead = true;
-                    if (ConfigurationManager.AppSettings[KEY_ERROR_FALLBACK] != null)
-                        bool.TryParse(ConfigurationManager.AppSettings[KEY_ERROR_FALLBACK], out _fallbackToEPiServerError);
+                    _fallbackToEPiServerErrorIsRead = true;
+                    if (ConfigurationManager.AppSettings[KeyErrorFallback] != null)
+                        bool.TryParse(ConfigurationManager.AppSettings[KeyErrorFallback], out _fallbackToEPiServerError);
                 }
                 return _fallbackToEPiServerError;
             }
@@ -85,11 +84,12 @@ namespace BVNetwork.NotFound.Core.Configuration
             {
                 if (_ignoredResourceExtensions == null)
                 {
-                    _ignoredResourceExtensions = new List<string>( string.IsNullOrEmpty(Bvn404HandlerConfiguration.Instance.IgnoredResourceExtensions) ?
-                                                    DEF_IGNORED_EXTENSIONS.Split(',') : 
-                                                    Bvn404HandlerConfiguration.Instance.IgnoredResourceExtensions.Split(','));
+                    var ignoredExtensions =
+                        string.IsNullOrEmpty(Bvn404HandlerConfiguration.Instance.IgnoredResourceExtensions)
+                            ? DefIgnoredExtensions.Split(',')
+                            : Bvn404HandlerConfiguration.Instance.IgnoredResourceExtensions.Split(',');
+                    _ignoredResourceExtensions = new List<string>(ignoredExtensions);
                 }
-
                 return _ignoredResourceExtensions;
             }
         }
@@ -101,11 +101,9 @@ namespace BVNetwork.NotFound.Core.Configuration
         {
             get
             {
-                if (_handlerMode_IsRead == false)
+                if (_handlerModeIsRead == false)
                 {
-                    string mode = Bvn404HandlerConfiguration.Instance.HandlerMode;
-                    if (mode == null)
-                        mode = DEF_NOTFOUND_MODE.ToString();
+                    var mode = Bvn404HandlerConfiguration.Instance.HandlerMode ?? DefNotfoundMode.ToString();
 
                     try
                     {
@@ -113,9 +111,9 @@ namespace BVNetwork.NotFound.Core.Configuration
                     }
                     catch
                     {
-                        _handlerMode = DEF_NOTFOUND_MODE;
+                        _handlerMode = DefNotfoundMode;
                     }
-                    _handlerMode_IsRead = true;
+                    _handlerModeIsRead = true;
                 }
 
                 return _handlerMode;
@@ -129,9 +127,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         {
             get
             {
-                string mode = BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.Instance.Logging;
-                if (mode == null)
-                    mode = DEF_LOGGING.ToString();
+                var mode = Bvn404HandlerConfiguration.Instance.Logging ?? DefLogging.ToString();
 
                 try
                 {
@@ -139,9 +135,8 @@ namespace BVNetwork.NotFound.Core.Configuration
                 }
                 catch
                 {
-                    _logging = DEF_LOGGING;
+                    _logging = DefLogging;
                 }
-
 
                 return _logging;
             }
@@ -151,20 +146,9 @@ namespace BVNetwork.NotFound.Core.Configuration
         /// <summary>
         /// The virtual path to the 404 handler aspx file.
         /// </summary>
-        public static string FileNotFoundHandlerPage
-        {
-            get
-            {
-
-                if (Bvn404HandlerConfiguration.Instance.FileNotFoundPage == null ||
-                   Bvn404HandlerConfiguration.Instance.FileNotFoundPage == string.Empty)
-                {
-                    return DEF_NOTFOUND_PAGE;
-                }
-
-                return Bvn404HandlerConfiguration.Instance.FileNotFoundPage;
-            }
-        }
+        public static string FileNotFoundHandlerPage => string.IsNullOrEmpty(Bvn404HandlerConfiguration.Instance.FileNotFoundPage)
+                                                            ? DefNotfoundPage
+                                                            : Bvn404HandlerConfiguration.Instance.FileNotFoundPage;
 
         /// <summary>
         /// The relative path to the custom redirects xml file, including the name of the
@@ -180,13 +164,13 @@ namespace BVNetwork.NotFound.Core.Configuration
                     return Bvn404HandlerConfiguration.Instance.RedirectsXmlFile;
                 }
 
-                return DEF_REDIRECTS_XML_FILE;
+                return DefRedirectsXmlFile;
             }
         }
 
 
         /// <summary>
-        /// BufferSize for logging of redirects. 
+        /// BufferSize for logging of redirects.
         /// </summary>
         public static int BufferSize
         {
@@ -197,7 +181,7 @@ namespace BVNetwork.NotFound.Core.Configuration
                     return Bvn404HandlerConfiguration.Instance.BufferSize;
                 }
 
-                return DEF_BUFFER_SIZE;
+                return DefBufferSize;
             }
         }
 
@@ -213,7 +197,7 @@ namespace BVNetwork.NotFound.Core.Configuration
                     return Bvn404HandlerConfiguration.Instance.Threshold;
                 }
 
-                return DEF_THRESHHOLD;
+                return DefThreshhold;
             }
         }
 

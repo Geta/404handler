@@ -20,11 +20,11 @@ namespace BVNetwork.NotFound.Core.Initialization
 
         public void Initialize(InitializationEngine context)
         {
-            
+
             _log.Debug("Initializing 404 handler version check");
             DataAccessBaseEx dba = DataAccessBaseEx.GetWorker();
             int version = dba.Check404Version();
-            if (version != Configuration.Configuration.CURRENT_VERSION)
+            if (version != Configuration.Configuration.CurrentVersion)
             {
                 _log.Debug("Older version found. Version nr. :" + version);
                 Upgrader.Start(version);
