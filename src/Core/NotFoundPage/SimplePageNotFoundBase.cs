@@ -6,54 +6,29 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
 {
     public class SimplePageNotFoundBase : EPiServer.SimplePage
     {
-        private Uri _urlNotFound = null;
-        private string _referer = null;
-        PageContent _content;
+        private Uri _urlNotFound;
+        private string _referer;
+        private PageContent _content;
 
         /// <summary>
         /// Content for the page
         /// </summary>
         /// <value></value>
-        public PageContent Content
-        {
-            get
-            {
-                if (_content == null)
-                    _content = NotFoundPageUtil.Get404PageLanguageResourceContent();
-                return _content;
-            }
-        }
+        public PageContent Content => _content ?? (_content = NotFoundPageUtil.Get404PageLanguageResourceContent());
 
         /// <summary>
         /// Holds the url - if any - the user tried to find
         /// </summary>
-        public Uri UrlNotFound
-        {
-            get
-            {
-                if (_urlNotFound == null)
-                {
-                       _urlNotFound = new Uri(SiteDefinition.Current.SiteUrl + NotFoundPageUtil.GetUrlNotFound(new HttpRequestWrapper(Page.Request)));
-                }
-                return _urlNotFound;
-            }
-        }
+        public Uri UrlNotFound => _urlNotFound
+                                    ?? (_urlNotFound =
+                                        new Uri($"{SiteDefinition.Current.SiteUrl}{NotFoundPageUtil.GetUrlNotFound(new HttpRequestWrapper(Page.Request))}"));
 
         /// <summary>
         /// The refering url
         /// </summary>
-        public string Referer
-        {
-            get
-            {
-                if (_referer == null)
-                {
-                    _referer = NotFoundPageUtil.GetReferer(new HttpRequestWrapper(Page.Request));
-                }
-                return _referer;
-            }
-        }
+        public string Referer => _referer ?? (_referer = NotFoundPageUtil.GetReferer(new HttpRequestWrapper(Page.Request)));
 
+        /// <inheritdoc />
         /// <summary>
         /// Load event for the page
         /// </summary>
@@ -61,7 +36,7 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         {
             base.OnLoad(e);
 
-            NotFoundPageUtil.HandleOnLoad(this.Page, UrlNotFound, this.Referer);
+            NotFoundPageUtil.HandleOnLoad(Page, UrlNotFound, Referer);
         }
     }
 }
