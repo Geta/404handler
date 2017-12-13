@@ -14,8 +14,8 @@
         <summary>The popular 404 handler for EPiServer, enabling better control over your 404 page in addition to allowing redirects for old urls that no longer works.</summary>
         <language>en-US</language>
       <dependencies>
-        <dependency id="EPiServer.CMS.UI.Core" version="[11.1.0, 12.0)" />
-        <dependency id="EPiServer.Framework" version="[11.1.0, 12.0)" />
+        <dependency id="EPiServer.CMS.UI.Core" version="[10.4.0, 11.0)" />
+        <dependency id="EPiServer.Framework" version="[10.4.0, 11.0)" />
       </dependencies>
     </metadata>
     <files>
