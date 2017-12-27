@@ -3,7 +3,7 @@
     <metadata>
         <id>BVN.404Handler</id>
         <title>404 Handler for EPiServer</title>
-        <version>10.1.1</version>
+        <version>10.1.2</version>
         <authors>BV Network</authors>
         <owners>BV Network</owners>
         <licenseUrl>https://www.coderesort.com/p/epicode/wiki/EpicodeLicense</licenseUrl>
