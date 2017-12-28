@@ -260,21 +260,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                     }
 
                     return redirect;
-                    //if (redirect.WildCardSkipAppend == true)
-                    //{
-                    //    // We'll redirect without appending the 404 url
-                    //    return redirect;
-                    //}
-                    //else
-                    //{
-                    //    return redirect;
-                    //    // We need to append the 404 to the end of the
-                    //    // new one. Make a copy of the redir object as we
-                    //    // are changing it.
-                    //    CustomRedirect redirCopy = new CustomRedirect(redirect);
-                    //    redirCopy.NewUrl = redirCopy.NewUrl + url.Substring(pair.Key.Length);
-                    //    return redirCopy;
-                    //}
                 }
             }
             return null;
