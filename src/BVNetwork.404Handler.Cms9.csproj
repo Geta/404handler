@@ -57,7 +57,7 @@
     <Optimize>false</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
@@ -81,7 +81,7 @@
     <Optimize>true</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
@@ -104,7 +104,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <None Include=".editorconfig" />
-    <None Include="BVNetwork.404Handler.Cms9.Version.targets" />
     <None Include="packages.BVNetwork.404Handler.Cms9.config" />
     <None Include="Views\NotFoundRedirect\Deleted.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -197,7 +196,7 @@
     </Content>
     <None Include="CustomRedirects.config" />
     <None Include="module.config" />
-    <None Include="web.config.install.xdt" />
+    <Content Include="web.config.install.xdt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -359,7 +358,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- This holds the version of the package -->
-  <Import Project="$(SolutionDir)\$(ProjectName).Version.targets" Condition="Exists('$(SolutionDir)\$(ProjectName).Version.targets')" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <Import Project="$(ProjectDir)\packageTools.targets" />
   <!-- Pack -->

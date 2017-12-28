@@ -11,10 +11,10 @@
 
 	<PropertyGroup>
 		<NugetCommand>
-			"$(NuGetExe)" pack "$(NuspecFile)" -OutputDirectory "$(PackageOutDir.TrimEnd('\\'))" -Version $(PackageVersion) -Properties Configuration=$(Configuration)
+			"$(NuGetExe)" pack "$(ProjectDir)\$(ProjectName).csproj" -OutputDirectory "$(PackageOutDir.TrimEnd('\\'))" -Properties Configuration=$(Configuration)
 		</NugetCommand>
 	</PropertyGroup>
-	
+
     <UsingTask TaskName="ZipDirectory" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
         <ParameterGroup>
             <InputPath ParameterType="System.String" Required="true" />
@@ -26,7 +26,7 @@
             <Using Namespace="System.IO" />
             <Using Namespace="System.IO.Compression" />
             <Code Type="Fragment" Language="cs">
-                <![CDATA[        
+                <![CDATA[
           if(this.OverwriteExistingFile) {
             File.Delete(this.OutputFileName);
           }
