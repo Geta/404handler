@@ -2,15 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>BVN.404Handler</id>
-        <title>404 Handler for EPiServer</title>
-        <version>8.0.0</version>
-        <authors>BV Network</authors>
-        <owners>BV Network</owners>
+        <title>$title$</title>
+        <version>$version$</version>
+        <authors>$author$</authors>
+        <owners>$author$</owners>
         <licenseUrl>https://www.coderesort.com/p/epicode/wiki/EpicodeLicense</licenseUrl>
         <projectUrl>https://github.com/BVNetwork/404handler</projectUrl>
         <iconUrl>http://www.coderesort.com/favicon.ico</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This library contains a custom 404 handler for your EPiServer project. It will replace the default 404 handler with one that you can change, in order for it to have a more consistent look with the rest of your site. It will also handle more 404 cases than the built-in handler. It also includes a Custom Redirect Gadget (for EPiServer Online Center) for editors to add redirects. The 404 handler logs all 404 errors and present them in a list in the gadget, which will allow editors to easily add redirects based on the logged errors.</description>
+        <description>$description$</description>
         <summary>The popular 404 handler for EPiServer, enabling better control over your 404 page in addition to allowing redirects for old urls that no longer works.</summary>
         <language>en-US</language>
       <dependencies>
@@ -19,10 +19,7 @@
       </dependencies>
     </metadata>
     <files>
-        <file src="bin\$configuration$\BVNetwork.EPi404.dll" target="lib\net45\" />  
         <file src="bin\$configuration$\BVNetwork.404Handler.zip" target="content\modules\_protected\BVNetwork.404Handler\" />
-        <file src="NotFound.aspx" target="content\NotFound.aspx" />
-        <file src="web.config.install.xdt" target="content" />
         <file src="readme.txt" target="" />
     </files>
 </package>
