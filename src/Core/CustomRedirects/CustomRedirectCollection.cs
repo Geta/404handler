@@ -183,9 +183,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             {
                 if (!redirect.WildCardSkipAppend)
                 {
-                    //    // We need to append the 404 to the end of the
-                    //    // new one. Make a copy of the redir object as we
-                    //    // are changing it.
+                    // We need to append the 404 to the end of the
+                    // new one. Make a copy of the redir object as we
+                    // are changing it.
                     var url = urlNotFound.ToString();
                     var redirCopy = new CustomRedirect(redirect);
                     var urlFromRule = UrlStandardizer.Standardize(redirect.OldUrl);
@@ -248,7 +248,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             {
                 var redirect = pair.Value;
                 if (redirect.ExactMatch)
-                    continue; // todo: [low] performance issue: we can store only non-exact-mathces separately
+                    continue; 
                 // See if this "old" url (the one that cannot be found) starts with one 
                 if (url.StartsWith(pair.Key, StringComparison.InvariantCultureIgnoreCase))
                 {
