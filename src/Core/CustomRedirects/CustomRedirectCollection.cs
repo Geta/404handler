@@ -187,7 +187,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                     //    // new one. Make a copy of the redir object as we
                     //    // are changing it.
                     var url = urlNotFound.ToString();
-                    CustomRedirect redirCopy = new CustomRedirect(redirect);
+                    var redirCopy = new CustomRedirect(redirect);
                     var urlFromRule = UrlStandardizer.Standardize(redirect.OldUrl);
 
                     var append = IsAbsoluteUrl(urlFromRule) ? url.Substring(urlFromRule.Length) : urlNotFound.PathAndQuery.Substring(urlFromRule.Length);
@@ -244,7 +244,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             // redirect using the <new> url as is, or we'll append the 404
             // url to the <new> url.
 
-            foreach (KeyValuePair<string, CustomRedirect> pair in _quickLookupTable)
+            foreach (var pair in _quickLookupTable)
             {
                 var redirect = pair.Value;
                 if (redirect.ExactMatch)
