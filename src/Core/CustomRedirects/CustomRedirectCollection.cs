@@ -212,12 +212,34 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                    || url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase);
         }
 
+        /// <summary>
+        /// Merges query parameters from the http request with ones from the redirect rule (the target query takes precedence).  
+        /// For instance: 
+        /// <list type="bullet">
+        ///     <item>
+        ///         <term>Rule:</term>
+        ///         <description>http://mysite/test => http://mysite?a=1&amp;b=2</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>Request:</term>
+        ///         <description>http://mysite/test?a=0&amp;x=0</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>Result:</term>
+        ///         <description>a=1&amp;b=2&amp;x=0 </description>
+        ///     </item>
+        /// </list>
+        /// </summary>
+        /// <param name="targetQuery">The target query as it's specified in the redirect rule</param>
+        /// <param name="originalQuery">The original query from http request</param>
+        /// <returns>Returns the merged query string parameters that can be appended to the url</returns>
         /*[NotNull]*/
         private string Merge(/*[NotNull]*/ NameValueCollection targetQuery, /*[NotNull]*/ NameValueCollection originalQuery)
         {
             if (targetQuery == null) throw new ArgumentNullException(nameof(targetQuery));
             if (originalQuery == null) throw new ArgumentNullException(nameof(originalQuery));
 
+            // append all keys from the original query that are not present in the target one, and all the target query keys
             var appendQueryArray = originalQuery.AllKeys.Where(x => targetQuery[x] == null)
                 .Select(x => $"{HttpUtility.UrlEncode(x)}={HttpUtility.UrlEncode(originalQuery[x])}").ToArray();
             var query = string.Join("&", appendQueryArray);
