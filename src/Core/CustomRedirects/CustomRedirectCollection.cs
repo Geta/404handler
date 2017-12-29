@@ -252,7 +252,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 // See if this "old" url (the one that cannot be found) starts with one 
                 if (url.StartsWith(pair.Key, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    foundRedirect = redirect;
                     if (redirect.State == (int)DataStoreHandler.State.Ignored)
                     {
                         return null;
