@@ -47,8 +47,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /*[CanBeNull]*/
         private CustomRedirect TryLookup(/*[NotNull]*/ string url)
         {
-            CustomRedirect foundRedirect = null;
-            _quickLookupTable.TryGetValue(GetLookupKey(url), out foundRedirect);
+            _quickLookupTable.TryGetValue(GetLookupKey(url), out var foundRedirect);
             return foundRedirect;
         }
 
