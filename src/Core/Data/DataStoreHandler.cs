@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BVNetwork.NotFound.Core.CustomRedirects;
 
@@ -84,11 +85,15 @@ namespace BVNetwork.NotFound.Core.Data
         public void DeleteCustomRedirect(string oldUrl)
         {
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
+            oldUrl = UrlStandardizer.Standardize(oldUrl);
 
-            var match = store.Find<CustomRedirect>(OldUrlPropertyName, oldUrl.ToLower()).SingleOrDefault();
-            if (match != null)
+            var matches = store.Items<CustomRedirect>().Where(x => x.OldUrl.StartsWith(oldUrl))
+                .ToList();
+
+            foreach (var match in matches)
             {
-                store.Delete(match);
+                if (string.Compare(UrlStandardizer.Standardize(match.OldUrl), oldUrl, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    store.Delete(match.Id);
             }
         }
 

@@ -24,13 +24,16 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         public string OldUrl
         {
-            get => _oldUrl.ToLower();
-            set => _oldUrl = value;
+            get => UrlStandardizer.Standardize(_oldUrl);
+            set => _oldUrl = UrlStandardizer.Standardize(value);
         }
 
         public string NewUrl { get; set; }
 
         public int  State { get; set; }
+
+        public bool ExactMatch { get; set; }
+        public bool SkipQueryString { get; set; }
 
         /// <summary>
         /// Tells if the new url is a virtual url, not containing
@@ -56,11 +59,16 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         {
         }
 
-        public CustomRedirect(string oldUrl, string newUrl, bool skipWildCardAppend)
-            : this(oldUrl, newUrl)
+        public CustomRedirect(string oldUrl, string newUrl,
+            bool skipWildCardAppend, bool exactMatch, bool skipQueryString)
         {
             WildCardSkipAppend = skipWildCardAppend;
+            OldUrl = oldUrl;
+            NewUrl = newUrl;
+            ExactMatch = exactMatch;
+            SkipQueryString = skipQueryString;
         }
+
 
         public CustomRedirect(string oldUrl, string newUrl)
         {

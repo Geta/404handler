@@ -6,6 +6,7 @@ using System.Security;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
+using BVNetwork.NotFound.Core;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Models;
@@ -71,10 +72,10 @@ namespace BVNetwork.NotFound.Controllers
             return View("Index", GetRedirectIndexViewData(pageNumber, customRedirectList, GetSearchResultInfo(searchWord, customRedirectList.Count, suggestion), searchWord, pageSize, suggestion, showRedirects));
         }
 
-        public ActionResult SaveSuggestion(string oldUrl, string newUrl, string skipWildCardAppend, int? pageNumber, int? pageSize)
+        public ActionResult SaveSuggestion(string oldUrl, string newUrl, string skipWildCardAppend, string exactMatch, string skipQueryString, int? pageNumber, int? pageSize)
         {
             CheckAccess();
-            SaveRedirect(oldUrl, newUrl, skipWildCardAppend);
+            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, exactMatch, skipQueryString);
 
             // delete rows from DB
             var dbAccess = DataAccessBaseEx.GetWorker();
@@ -104,23 +105,26 @@ namespace BVNetwork.NotFound.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, int? pageNumber, int? pageSize)
+        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, string exactMatch, string skipQueryString, int? pageNumber, int? pageSize)
         {
             CheckAccess();
-            SaveRedirect(oldUrl, newUrl, skipWildCardAppend);
+            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, exactMatch, skipQueryString);
             List<CustomRedirect> redirectList = GetData(null);
             string actionInfo = string.Format(LocalizationService.Current.GetString("/gadget/redirects/saveredirect"), oldUrl, newUrl);
             return View("Index", GetRedirectIndexViewData(pageNumber, redirectList, actionInfo, null, pageSize, false, true));
 
         }
 
-        public void SaveRedirect(string oldUrl, string newUrl, string skipWildCardAppend)
+        public void SaveRedirect(string oldUrl, string newUrl, string skipWildCardAppend, string exactMatch, string skipQueryString)
         {
-
+            oldUrl = UrlStandardizer.Standardize(oldUrl?.Trim());
             Logger.Debug("Adding redirect: '{0}' -> '{1}'", oldUrl, newUrl);
             // Get hold of the datastore
             DataStoreHandler dsHandler = new DataStoreHandler();
-            dsHandler.SaveCustomRedirect(new CustomRedirect(oldUrl.Trim(), newUrl.Trim(), skipWildCardAppend == null ? false : true));
+            dsHandler.SaveCustomRedirect(new CustomRedirect(oldUrl, newUrl.Trim(),
+                skipWildCardAppend == null ? false : true,
+                exactMatch == null ? false : true,
+                skipQueryString == null ? false : true));
             DataStoreEventHandlerHook.DataStoreUpdated();
 
         }
