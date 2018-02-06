@@ -5,32 +5,10 @@ using BVNetwork.NotFound.Configuration;
 
 namespace BVNetwork.NotFound.Core.Configuration
 {
-    public enum FileNotFoundMode
-    {
-        /// <summary>
-        ///
-        /// </summary>
-        On,
-        /// <summary>
-        ///
-        /// </summary>
-        Off,
-        /// <summary>
-        ///
-        /// </summary>
-        RemoteOnly
-    };
-
-    public enum LoggerMode
-    {
-        On, Off
-    };
-
-
     /// <summary>
     /// Configuration utility class for the custom 404 handler
     /// </summary>
-    public class Configuration
+    public class Configuration : IConfiguration
     {
         private const string DefRedirectsXmlFile = "~/CustomRedirects.config";
         private const string DefNotfoundPage = "~/bvn/filenotfound/notfound.aspx";
@@ -56,12 +34,13 @@ namespace BVNetwork.NotFound.Core.Configuration
         {
         }
 
+        public static Configuration Instance { get; } = new Configuration();
 
         /// <summary>
         /// Tells the errorhandler to use EPiServer Exception Manager
         /// to render unhandled errors. Defaults to False.
         /// </summary>
-        public static bool FallbackToEPiServerErrorExceptionManager
+        public bool FallbackToEPiServerErrorExceptionManager
         {
             get
             {
@@ -78,7 +57,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         /// <summary>
         /// Resource extensions to be ignored.
         /// </summary>
-        public static List<string> IgnoredResourceExtensions
+        public List<string> IgnoredResourceExtensions
         {
             get
             {
@@ -97,7 +76,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         /// <summary>
         /// The mode to use for the 404 handler
         /// </summary>
-        public static FileNotFoundMode FileNotFoundHandlerMode
+        public FileNotFoundMode FileNotFoundHandlerMode
         {
             get
             {
@@ -123,7 +102,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         /// <summary>
         /// The mode to use for the 404 handler
         /// </summary>
-        public static LoggerMode Logging
+        public LoggerMode Logging
         {
             get
             {
@@ -146,7 +125,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         /// <summary>
         /// The virtual path to the 404 handler aspx file.
         /// </summary>
-        public static string FileNotFoundHandlerPage => string.IsNullOrEmpty(Bvn404HandlerConfiguration.Instance.FileNotFoundPage)
+        public string FileNotFoundHandlerPage => string.IsNullOrEmpty(Bvn404HandlerConfiguration.Instance.FileNotFoundPage)
                                                             ? DefNotfoundPage
                                                             : Bvn404HandlerConfiguration.Instance.FileNotFoundPage;
 
@@ -154,7 +133,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         /// The relative path to the custom redirects xml file, including the name of the
         /// xml file. The 404 handler will map the result to a server path.
         /// </summary>
-        public static string CustomRedirectsXmlFile
+        public string CustomRedirectsXmlFile
         {
             get
             {
@@ -172,7 +151,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         /// <summary>
         /// BufferSize for logging of redirects.
         /// </summary>
-        public static int BufferSize
+        public int BufferSize
         {
             get
             {
@@ -188,7 +167,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         /// <summary>
         /// ThreshHold value for redirect logging.
         /// </summary>
-        public static int ThreshHold
+        public int ThreshHold
         {
             get
             {

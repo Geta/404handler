@@ -92,6 +92,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\Configuration\FileNotFoundMode.cs" />
+    <Compile Include="Core\Configuration\IConfiguration.cs" />
+    <Compile Include="Core\Configuration\LoggerMode.cs" />
     <Compile Include="Core\CustomRedirects\XmlActionResult.cs" />
     <Compile Include="Core\ErrorHandler.cs" />
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
@@ -187,9 +190,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\CustomRedirects\RedirectsXmlParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Custom404Handler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\NotFoundPage\NotFoundBase.cs">

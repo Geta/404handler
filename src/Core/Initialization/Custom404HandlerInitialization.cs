@@ -56,12 +56,11 @@ namespace BVNetwork.NotFound.Core.Initialization
         {
             application.Error += OnError;
             application.EndRequest += OnEndRequest;
-            application.EndRequest += Custom404Handler.FileNotFoundHandler;
         }
 
         private void OnEndRequest(object sender, EventArgs eventArgs)
         {
-
+            RequestHandler.Service.Handle(GetContext());
         }
 
         private void OnError(object sender, EventArgs eventArgs)
