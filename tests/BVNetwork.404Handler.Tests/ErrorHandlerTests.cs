@@ -60,7 +60,7 @@ namespace BVNetwork.NotFound.Tests
         {
             WhenNotFoundExceptionIsThrown();
 
-            _sut.HandleNotFoundException(_httpContext);
+            _sut.Handle(_httpContext);
 
             AssertNotFoundResponseSet(_httpContext);
         }
@@ -70,7 +70,7 @@ namespace BVNetwork.NotFound.Tests
         {
             WhenNoNotFoundExceptionIsThrown();
 
-            _sut.HandleNotFoundException(_httpContext);
+            _sut.Handle(_httpContext);
 
             AssertNotFoundResponseNotSet(_httpContext);
         }
@@ -78,7 +78,7 @@ namespace BVNetwork.NotFound.Tests
         [Fact]
         public void HandleNotFoundException_does_not_throw_when_context_is_null()
         {
-            _sut.HandleNotFoundException(null);
+            _sut.Handle(null);
         }
 
         public static IEnumerable<object[]> NotFoundExceptions => new []

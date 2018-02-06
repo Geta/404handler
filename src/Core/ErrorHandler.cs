@@ -10,7 +10,7 @@ namespace BVNetwork.NotFound.Core
     {
         private static readonly ILogger Logger = LogManager.GetLogger();
 
-        public virtual void HandleNotFoundException(HttpContextBase context)
+        public virtual void Handle(HttpContextBase context)
         {
             if (context == null) return;
 

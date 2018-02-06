@@ -66,7 +66,7 @@ namespace BVNetwork.NotFound.Core.Initialization
 
         private void OnError(object sender, EventArgs eventArgs)
         {
-            ErrorHandler.Service.HandleNotFoundException(GetContext());
+            ErrorHandler.Service.Handle(GetContext());
         }
 
         private static HttpContextBase GetContext()
