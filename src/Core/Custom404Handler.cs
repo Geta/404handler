@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Web;
 using EPiServer.Logging;
@@ -9,7 +8,6 @@ using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Logging;
-using EPiServer.Core;
 using EPiServer.Web;
 using IPAddress = System.Net.IPAddress;
 
@@ -66,19 +64,6 @@ namespace BVNetwork.NotFound.Core
                 }
             }
             return false;
-        }
-
-        public static void FileNotFoundExceptionHandler(object sender, EventArgs e)
-        {
-            var context = GetContext();
-            if (context == null) return;
-
-            if (CheckForException(context, context.Request.Url))
-            {
-                context.Response.Clear();
-                context.Response.TrySkipIisCustomErrors = true;
-                context.Response.StatusCode = 404;
-            }
         }
 
         private static HttpContext GetContext()
@@ -155,50 +140,6 @@ namespace BVNetwork.NotFound.Core
             context.Server.ClearError();
             context.Response.StatusCode = statusCode;
             context.Response.End();
-        }
-
-        private static bool CheckForException(HttpContext context, Uri notFoundUri)
-        {
-            try
-            {
-                var exception = context.Server.GetLastError();
-                if (exception == null) return false;
-
-                var innerEx = exception.GetBaseException();
-                switch (innerEx)
-                {
-                    case ContentNotFoundException _:
-                        // Should be a normal 404 handler
-                        Logger.Information("404 PageNotFoundException - Url: {0}", notFoundUri.ToString());
-                        Logger.Debug("404 PageNotFoundException - Exception: {0}", innerEx.ToString());
-                        return true;
-                    case FileNotFoundException _:
-                        Logger.Information("404 FileNotFoundException - Url: {0}", notFoundUri.ToString());
-                        Logger.Debug("404 FileNotFoundException - Exception: {0}", innerEx.ToString());
-                        return true;
-                    case HttpException httpEx:
-                        if (httpEx.GetHttpCode() == 404)
-                        {
-                            Logger.Information("404 HttpException - Url: {0}", notFoundUri.ToString());
-                            Logger.Debug("404 HttpException - Exception: {0}", httpEx.ToString());
-                            return true;
-                        }
-                        break;
-
-                    // IO File not Found exceptions means the .aspx file cannot
-                    // be found. We'll handle this as a standard 404 error
-
-                    // Not all exceptions we need to handle are specific exception types.
-                    // We need to handle file not founds, for .aspx pages in directories
-                    // that does not exists. However, an 404 error will be returned by the
-                    // HttpException class.
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Debug("Unable to fetch 404 exception.", ex);
-            }
-            return false;
         }
 
         /// <summary>
