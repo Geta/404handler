@@ -25,6 +25,14 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// </summary>
         public CustomRedirectCollection CustomRedirects => _customRedirects;
 
+        public CustomRedirect Find(Uri urlNotFound)
+        {
+            // Try to match the requested url by matching it
+            // to the static list of custom redirects
+            return CustomRedirects.Find(urlNotFound)
+                ?? CustomRedirects.FindInProviders(urlNotFound.AbsoluteUri);
+        }
+
         /// <summary>
         /// Save a collection of redirects, and call method to raise an event in order to clear cache on all servers.
         /// </summary>

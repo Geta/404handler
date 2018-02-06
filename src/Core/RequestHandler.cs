@@ -81,15 +81,10 @@ namespace BVNetwork.NotFound.Core
 
         public virtual bool HandleRequest(string referer, Uri urlNotFound, out CustomRedirect foundRedirect)
         {
-            // Try to match the requested url my matching it
-            // to the static list of custom redirects
-            var redirect = _redirectHandler.CustomRedirects.Find(urlNotFound);
-            var pathAndQuery = urlNotFound.PathAndQuery;
+            var redirect = _redirectHandler.Find(urlNotFound);
+
             foundRedirect = null;
-            if (redirect == null)
-            {
-                redirect = _redirectHandler.CustomRedirects.FindInProviders(urlNotFound.AbsoluteUri);
-            }
+            var pathAndQuery = urlNotFound.PathAndQuery;
 
             if (redirect != null)
             {

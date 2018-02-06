@@ -108,6 +108,133 @@ namespace BVNetwork.NotFound.Tests
             AssertRedirected(_httpContext, redirect);
         }
 
+        [Fact]
+        public void HandleRequest_returns_false_when_redirect_not_found()
+        {
+            WhenRedirectNotFound();
+
+            var actual = _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var _);
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void HandleRequest_logs_request_when_redirect_not_found_and_logging_is_on()
+        {
+            WhenRedirectNotFound();
+            WhenLoggingIsOn();
+            var referrer = "http://example.com/home";
+            var urlNotFound = new Uri("http://example.com/path");
+
+            _sut.HandleRequest(referrer, urlNotFound, out var _);
+
+            AssertRequestLogged(referrer, urlNotFound);
+        }
+
+        [Fact]
+        public void HandleRequest_doesnt_log_request_when_redirect_not_found_and_logging_is_off()
+        {
+            WhenRedirectNotFound();
+            WhenLoggingIsOff();
+            var referrer = "http://example.com/home";
+            var urlNotFound = new Uri("http://example.com/path");
+
+            _sut.HandleRequest(referrer, urlNotFound, out var _);
+
+            AssertRequestNotLogged(referrer, urlNotFound);
+        }
+
+        [Fact]
+        public void HandleRequest_returns_true_when_redirect_found_with_deleted_state()
+        {
+            var redirect = new CustomRedirect("http://example.com/missing", (int) DataStoreHandler.State.Deleted, 1);
+            WhenRedirectFound(redirect);
+
+            var actual = _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var _);
+
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void HandleRequest_returns_redirect_when_redirect_found_with_deleted_state()
+        {
+            var redirect = new CustomRedirect("http://example.com/missing", (int) DataStoreHandler.State.Deleted, 1);
+            WhenRedirectFound(redirect);
+
+            _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var actual);
+
+            Assert.Equal(redirect.OldUrl, actual.OldUrl);
+        }
+
+        [Fact]
+        public void HandleRequest_returns_true_when_redirect_found_with_saved_state()
+        {
+            var redirect = new CustomRedirect("http://example.com/found", (int) DataStoreHandler.State.Saved, 1);
+            WhenRedirectFound(redirect);
+
+            var actual = _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var _);
+
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void HandleRequest_returns_redirect_when_redirect_found_with_saved_state()
+        {
+            var redirect = new CustomRedirect("http://example.com/found", (int)DataStoreHandler.State.Saved, 1);
+            WhenRedirectFound(redirect);
+
+            _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var actual);
+
+            Assert.Equal(redirect.OldUrl, actual.OldUrl);
+        }
+
+        [Fact]
+        public void HandleRequest_returns_false_when_redirect_is_same_as_not_found()
+        {
+            var sameUri = new Uri("http://example.com/same");
+            var redirect = new CustomRedirect(sameUri.ToString(), (int) DataStoreHandler.State.Saved, 1)
+            {
+                NewUrl = sameUri.PathAndQuery
+            };
+            WhenRedirectFound(redirect);
+
+            var actual = _sut.HandleRequest(A.Dummy<string>(), sameUri, out var _);
+
+            Assert.False(actual);
+        }
+
+        private void WhenRedirectFound(CustomRedirect redirect)
+        {
+            A.CallTo(() => _redirectHandler.Find(A<Uri>._)).Returns(redirect);
+        }
+
+        private void AssertRequestNotLogged(string referrer, Uri urlNotFound)
+        {
+            A.CallTo(() => _requestLogger.LogRequest(urlNotFound.PathAndQuery, referrer))
+                .MustNotHaveHappened();
+        }
+
+        private void AssertRequestLogged(string referrer, Uri urlNotFound)
+        {
+            A.CallTo(() => _requestLogger.LogRequest(urlNotFound.PathAndQuery, referrer))
+                .MustHaveHappened();
+        }
+
+        private void WhenLoggingIsOn()
+        {
+            A.CallTo(() => _configuration.Logging).Returns(LoggerMode.On);
+        }
+
+        private void WhenLoggingIsOff()
+        {
+            A.CallTo(() => _configuration.Logging).Returns(LoggerMode.Off);
+        }
+
+        private void WhenRedirectNotFound()
+        {
+            A.CallTo(() => _redirectHandler.Find(A<Uri>._)).Returns(null);
+        }
+
         private void WhenRedirectUrlFound(CustomRedirect redirect)
         {
             A.CallTo(() => _sut.HandleRequest(A<string>._, A<Uri>._, out redirect)).Returns(true);
