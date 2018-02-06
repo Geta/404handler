@@ -9,5 +9,9 @@ namespace BVNetwork.NotFound.Tests.Base.Http
         {
             return new Exception();
         }
+
+        public override void ClearError()
+        {
+        }
     }
 }
