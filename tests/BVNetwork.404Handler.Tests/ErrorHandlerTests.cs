@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using BVNetwork.NotFound.Core;
+using BVNetwork.NotFound.Tests.Base.Http;
 using EPiServer.Core;
 using FakeItEasy;
 using Xunit;
 
 namespace BVNetwork.NotFound.Tests
 {
-    public partial class ErrorHandlerTests
+    public class ErrorHandlerTests
     {
         private readonly ErrorHandler _sut;
         private readonly FakeHttpContext _httpContext;

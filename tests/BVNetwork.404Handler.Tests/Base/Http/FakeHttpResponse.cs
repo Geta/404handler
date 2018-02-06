@@ -1,14 +1,11 @@
 ﻿using System.Web;
 
-namespace BVNetwork.NotFound.Tests
+namespace BVNetwork.NotFound.Tests.Base.Http
 {
-    public partial class ErrorHandlerTests
+    public class FakeHttpResponse : HttpResponseBase
     {
-        public class FakeHttpResponse : HttpResponseBase
-        {
-            public override bool TrySkipIisCustomErrors { get; set; }
-            public override void Clear() { }
-            public override int StatusCode { get; set; }
-        }
+        public override bool TrySkipIisCustomErrors { get; set; }
+        public override void Clear() { }
+        public override int StatusCode { get; set; }
     }
 }

@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Web;
 
-namespace BVNetwork.NotFound.Tests
+namespace BVNetwork.NotFound.Tests.Base.Http
 {
-    public partial class ErrorHandlerTests
+    public class FakeHttpServerUtility : HttpServerUtilityBase
     {
-        public class FakeHttpServerUtility : HttpServerUtilityBase
+        public override Exception GetLastError()
         {
-            public override Exception GetLastError()
-            {
-                return new Exception();
-            }
+            return new Exception();
         }
     }
 }
