@@ -131,7 +131,12 @@
   <ItemGroup>
     <Compile Include="ColorHelperTests.cs" />
     <Compile Include="ErrorHandlerTests.cs" />
+    <Compile Include="Base\Http\FakeHttpContext.cs" />
+    <Compile Include="Base\Http\FakeHttpRequest.cs" />
+    <Compile Include="Base\Http\FakeHttpResponse.cs" />
+    <Compile Include="Base\Http\FakeHttpServerUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestHandlerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\BVNetwork.404Handler.csproj">
@@ -146,6 +151,7 @@
   <ItemGroup>
     <Analyzer Include="..\..\src\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

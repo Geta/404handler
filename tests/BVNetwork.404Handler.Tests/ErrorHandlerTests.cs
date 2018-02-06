@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
@@ -10,7 +9,7 @@ using Xunit;
 
 namespace BVNetwork.NotFound.Tests
 {
-    public class ErrorHandlerTests
+    public partial class ErrorHandlerTests
     {
         private readonly ErrorHandler _sut;
         private readonly FakeHttpContext _httpContext;
@@ -108,33 +107,6 @@ namespace BVNetwork.NotFound.Tests
         private void WhenNotFoundExceptionIsThrown()
         {
             A.CallTo(() => _sut.IsNotFoundException(A<Exception>._, A<Uri>._)).Returns(true);
-        }
-
-        public class FakeHttpContext : HttpContextBase
-        {
-            public override HttpRequestBase Request { get; } = new FakeHttpRequest();
-            public override HttpResponseBase Response { get; } = new FakeHttpResponse();
-            public override HttpServerUtilityBase Server { get; } = new FakeHttpServerUtility();
-        }
-
-        public class FakeHttpRequest : HttpRequestBase
-        {
-            public override Uri Url { get; } = new Uri("http://example.com");
-        }
-
-        public class FakeHttpResponse : HttpResponseBase
-        {
-            public override bool TrySkipIisCustomErrors { get; set; }
-            public override void Clear() { }
-            public override int StatusCode { get; set; }
-        }
-
-        public class FakeHttpServerUtility : HttpServerUtilityBase
-        {
-            public override Exception GetLastError()
-            {
-                return new Exception();
-            }
         }
     }
 }
