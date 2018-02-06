@@ -13,20 +13,20 @@ namespace BVNetwork.NotFound.Core
 {
     public class RequestHandler
     {
-        private readonly CustomRedirectHandler _customRedirectHandler;
-        private readonly RequestLogger _requestLogger;
+        private readonly IRedirectHandler _redirectHandler;
+        private readonly IRequestLogger _requestLogger;
         private readonly IConfiguration _configuration;
 
         private static readonly ILogger Logger = LogManager.GetLogger();
 
         public RequestHandler(
-            CustomRedirectHandler customRedirectHandler,
-            RequestLogger requestLogger,
+            IRedirectHandler redirectHandler,
+            IRequestLogger requestLogger,
             IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _requestLogger = requestLogger ?? throw new ArgumentNullException(nameof(requestLogger));
-            _customRedirectHandler = customRedirectHandler ?? throw new ArgumentNullException(nameof(customRedirectHandler));
+            _redirectHandler = redirectHandler ?? throw new ArgumentNullException(nameof(redirectHandler));
         }
 
         public virtual void Handle(HttpContextBase context)
@@ -83,12 +83,12 @@ namespace BVNetwork.NotFound.Core
         {
             // Try to match the requested url my matching it
             // to the static list of custom redirects
-            var redirect = _customRedirectHandler.CustomRedirects.Find(urlNotFound);
+            var redirect = _redirectHandler.CustomRedirects.Find(urlNotFound);
             var pathAndQuery = urlNotFound.PathAndQuery;
             foundRedirect = null;
             if (redirect == null)
             {
-                redirect = _customRedirectHandler.CustomRedirects.FindInProviders(urlNotFound.AbsoluteUri);
+                redirect = _redirectHandler.CustomRedirects.FindInProviders(urlNotFound.AbsoluteUri);
             }
 
             if (redirect != null)

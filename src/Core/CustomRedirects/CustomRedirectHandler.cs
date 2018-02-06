@@ -9,7 +9,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
     /// Handler for custom redirects. Loads and caches the list of custom redirects
     /// to ensure performance.
     /// </summary>
-    public class CustomRedirectHandler
+    public class CustomRedirectHandler : IRedirectHandler
     {
         private static readonly ILogger Logger = LogManager.GetLogger();
         private const string CacheKeyCustomRedirectHandlerInstance = "BvnCustomRedirectHandler";

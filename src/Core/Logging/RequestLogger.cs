@@ -6,7 +6,7 @@ using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.Logging
 {
-    public class RequestLogger
+    public class RequestLogger : IRequestLogger
     {
         public static RequestLogger Instance => InternalInstance;
 
