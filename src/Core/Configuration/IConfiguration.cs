@@ -12,5 +12,6 @@ namespace BVNetwork.NotFound.Core.Configuration
         List<string> IgnoredResourceExtensions { get; }
         LoggerMode Logging { get; }
         int ThreshHold { get; }
+        IEnumerable<INotFoundHandler> Providers { get; }
     }
 }

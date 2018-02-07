@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Web;
-using BVNetwork.NotFound.Configuration;
+using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.Data;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
@@ -11,6 +11,18 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
     /// </summary>
     public class CustomRedirectCollection: CollectionBase
     {
+        private readonly IConfiguration _configuration;
+
+        public CustomRedirectCollection()
+            : this(Configuration.Configuration.Instance)
+        {
+        }
+
+        public CustomRedirectCollection(IConfiguration configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
+
         /// <summary>
         /// Hashtable for quick lookup of old urls
         /// </summary>
@@ -103,18 +115,10 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         private CustomRedirect FindInProviders(string oldUrl)
         {
             // If no exact or wildcard match is found, try to parse the url through the custom providers
-            var providers = Bvn404HandlerConfiguration.Instance.Bvn404HandlerProviders;
-            if (providers == null || providers.Count == 0) return null;
-
-            foreach (Bvn404HandlerProvider provider in Bvn404HandlerConfiguration.Instance.Bvn404HandlerProviders)
+            foreach (var provider in _configuration.Providers)
             {
-                var type = Type.GetType(provider.Type);
-                if (type != null)
-                {
-                    var handler = (INotFoundHandler)Activator.CreateInstance(type);
-                    var newUrl = handler.RewriteUrl(oldUrl);
-                    if (newUrl != null) return new CustomRedirect(oldUrl, newUrl);
-                }
+                var newUrl = provider.RewriteUrl(oldUrl);
+                if (newUrl != null) return new CustomRedirect(oldUrl, newUrl);
             }
             return null;
         }

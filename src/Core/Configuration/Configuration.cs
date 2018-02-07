@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using BVNetwork.NotFound.Configuration;
 
 namespace BVNetwork.NotFound.Core.Configuration
@@ -180,5 +181,28 @@ namespace BVNetwork.NotFound.Core.Configuration
             }
         }
 
+        public IEnumerable<string> ProviderTypes
+        {
+            get
+            {
+                var providers = Bvn404HandlerConfiguration.Instance?.Bvn404HandlerProviders;
+                if (providers != null)
+                {
+                    foreach (Bvn404HandlerProvider provider in providers)
+                    {
+                        yield return provider.Type;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<INotFoundHandler> Providers => ProviderTypes
+            .Select(Type.GetType)
+            .Where(NotNull)
+            .Select(Provider);
+
+        private static INotFoundHandler Provider(Type t) => (INotFoundHandler)Activator.CreateInstance(t);
+
+        private static bool NotNull(Type t) => t != null;
     }
 }
