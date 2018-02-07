@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorHelperTests.cs" />
+    <Compile Include="CustomRedirectCollectionTests.cs" />
     <Compile Include="ErrorHandlerTests.cs" />
     <Compile Include="Base\Http\FakeHttpContext.cs" />
     <Compile Include="Base\Http\FakeHttpRequest.cs" />

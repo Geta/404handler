@@ -16,34 +16,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// </summary>
         private readonly Hashtable _quickLookupTable = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
 
-        public int Add(CustomRedirect customRedirect)
-        {
-            // Add to quick look up table too
-            _quickLookupTable.Add(customRedirect.OldUrl, customRedirect);
-            return List.Add(customRedirect);
-        }
-
-        public int IndexOf(CustomRedirect customRedirect)
-        {
-            for(var i = 0; i < List.Count; i++)
-            {
-                if (this[i] == customRedirect) return i; // Found
-            }
-            return -1;
-        }
-
-        public void Insert(int index, CustomRedirect customRedirect)
-        {
-            _quickLookupTable.Add(customRedirect, customRedirect);
-            List.Insert(index, customRedirect);
-        }
-
-        public void Remove(CustomRedirect customRedirect)
-        {
-            _quickLookupTable.Remove(customRedirect);
-            List.Remove(customRedirect);
-        }
-
         public CustomRedirect Find(Uri urlNotFound)
         {
             // Handle absolute addresses first
@@ -71,6 +43,13 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             }
 
             return foundRedirect;
+        }
+
+        public int Add(CustomRedirect customRedirect)
+        {
+            // Add to quick look up table too
+            _quickLookupTable.Add(customRedirect.OldUrl, customRedirect);
+            return List.Add(customRedirect);
         }
 
         private CustomRedirect FindInternal(string url)
@@ -145,10 +124,31 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return _quickLookupTable.ContainsKey(oldUrl);
         }
 
+        public int IndexOf(CustomRedirect customRedirect)
+        {
+            for(var i = 0; i < List.Count; i++)
+            {
+                if (this[i] == customRedirect) return i; // Found
+            }
+            return -1;
+        }
+
         public CustomRedirect this[int index]
         {
             get => (CustomRedirect) List[index];
             set => List[index] = value;
+        }
+
+        public void Insert(int index, CustomRedirect customRedirect)
+        {
+            _quickLookupTable.Add(customRedirect, customRedirect);
+            List.Insert(index, customRedirect);
+        }
+
+        public void Remove(CustomRedirect customRedirect)
+        {
+            _quickLookupTable.Remove(customRedirect);
+            List.Remove(customRedirect);
         }
     }
 }
