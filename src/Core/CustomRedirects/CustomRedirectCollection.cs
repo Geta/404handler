@@ -64,6 +64,12 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 foundRedirect = FindInternal(url);
             }
 
+            if (foundRedirect == null)
+            {
+                url = urlNotFound.AbsoluteUri;
+                foundRedirect = FindInProviders(url);
+            }
+
             return foundRedirect;
         }
 
@@ -115,7 +121,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return null;
         }
 
-        public CustomRedirect FindInProviders(string oldUrl)
+        private CustomRedirect FindInProviders(string oldUrl)
         {
             // If no exact or wildcard match is found, try to parse the url through the custom providers
             var providers = Bvn404HandlerConfiguration.Instance.Bvn404HandlerProviders;
@@ -123,7 +129,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
             foreach (Bvn404HandlerProvider provider in Bvn404HandlerConfiguration.Instance.Bvn404HandlerProviders)
             {
-                var type = (Type.GetType(provider.Type));
+                var type = Type.GetType(provider.Type);
                 if (type != null)
                 {
                     var handler = (INotFoundHandler)Activator.CreateInstance(type);

@@ -27,10 +27,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         public CustomRedirect Find(Uri urlNotFound)
         {
-            // Try to match the requested url by matching it
-            // to the static list of custom redirects
-            return CustomRedirects.Find(urlNotFound)
-                ?? CustomRedirects.FindInProviders(urlNotFound.AbsoluteUri);
+            return CustomRedirects.Find(urlNotFound);
         }
 
         /// <summary>
