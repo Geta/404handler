@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Web;
 using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.Data;
@@ -9,7 +10,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
     /// <summary>
     /// A collection of custom urls
     /// </summary>
-    public class CustomRedirectCollection: CollectionBase
+    public class CustomRedirectCollection : IEnumerable<CustomRedirect>
     {
         private readonly IConfiguration _configuration;
 
@@ -26,7 +27,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// <summary>
         /// Hashtable for quick lookup of old urls
         /// </summary>
-        private readonly Hashtable _quickLookupTable = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, CustomRedirect> _quickLookupTable = new Dictionary<string, CustomRedirect>(StringComparer.InvariantCultureIgnoreCase);
 
         public CustomRedirect Find(Uri urlNotFound)
         {
@@ -57,19 +58,17 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return foundRedirect;
         }
 
-        public int Add(CustomRedirect customRedirect)
+        public void Add(CustomRedirect customRedirect)
         {
             // Add to quick look up table too
             _quickLookupTable.Add(customRedirect.OldUrl, customRedirect);
-            return List.Add(customRedirect);
         }
 
         private CustomRedirect FindInternal(string url)
         {
-            var foundRedirect = _quickLookupTable[url];
-            if (foundRedirect != null)
+            if (_quickLookupTable.TryGetValue(url, out var redirect))
             {
-                return foundRedirect as CustomRedirect;
+                return redirect;
             }
 
             // No exact match could be done, so we'll check if the 404 url
@@ -82,33 +81,33 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             // Depending on the skip wild card append setting, we will either
             // redirect using the <new> url as is, or we'll append the 404
             // url to the <new> url.
-            var enumerator = _quickLookupTable.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                var key = enumerator.Key?.ToString();
-                // See if this "old" url (the one that cannot be found) starts with one
-                if (key != null && url.StartsWith(key, StringComparison.InvariantCultureIgnoreCase))
+            using (var enumerator = _quickLookupTable.GetEnumerator())
+                while (enumerator.MoveNext())
                 {
-                    foundRedirect = _quickLookupTable[enumerator.Key];
-                    var cr = foundRedirect as CustomRedirect;
-                    if (cr != null && cr.State == (int) DataStoreHandler.State.Ignored)
+                    var key = enumerator.Current.Key;
+                    // See if this "old" url (the one that cannot be found) starts with one
+                    if (key != null && url.StartsWith(key, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return null;
-                    }
-                    if (cr != null && cr.WildCardSkipAppend)
-                    {
-                        // We'll redirect without appending the 404 url
-                        return cr;
-                    }
+                        var foundRedirect = _quickLookupTable[key];
+                        var cr = foundRedirect;
+                        if (cr != null && cr.State == (int)DataStoreHandler.State.Ignored)
+                        {
+                            return null;
+                        }
+                        if (cr != null && cr.WildCardSkipAppend)
+                        {
+                            // We'll redirect without appending the 404 url
+                            return cr;
+                        }
 
-                    // We need to append the 404 to the end of the
-                    // new one. Make a copy of the redir object as we
-                    // are changing it.
-                    var redirCopy = new CustomRedirect(cr);
-                    redirCopy.NewUrl = redirCopy.NewUrl + url.Substring(enumerator.Key.ToString().Length);
-                    return redirCopy;
+                        // We need to append the 404 to the end of the
+                        // new one. Make a copy of the redir object as we
+                        // are changing it.
+                        var redirCopy = new CustomRedirect(cr);
+                        redirCopy.NewUrl = redirCopy.NewUrl + url.Substring(key.Length);
+                        return redirCopy;
+                    }
                 }
-            }
             return null;
         }
 
@@ -123,36 +122,14 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return null;
         }
 
-        public bool Contains(string oldUrl)
+        public IEnumerator<CustomRedirect> GetEnumerator()
         {
-            return _quickLookupTable.ContainsKey(oldUrl);
+            return _quickLookupTable.Values.GetEnumerator();
         }
 
-        public int IndexOf(CustomRedirect customRedirect)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            for(var i = 0; i < List.Count; i++)
-            {
-                if (this[i] == customRedirect) return i; // Found
-            }
-            return -1;
-        }
-
-        public CustomRedirect this[int index]
-        {
-            get => (CustomRedirect) List[index];
-            set => List[index] = value;
-        }
-
-        public void Insert(int index, CustomRedirect customRedirect)
-        {
-            _quickLookupTable.Add(customRedirect, customRedirect);
-            List.Insert(index, customRedirect);
-        }
-
-        public void Remove(CustomRedirect customRedirect)
-        {
-            _quickLookupTable.Remove(customRedirect);
-            List.Remove(customRedirect);
+            return GetEnumerator();
         }
     }
 }
