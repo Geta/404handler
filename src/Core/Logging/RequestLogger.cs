@@ -6,7 +6,7 @@ using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core.Logging
 {
-    public class RequestLogger
+    public class RequestLogger : IRequestLogger
     {
         public static RequestLogger Instance => InternalInstance;
 
@@ -18,7 +18,7 @@ namespace BVNetwork.NotFound.Core.Logging
 
         public void LogRequest(string oldUrl, string referrer)
         {
-            var bufferSize = Configuration.Configuration.BufferSize;
+            var bufferSize = Configuration.Configuration.Instance.BufferSize;
             if (LogQueue.Count > 0 && LogQueue.Count >= bufferSize)
             {
                 lock (LogQueue)
@@ -42,8 +42,8 @@ namespace BVNetwork.NotFound.Core.Logging
         private void LogRequests(ConcurrentQueue<LogEvent> logEvents)
         {
             Logger.Debug("Logging 404 errors to database");
-            var bufferSize = Configuration.Configuration.BufferSize;
-            var threshold = Configuration.Configuration.ThreshHold;
+            var bufferSize = Configuration.Configuration.Instance.BufferSize;
+            var threshold = Configuration.Configuration.Instance.ThreshHold;
             var start = logEvents.First().Requested;
             var end = logEvents.Last().Requested;
             var diff = (end - start).Seconds;

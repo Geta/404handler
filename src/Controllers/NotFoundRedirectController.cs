@@ -272,10 +272,10 @@ namespace BVNetwork.NotFound.Controllers
             // Save all redirects from xml file
             CustomRedirectCollection redirects = parser.Load();
             string message;
-            if (redirects != null || redirects.Count != 0)
+            if (redirects != null || redirects.Count() != 0)
             {
                 CustomRedirectHandler.Current.SaveCustomRedirects(redirects);
-                message = string.Format(LocalizationService.Current.GetString("/gadget/redirects/importsuccess"), redirects.Count);
+                message = string.Format(LocalizationService.Current.GetString("/gadget/redirects/importsuccess"), redirects.Count());
             }
             else
             {
@@ -317,10 +317,10 @@ namespace BVNetwork.NotFound.Controllers
                 }
             }
             string message;
-            if (redirects.Count != 0)
+            if (redirects.Count() != 0)
             {
                 CustomRedirectHandler.Current.SaveCustomRedirects(redirects);
-                message = string.Format(LocalizationService.Current.GetString("/gadget/redirects/importdeletedsuccess"), redirects.Count);
+                message = string.Format(LocalizationService.Current.GetString("/gadget/redirects/importdeletedsuccess"), redirects.Count());
             }
             else
             {

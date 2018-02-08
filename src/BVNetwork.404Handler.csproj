@@ -92,10 +92,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\Configuration\FileNotFoundMode.cs" />
+    <Compile Include="Core\Configuration\IConfiguration.cs" />
+    <Compile Include="Core\Configuration\LoggerMode.cs" />
+    <Compile Include="Core\CustomRedirects\IRedirectHandler.cs" />
     <Compile Include="Core\CustomRedirects\XmlActionResult.cs" />
+    <Compile Include="Core\ErrorHandler.cs" />
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
+    <Compile Include="Core\Initialization\DependencyInjectionInitialization.cs" />
+    <Compile Include="Core\Logging\IRequestLogger.cs" />
     <Compile Include="Core\Logging\LogEvent.cs" />
     <Compile Include="Core\NotFoundPage\NotFoundPageAttribute.cs" />
+    <Compile Include="Core\RequestHandler.cs" />
     <Compile Include="Core\Upgrade\Upgrader.cs" />
     <Compile Include="Core\ColorHelper.cs" />
     <Compile Include="Controllers\NotFoundRedirectController.cs" />
@@ -185,9 +193,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\CustomRedirects\RedirectsXmlParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Custom404Handler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\NotFoundPage\NotFoundBase.cs">
@@ -328,7 +333,9 @@
     </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Bvn\FileNotFound\Configuration\" />
+  </ItemGroup>
   <PropertyGroup>
     <SolutionDir>$(ProjectDir)</SolutionDir>
   </PropertyGroup>

@@ -1,3 +1,4 @@
+using System;
 using System.Web;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
@@ -5,6 +6,7 @@ using BVNetwork.NotFound.Core.Upgrade;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Logging;
+using EPiServer.ServiceLocation;
 
 namespace BVNetwork.NotFound.Core.Initialization
 {
@@ -16,17 +18,20 @@ namespace BVNetwork.NotFound.Core.Initialization
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]
     public class Custom404HandlerInitialization : IInitializableHttpModule
     {
-        private static readonly ILogger Log = LogManager.GetLogger(typeof(Custom404HandlerInitialization));
+        private static readonly ILogger Logger = LogManager.GetLogger();
+
+        private static Injected<RequestHandler> RequestHandler { get; set; }
+        private static Injected<ErrorHandler> ErrorHandler { get; set; }
 
         public void Initialize(InitializationEngine context)
         {
 
-            Log.Debug("Initializing 404 handler version check");
+            Logger.Debug("Initializing 404 handler version check");
             var dba = DataAccessBaseEx.GetWorker();
             var version = dba.Check404Version();
             if (version != Configuration.Configuration.CurrentVersion)
             {
-                Log.Debug("Older version found. Version nr. :" + version);
+                Logger.Debug("Older version found. Version nr. :" + version);
                 Upgrader.Start(version);
             }
             else
@@ -49,8 +54,27 @@ namespace BVNetwork.NotFound.Core.Initialization
 
         public void InitializeHttpEvents(HttpApplication application)
         {
-            application.Error += Custom404Handler.FileNotFoundExceptionHandler;
-            application.EndRequest += Custom404Handler.FileNotFoundHandler;
+            application.Error += OnError;
+            application.EndRequest += OnEndRequest;
+        }
+
+        private void OnEndRequest(object sender, EventArgs eventArgs)
+        {
+            RequestHandler.Service.Handle(GetContext());
+        }
+
+        private void OnError(object sender, EventArgs eventArgs)
+        {
+            ErrorHandler.Service.Handle(GetContext());
+        }
+
+        private static HttpContextBase GetContext()
+        {
+            var context = HttpContext.Current;
+            if (context != null) return new HttpContextWrapper(context);
+
+            Logger.Debug("No HTTPContext, returning");
+            return null;
         }
     }
 }
