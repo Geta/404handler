@@ -99,6 +99,7 @@
     <Compile Include="Core\CustomRedirects\XmlActionResult.cs" />
     <Compile Include="Core\ErrorHandler.cs" />
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
+    <Compile Include="Core\Initialization\DependencyInjectionInitialization.cs" />
     <Compile Include="Core\Logging\IRequestLogger.cs" />
     <Compile Include="Core\Logging\LogEvent.cs" />
     <Compile Include="Core\NotFoundPage\NotFoundPageAttribute.cs" />
