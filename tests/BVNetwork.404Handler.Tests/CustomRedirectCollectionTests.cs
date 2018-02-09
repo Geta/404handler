@@ -5,6 +5,7 @@ using BVNetwork.NotFound.Core;
 using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
+using BVNetwork.NotFound.Tests.Base;
 using FakeItEasy;
 using Xunit;
 
@@ -14,6 +15,7 @@ namespace BVNetwork.NotFound.Tests
     {
         private static readonly Uri DefaultNewUri = new Uri("http://example.com/new");
         private static readonly Uri DefaultOldUri = new Uri("http://example.com/old");
+        private static readonly Uri DefaultReferrer = new Uri("http://example.com/referrer");
         private static readonly string RelativeUrlWithParams = "/old?param1=value1&param2=value2";
         private readonly IConfiguration _configuration;
 
@@ -39,7 +41,7 @@ namespace BVNetwork.NotFound.Tests
             var redirect = new CustomRedirect(storedUrl, DefaultNewUri.ToString());
             _sut.Add(redirect);
 
-            var actual = _sut.Find(ToUri(notFoundUrl));
+            var actual = _sut.Find(notFoundUrl.ToUri(), DefaultReferrer);
 
             Assert.Equal(redirect.NewUrl, actual.NewUrl);
         }
@@ -54,7 +56,7 @@ namespace BVNetwork.NotFound.Tests
             };
             _sut.Add(redirect);
 
-            var actual = _sut.Find(ToUri($"{storedUrl}/page"));
+            var actual = _sut.Find($"{storedUrl}/page".ToUri(), DefaultReferrer);
 
             Assert.Equal(redirect.NewUrl, actual.NewUrl);
         }
@@ -67,7 +69,7 @@ namespace BVNetwork.NotFound.Tests
             var newRedirectUrlWithPath = $"{redirect.NewUrl}/page";
             _sut.Add(redirect);
 
-            var actual = _sut.Find(ToUri($"{storedUrl}/page"));
+            var actual = _sut.Find($"{storedUrl}/page".ToUri(), DefaultReferrer);
 
             Assert.Equal(newRedirectUrlWithPath, actual.NewUrl);
         }
@@ -82,7 +84,7 @@ namespace BVNetwork.NotFound.Tests
             };
             _sut.Add(redirect);
 
-            var actual = _sut.Find(ToUri($"{storedUrl}/page"));
+            var actual = _sut.Find($"{storedUrl}/page".ToUri(), DefaultReferrer);
 
             Assert.Null(actual);
         }
@@ -94,7 +96,7 @@ namespace BVNetwork.NotFound.Tests
             var newUrl = "http://example.com/new";
             WithProvider(oldUrl, newUrl);
 
-            var actual = _sut.Find(ToUri(oldUrl));
+            var actual = _sut.Find(oldUrl.ToUri(), DefaultReferrer);
 
             Assert.Equal(newUrl, actual.NewUrl);
         }
@@ -105,22 +107,36 @@ namespace BVNetwork.NotFound.Tests
             var oldUrl = "http://example.com/old";
             WithProvider(oldUrl, null);
 
-            var actual = _sut.Find(ToUri(oldUrl));
+            var actual = _sut.Find(oldUrl.ToUri(), DefaultReferrer);
 
             Assert.Null(actual);
+        }
+
+        // Regression tests
+
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/46
+        /// </summary>
+        [Theory]
+        [InlineData("http://localhost:80/en/about-us/news-events-wrong-word")]
+        [InlineData("http://localhost:80/en/about-us/news-events/wrong-page")]
+        public void Find_should_not_cause_redirect_loop(string notFoundUrl)
+        {
+            var redirect = new CustomRedirect("/en/about-us/", "/en/about-us/news-events");
+            _sut.Add(redirect);
+
+            var first = _sut.Find(notFoundUrl.ToUri(), DefaultReferrer);
+            var second = _sut.Find(first.NewUrl.ToUri(), notFoundUrl.ToUri());
+
+            Assert.Null(second);
         }
 
         private void WithProvider(string oldUrl, string newUrl)
         {
             var provider = A.Fake<INotFoundHandler>();
+            A.CallTo(() => provider.RewriteUrl(A<string>._)).Returns(null);
             A.CallTo(() => provider.RewriteUrl(oldUrl)).Returns(newUrl);
             A.CallTo(() => _configuration.Providers).Returns(new[] {provider});
-        }
-
-        private Uri ToUri(string url)
-        {
-            if (Uri.TryCreate(url, UriKind.Absolute, out var uri)) return uri;
-            return new Uri(new Uri("http://example.com"), url);
         }
     }
 }

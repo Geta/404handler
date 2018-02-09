@@ -5,6 +5,7 @@ using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Logging;
+using BVNetwork.NotFound.Tests.Base;
 using BVNetwork.NotFound.Tests.Base.Http;
 using FakeItEasy;
 using Xunit;
@@ -18,6 +19,7 @@ namespace BVNetwork.NotFound.Tests
         private readonly IConfiguration _configuration;
         private readonly FakeHttpContext _httpContext;
         private readonly RequestHandler _sut;
+        private static readonly Uri DefaultOldUri = new Uri("http://example.com/old");
 
         public RequestHandlerTests()
         {
@@ -31,7 +33,6 @@ namespace BVNetwork.NotFound.Tests
             _httpContext.Response.StatusCode = 404;
             WhenIsRemote();
             WhenIsNotResourceFile();
-            WhenHasReferrer();
         }
 
         [Fact]
@@ -113,7 +114,7 @@ namespace BVNetwork.NotFound.Tests
         {
             WhenRedirectNotFound();
 
-            var actual = _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var _);
+            var actual = _sut.HandleRequest(DefaultOldUri, new Uri("http://example.com/path"), out var _);
 
             Assert.False(actual);
         }
@@ -123,8 +124,8 @@ namespace BVNetwork.NotFound.Tests
         {
             WhenRedirectNotFound();
             WhenLoggingIsOn();
-            var referrer = "http://example.com/home";
-            var urlNotFound = new Uri("http://example.com/path");
+            var referrer = "http://example.com/home".ToUri();
+            var urlNotFound = "http://example.com/path".ToUri();
 
             _sut.HandleRequest(referrer, urlNotFound, out var _);
 
@@ -136,8 +137,8 @@ namespace BVNetwork.NotFound.Tests
         {
             WhenRedirectNotFound();
             WhenLoggingIsOff();
-            var referrer = "http://example.com/home";
-            var urlNotFound = new Uri("http://example.com/path");
+            var referrer = "http://example.com/home".ToUri();
+            var urlNotFound = "http://example.com/path".ToUri();
 
             _sut.HandleRequest(referrer, urlNotFound, out var _);
 
@@ -150,7 +151,7 @@ namespace BVNetwork.NotFound.Tests
             var redirect = new CustomRedirect("http://example.com/missing", (int) DataStoreHandler.State.Deleted, 1);
             WhenRedirectFound(redirect);
 
-            var actual = _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var _);
+            var actual = _sut.HandleRequest(DefaultOldUri, new Uri("http://example.com/path"), out var _);
 
             Assert.True(actual);
         }
@@ -161,7 +162,7 @@ namespace BVNetwork.NotFound.Tests
             var redirect = new CustomRedirect("http://example.com/missing", (int) DataStoreHandler.State.Deleted, 1);
             WhenRedirectFound(redirect);
 
-            _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var actual);
+            _sut.HandleRequest(DefaultOldUri, new Uri("http://example.com/path"), out var actual);
 
             Assert.Equal(redirect.OldUrl, actual.OldUrl);
         }
@@ -172,7 +173,7 @@ namespace BVNetwork.NotFound.Tests
             var redirect = new CustomRedirect("http://example.com/found", (int) DataStoreHandler.State.Saved, 1);
             WhenRedirectFound(redirect);
 
-            var actual = _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var _);
+            var actual = _sut.HandleRequest(DefaultOldUri, new Uri("http://example.com/path"), out var _);
 
             Assert.True(actual);
         }
@@ -183,7 +184,7 @@ namespace BVNetwork.NotFound.Tests
             var redirect = new CustomRedirect("http://example.com/found", (int)DataStoreHandler.State.Saved, 1);
             WhenRedirectFound(redirect);
 
-            _sut.HandleRequest(A.Dummy<string>(), new Uri("http://example.com/path"), out var actual);
+            _sut.HandleRequest(DefaultOldUri, new Uri("http://example.com/path"), out var actual);
 
             Assert.Equal(redirect.OldUrl, actual.OldUrl);
         }
@@ -198,25 +199,25 @@ namespace BVNetwork.NotFound.Tests
             };
             WhenRedirectFound(redirect);
 
-            var actual = _sut.HandleRequest(A.Dummy<string>(), sameUri, out var _);
+            var actual = _sut.HandleRequest(DefaultOldUri, sameUri, out var _);
 
             Assert.False(actual);
         }
 
         private void WhenRedirectFound(CustomRedirect redirect)
         {
-            A.CallTo(() => _redirectHandler.Find(A<Uri>._)).Returns(redirect);
+            A.CallTo(() => _redirectHandler.Find(A<Uri>._, A<Uri>._)).Returns(redirect);
         }
 
-        private void AssertRequestNotLogged(string referrer, Uri urlNotFound)
+        private void AssertRequestNotLogged(Uri referrer, Uri urlNotFound)
         {
-            A.CallTo(() => _requestLogger.LogRequest(urlNotFound.PathAndQuery, referrer))
+            A.CallTo(() => _requestLogger.LogRequest(urlNotFound.PathAndQuery, referrer.ToString()))
                 .MustNotHaveHappened();
         }
 
-        private void AssertRequestLogged(string referrer, Uri urlNotFound)
+        private void AssertRequestLogged(Uri referrer, Uri urlNotFound)
         {
-            A.CallTo(() => _requestLogger.LogRequest(urlNotFound.PathAndQuery, referrer))
+            A.CallTo(() => _requestLogger.LogRequest(urlNotFound.PathAndQuery, referrer.ToString()))
                 .MustHaveHappened();
         }
 
@@ -232,29 +233,24 @@ namespace BVNetwork.NotFound.Tests
 
         private void WhenRedirectNotFound()
         {
-            A.CallTo(() => _redirectHandler.Find(A<Uri>._)).Returns(null);
+            A.CallTo(() => _redirectHandler.Find(A<Uri>._, A<Uri>._)).Returns(null);
         }
 
         private void WhenRedirectUrlFound(CustomRedirect redirect)
         {
-            A.CallTo(() => _sut.HandleRequest(A<string>._, A<Uri>._, out redirect)).Returns(true);
+            A.CallTo(() => _sut.HandleRequest(A<Uri>._, A<Uri>._, out redirect)).Returns(true);
         }
 
         private void WhenResourceDeleted()
         {
             var redirect = new CustomRedirect("http://example.com", (int)DataStoreHandler.State.Deleted, 1);
-            A.CallTo(() => _sut.HandleRequest(A<string>._, A<Uri>._, out redirect)).Returns(true);
-        }
-
-        private void WhenHasReferrer()
-        {
-            A.CallTo(() => _sut.GetReferer(A<Uri>._)).Returns("http://example.com/home");
+            A.CallTo(() => _sut.HandleRequest(A<Uri>._, A<Uri>._, out redirect)).Returns(true);
         }
 
         private void WhenUnableRedirect()
         {
             CustomRedirect outRedirect;
-            A.CallTo(() => _sut.HandleRequest(A<string>._, A<Uri>._, out outRedirect)).Returns(false);
+            A.CallTo(() => _sut.HandleRequest(A<Uri>._, A<Uri>._, out outRedirect)).Returns(false);
         }
 
         private void WhenQueryStringValueIs404()

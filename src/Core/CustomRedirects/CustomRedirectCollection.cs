@@ -29,7 +29,17 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// </summary>
         private readonly Dictionary<string, CustomRedirect> _quickLookupTable = new Dictionary<string, CustomRedirect>(StringComparer.InvariantCultureIgnoreCase);
 
-        public CustomRedirect Find(Uri urlNotFound)
+        public CustomRedirect Find(Uri urlNotFound, Uri referrer)
+        {
+            if (IsLoop(referrer))
+            {
+                return null;
+            }
+
+            return Find(urlNotFound);
+        }
+
+        private CustomRedirect Find(Uri urlNotFound)
         {
             // Handle absolute addresses first
             var url = urlNotFound.AbsoluteUri;
@@ -120,6 +130,13 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 if (newUrl != null) return new CustomRedirect(oldUrl, newUrl);
             }
             return null;
+        }
+
+        private bool IsLoop(Uri referrer)
+        {
+            if (referrer == null) return false;
+            var previousRedirect = Find(referrer);
+            return previousRedirect != null;
         }
 
         public IEnumerator<CustomRedirect> GetEnumerator()
