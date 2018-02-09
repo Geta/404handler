@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Refactored Custom404Handler by extracting into RequestHandler and ErrorHandler
+- #46 Fixed redirect loop
 
 
 ### Removed
