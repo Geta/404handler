@@ -129,6 +129,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\Uris.cs" />
     <Compile Include="ColorHelperTests.cs" />
     <Compile Include="CustomRedirectCollectionTests.cs" />
     <Compile Include="ErrorHandlerTests.cs" />

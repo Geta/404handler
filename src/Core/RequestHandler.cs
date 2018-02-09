@@ -7,7 +7,6 @@ using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Logging;
 using EPiServer.Logging;
-using EPiServer.Web;
 
 namespace BVNetwork.NotFound.Core
 {
@@ -60,7 +59,7 @@ namespace BVNetwork.NotFound.Core
                 return;
             }
 
-            var canHandleRedirect = HandleRequest(GetReferer(context.Request.UrlReferrer), notFoundUri, out var newUrl);
+            var canHandleRedirect = HandleRequest(context.Request.UrlReferrer, notFoundUri, out var newUrl);
             if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Saved)
             {
                 context.Response.Clear();
@@ -79,9 +78,9 @@ namespace BVNetwork.NotFound.Core
             }
         }
 
-        public virtual bool HandleRequest(string referer, Uri urlNotFound, out CustomRedirect foundRedirect)
+        public virtual bool HandleRequest(Uri referrer, Uri urlNotFound, out CustomRedirect foundRedirect)
         {
-            var redirect = _redirectHandler.Find(urlNotFound);
+            var redirect = _redirectHandler.Find(urlNotFound, referrer);
 
             foundRedirect = null;
             var pathAndQuery = urlNotFound.PathAndQuery;
@@ -113,7 +112,7 @@ namespace BVNetwork.NotFound.Core
                 if (_configuration.Logging == LoggerMode.On)
                 {
                     // Safe logging
-                    _requestLogger.LogRequest(pathAndQuery, referer);
+                    _requestLogger.LogRequest(pathAndQuery, referrer?.ToString());
                 }
             }
             return false;
@@ -173,23 +172,6 @@ namespace BVNetwork.NotFound.Core
             {
                 return false;
             }
-        }
-
-        public virtual string GetReferer(Uri referer)
-        {
-            var refererUrl = "";
-            if (referer == null) return refererUrl;
-
-            refererUrl = referer.AbsolutePath;
-            if (string.IsNullOrEmpty(refererUrl)) return refererUrl;
-
-            // Strip away host name in front, if local redirect
-            var hostUrl = SiteDefinition.Current.SiteUrl.ToString();
-            if (refererUrl.StartsWith(hostUrl))
-            {
-                refererUrl = refererUrl.Remove(0, hostUrl.Length);
-            }
-            return refererUrl;
         }
     }
 }

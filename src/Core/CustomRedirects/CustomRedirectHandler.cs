@@ -25,9 +25,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// </summary>
         public CustomRedirectCollection CustomRedirects => _customRedirects;
 
-        public CustomRedirect Find(Uri urlNotFound)
+        public CustomRedirect Find(Uri urlNotFound, Uri referrer)
         {
-            return CustomRedirects.Find(urlNotFound);
+            return CustomRedirects.Find(urlNotFound, referrer);
         }
 
         /// <summary>
