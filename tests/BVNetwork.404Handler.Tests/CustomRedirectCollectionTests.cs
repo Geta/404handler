@@ -146,6 +146,21 @@ namespace BVNetwork.NotFound.Tests
             Assert.Null(ex);
         }
 
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/36
+        /// </summary>
+        [Fact]
+        public void Find_does_not_add_trailing_slash()
+        {
+            var expected = "https://domain.mydomain.dk/thisismypdf.pdf";
+            var redirect = new CustomRedirect("/something", expected);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(redirect.OldUrl.ToUri(), DefaultReferrer);
+
+            Assert.Equal(expected, actual.NewUrl);
+        }
+
         private void WithProvider(string oldUrl, string newUrl)
         {
             var provider = A.Fake<INotFoundHandler>();
