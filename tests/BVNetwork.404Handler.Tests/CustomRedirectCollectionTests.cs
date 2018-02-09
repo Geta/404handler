@@ -131,6 +131,21 @@ namespace BVNetwork.NotFound.Tests
             Assert.Null(second);
         }
 
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/38
+        /// </summary>
+        [Fact]
+        public void Add_allows_similar_culture_specific_urls()
+        {
+            var first = new CustomRedirect("/digtalpaent", "/");
+            _sut.Add(first);
+            var second = new CustomRedirect("/digtalpænt", "/");
+
+            var ex = Record.Exception(() => _sut.Add(second));
+
+            Assert.Null(ex);
+        }
+
         private void WithProvider(string oldUrl, string newUrl)
         {
             var provider = A.Fake<INotFoundHandler>();

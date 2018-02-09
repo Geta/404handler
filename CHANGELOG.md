@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Refactored Custom404Handler by extracting into RequestHandler and ErrorHandler
 - #46 Fixed redirect loop
-
+- #38 Fixed culture specific URLs to fail when has similar English URL version
 
 ### Removed
 - Custom404Handler

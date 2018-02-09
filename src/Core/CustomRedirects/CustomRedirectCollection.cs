@@ -27,7 +27,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// <summary>
         /// Hashtable for quick lookup of old urls
         /// </summary>
-        private readonly Dictionary<string, CustomRedirect> _quickLookupTable = new Dictionary<string, CustomRedirect>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, CustomRedirect> _quickLookupTable = new Dictionary<string, CustomRedirect>(StringComparer.OrdinalIgnoreCase);
 
         public CustomRedirect Find(Uri urlNotFound, Uri referrer)
         {
