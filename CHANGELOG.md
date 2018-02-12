@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 11.1.0
+## [11.1.0], [10.3.0]
 
 ## Added
 - Added interface for configuration - IConfiguration
