@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## 11.1.0
 
 ## Added
 - Added interface for configuration - IConfiguration
@@ -18,3 +18,4 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - Custom404Handler
+- #66 Removed Microsoft.CodeDom.Providers.DotNetCompilerPlatform package dependency
