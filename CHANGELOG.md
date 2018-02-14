@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [11.1.0], [10.3.0]
 
-## Added
+### Added
 - Added interface for configuration - IConfiguration
 - Added interface for redirect handler - IRedirectHandler
 - Added interface for request logger - IRequestLogger
