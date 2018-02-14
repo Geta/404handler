@@ -13,9 +13,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Refactored Custom404Handler by extracting into RequestHandler and ErrorHandler
-- #46 Fixed redirect loop
-- #38 Fixed culture specific URLs to fail when has similar English URL version
+- [#46](https://github.com/Geta/404handler/issues/46) Fixed redirect loop
+- [#38](https://github.com/Geta/404handler/issues/38) Fixed culture specific URLs to fail when has similar English URL version
 
 ### Removed
 - Custom404Handler
-- #66 Removed Microsoft.CodeDom.Providers.DotNetCompilerPlatform package dependency
+- [#66](https://github.com/Geta/404handler/issues/66) Removed Microsoft.CodeDom.Providers.DotNetCompilerPlatform package dependency
