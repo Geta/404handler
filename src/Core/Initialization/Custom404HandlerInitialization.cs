@@ -60,12 +60,28 @@ namespace BVNetwork.NotFound.Core.Initialization
 
         private void OnEndRequest(object sender, EventArgs eventArgs)
         {
-            RequestHandler.Service.Handle(GetContext());
+            try
+            {
+                RequestHandler.Service.Handle(GetContext());
+            }
+            catch (Exception e)
+            {
+                Logger.Error("Error on 404 handling.", e);
+                throw;
+            }
         }
 
         private void OnError(object sender, EventArgs eventArgs)
         {
-            ErrorHandler.Service.Handle(GetContext());
+            try
+            {
+                ErrorHandler.Service.Handle(GetContext());
+            }
+            catch (Exception e)
+            {
+                Logger.Error("Error on 404 handling.", e);
+                throw;
+            }
         }
 
         private static HttpContextBase GetContext()
