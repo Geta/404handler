@@ -30,7 +30,11 @@ namespace BVNetwork.NotFound.Core
 
         public virtual void Handle(HttpContextBase context)
         {
-            if (context?.Response.StatusCode != 404) return;
+            if (context?.Response.StatusCode != 404)
+            {
+                LogDebug("Not a 404 response.", context);
+                return;
+            }
 
             // If we're only doing this for remote users, we need to test for local host
             if (_configuration.FileNotFoundHandlerMode == FileNotFoundMode.RemoteOnly)
@@ -39,29 +43,36 @@ namespace BVNetwork.NotFound.Core
                 var localHost = IsLocalhost(context);
                 if (localHost)
                 {
-                    Logger.Debug("Determined to be localhost, returning");
+                    LogDebug("Determined to be localhost, returning.", context);
                     return;
                 }
-                Logger.Debug("Not localhost, handling error");
+                LogDebug("Not a localhost, handling error.", context);
             }
 
-            Logger.Debug("FileNotFoundHandler called");
+            LogDebug("Handling 404 request.", context);
 
             var notFoundUri = context.Request.Url;
 
-            if (IsResourceFile(notFoundUri)) return;
+            if (IsResourceFile(notFoundUri))
+            {
+                LogDebug("Skipping resource file.", context);
+                return;
+            }
 
             var query = context.Request.ServerVariables["QUERY_STRING"];
 
             // avoid duplicate log entries
             if (query != null && query.StartsWith("404;"))
             {
+                LogDebug("Skipping request with 404; in the query string.", context);
                 return;
             }
 
             var canHandleRedirect = HandleRequest(context.Request.UrlReferrer, notFoundUri, out var newUrl);
             if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Saved)
             {
+                LogDebug("Handled saved URL", context);
+
                 context.Response.Clear();
                 context.Response.TrySkipIisCustomErrors = true;
                 context.Server.ClearError();
@@ -70,10 +81,14 @@ namespace BVNetwork.NotFound.Core
             }
             else if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Deleted)
             {
+                LogDebug("Handled deleted URL", context);
+
                 SetStatusCodeAndShow404(context, 410);
             }
             else
             {
+                LogDebug("Not handled. Current URL is ignored or no redirect found.", context);
+
                 SetStatusCodeAndShow404(context);
             }
         }
@@ -172,6 +187,13 @@ namespace BVNetwork.NotFound.Core
             {
                 return false;
             }
+        }
+
+        private void LogDebug(string message, HttpContextBase context)
+        {
+            Logger.Debug(
+                $"{{0}}{Environment.NewLine}Request URL: {{1}}{Environment.NewLine}Response status code: {{2}}",
+                message, context?.Request.Url, context?.Response.StatusCode);
         }
     }
 }
