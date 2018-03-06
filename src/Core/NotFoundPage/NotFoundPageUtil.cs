@@ -29,33 +29,9 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         /// <returns></returns>
         public static string GetUrlNotFound(HttpRequestBase request)
         {
-            var urlNotFound = string.Empty;
             var query = request.ServerVariables["QUERY_STRING"];
-            if (IsNotFoundQuery(query))
-            {
-                var url = query.Split(';')[1];
-                urlNotFound = HttpUtility.UrlDecode(url);
-            }
-            if (string.IsNullOrEmpty(urlNotFound))
-            {
-                if (query != null
-                    && query.StartsWith("aspxerrorpath=")
-                    && request.Url != null)
-                {
-                    var url = query.Split('=')[1];
-                    urlNotFound = string.IsNullOrEmpty(url)
-                        ? string.Empty
-                        : request.Url.GetLeftPart(UriPartial.Authority) + HttpUtility.UrlDecode(url);
-                }
-            }
-            return urlNotFound;
-        }
-
-        private static bool IsNotFoundQuery(string query)
-        {
-            if (string.IsNullOrEmpty(query)) return false;
-            var notFoundStatuses = new[] {"404", "410"}.Select(code => $"{code};");
-            return notFoundStatuses.Any(query.StartsWith);
+            var url = GetUrlNotFoundFromQueryString(query);
+            return ToAbsoluteUrl(request, url);
         }
 
         /// <summary>
@@ -153,6 +129,39 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
                     return "410 Deleted";
             }
             return string.Empty;
+        }
+
+        private static string ToAbsoluteUrl(HttpRequestBase request, string url)
+        {
+            if (string.IsNullOrEmpty(url)) return string.Empty;
+
+            if (Uri.TryCreate(url, UriKind.Absolute, out var _))
+            {
+                return url;
+            }
+
+            if (request?.Url == null) return string.Empty;
+            if (Uri.TryCreate(request.Url, url, out var u))
+            {
+                return u.ToString();
+            }
+            return string.Empty;
+        }
+
+        private static string GetUrlNotFoundFromQueryString(string query)
+        {
+            if (!IsValidQueryString(query)) return string.Empty;
+            var parts = query.Split(';', '=');
+            if (parts.Length < 2) return string.Empty;
+            var url = parts[1];
+            return HttpUtility.UrlDecode(url);
+        }
+
+        private static bool IsValidQueryString(string query)
+        {
+            if (string.IsNullOrEmpty(query)) return false;
+            var prefixes = new[] { "404;", "410;", "aspxerrorpath=" };
+            return prefixes.Any(query.StartsWith);
         }
     }
 }
