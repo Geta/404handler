@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
@@ -28,24 +29,33 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         /// <returns></returns>
         public static string GetUrlNotFound(HttpRequestBase request)
         {
-            string urlNotFound = null;
+            var urlNotFound = string.Empty;
             var query = request.ServerVariables["QUERY_STRING"];
-            if (query != null && query.StartsWith("4"))
+            if (IsNotFoundQuery(query))
             {
                 var url = query.Split(';')[1];
                 urlNotFound = HttpUtility.UrlDecode(url);
             }
-            if (urlNotFound == null)
+            if (string.IsNullOrEmpty(urlNotFound))
             {
                 if (query != null
                     && query.StartsWith("aspxerrorpath=")
                     && request.Url != null)
                 {
-                    var parts = query.Split('=');
-                    urlNotFound = request.Url.GetLeftPart(UriPartial.Authority) + HttpUtility.UrlDecode(parts[1]);
+                    var url = query.Split('=')[1];
+                    urlNotFound = string.IsNullOrEmpty(url)
+                        ? string.Empty
+                        : request.Url.GetLeftPart(UriPartial.Authority) + HttpUtility.UrlDecode(url);
                 }
             }
             return urlNotFound;
+        }
+
+        private static bool IsNotFoundQuery(string query)
+        {
+            if (string.IsNullOrEmpty(query)) return false;
+            var notFoundStatuses = new[] {"404", "410"}.Select(code => $"{code};");
+            return notFoundStatuses.Any(query.StartsWith);
         }
 
         /// <summary>
