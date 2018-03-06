@@ -78,7 +78,7 @@ namespace BVNetwork.NotFound.Tests
         [Fact]
         public void Handle_sets_404_response_when_unable_redirect()
         {
-            WhenUnableRedirect();
+            WhenRedirectRequestNotHandled();
 
             _sut.Handle(_httpContext);
 
@@ -108,6 +108,18 @@ namespace BVNetwork.NotFound.Tests
 
             AssertRedirected(_httpContext, redirect);
         }
+
+        [Fact]
+        public void Handle_handles_request_only_once()
+        {
+            WhenRedirectRequestNotHandled();
+
+            _sut.Handle(_httpContext);
+            _sut.Handle(_httpContext);
+
+            AssertRequestHandledOnce();
+        }
+
 
         [Fact]
         public void HandleRequest_returns_false_when_redirect_not_found()
@@ -236,6 +248,12 @@ namespace BVNetwork.NotFound.Tests
             A.CallTo(() => _redirectHandler.Find(A<Uri>._, A<Uri>._)).Returns(null);
         }
 
+        private void AssertRequestHandledOnce()
+        {
+            CustomRedirect _;
+            A.CallTo(() => _sut.HandleRequest(A<Uri>._, A<Uri>._, out _)).MustHaveHappened(Repeated.Exactly.Once);
+        }
+
         private void WhenRedirectUrlFound(CustomRedirect redirect)
         {
             A.CallTo(() => _sut.HandleRequest(A<Uri>._, A<Uri>._, out redirect)).Returns(true);
@@ -247,7 +265,7 @@ namespace BVNetwork.NotFound.Tests
             A.CallTo(() => _sut.HandleRequest(A<Uri>._, A<Uri>._, out redirect)).Returns(true);
         }
 
-        private void WhenUnableRedirect()
+        private void WhenRedirectRequestNotHandled()
         {
             CustomRedirect outRedirect;
             A.CallTo(() => _sut.HandleRequest(A<Uri>._, A<Uri>._, out outRedirect)).Returns(false);

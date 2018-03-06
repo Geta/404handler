@@ -8,7 +8,13 @@ namespace BVNetwork.NotFound.Core
 {
     public class ErrorHandler
     {
+        private readonly RequestHandler _requestHandler;
         private static readonly ILogger Logger = LogManager.GetLogger();
+
+        public ErrorHandler(RequestHandler requestHandler)
+        {
+            _requestHandler = requestHandler ?? throw new ArgumentNullException(nameof(requestHandler));
+        }
 
         public virtual void Handle(HttpContextBase context)
         {
@@ -19,6 +25,8 @@ namespace BVNetwork.NotFound.Core
                 context.Response.Clear();
                 context.Response.TrySkipIisCustomErrors = true;
                 context.Response.StatusCode = 404;
+
+                _requestHandler.Handle(context);
             }
         }
 

@@ -15,6 +15,7 @@ namespace BVNetwork.NotFound.Core
         private readonly IRedirectHandler _redirectHandler;
         private readonly IRequestLogger _requestLogger;
         private readonly IConfiguration _configuration;
+        private const string HandledRequestItemKey = "404handler:handled";
 
         private static readonly ILogger Logger = LogManager.GetLogger();
 
@@ -30,6 +31,12 @@ namespace BVNetwork.NotFound.Core
 
         public virtual void Handle(HttpContextBase context)
         {
+            if (IsHandled(context))
+            {
+                LogDebug("Already handled.", context);
+                return;
+            }
+
             if (context?.Response.StatusCode != 404)
             {
                 LogDebug("Not a 404 response.", context);
@@ -91,6 +98,19 @@ namespace BVNetwork.NotFound.Core
 
                 SetStatusCodeAndShow404(context);
             }
+
+            MarkHandled(context);
+        }
+
+        private bool IsHandled(HttpContextBase context)
+        {
+            return context.Items.Contains(HandledRequestItemKey)
+                && (bool)context.Items[HandledRequestItemKey];
+        }
+
+        private void MarkHandled(HttpContextBase context)
+        {
+            context.Items[HandledRequestItemKey] = true;
         }
 
         public virtual bool HandleRequest(Uri referrer, Uri urlNotFound, out CustomRedirect foundRedirect)
