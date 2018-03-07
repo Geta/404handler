@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [11.1.3], [10.3.2]
 
-## Changed
+### Changed
 - Fixed redirects not working in Azure
 - Fixed NotFoundPageUtil.GetUrlNotFound throwing index out of bounds exception
 
