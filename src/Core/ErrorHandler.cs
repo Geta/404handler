@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Web;
+using BVNetwork.NotFound.Core.Web;
 using EPiServer.Core;
 using EPiServer.Logging;
 
@@ -8,7 +9,13 @@ namespace BVNetwork.NotFound.Core
 {
     public class ErrorHandler
     {
+        private readonly RequestHandler _requestHandler;
         private static readonly ILogger Logger = LogManager.GetLogger();
+
+        public ErrorHandler(RequestHandler requestHandler)
+        {
+            _requestHandler = requestHandler ?? throw new ArgumentNullException(nameof(requestHandler));
+        }
 
         public virtual void Handle(HttpContextBase context)
         {
@@ -16,9 +23,8 @@ namespace BVNetwork.NotFound.Core
 
             if (IsNotFoundException(context.Server.GetLastError(), context.Request.Url))
             {
-                context.Response.Clear();
-                context.Response.TrySkipIisCustomErrors = true;
-                context.Response.StatusCode = 404;
+                context.SetStatusCode(404);
+                _requestHandler.Handle(context);
             }
         }
 

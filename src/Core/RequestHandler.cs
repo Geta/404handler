@@ -6,6 +6,7 @@ using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Logging;
+using BVNetwork.NotFound.Core.Web;
 using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core
@@ -15,6 +16,7 @@ namespace BVNetwork.NotFound.Core
         private readonly IRedirectHandler _redirectHandler;
         private readonly IRequestLogger _requestLogger;
         private readonly IConfiguration _configuration;
+        private const string HandledRequestItemKey = "404handler:handled";
 
         private static readonly ILogger Logger = LogManager.GetLogger();
 
@@ -30,6 +32,12 @@ namespace BVNetwork.NotFound.Core
 
         public virtual void Handle(HttpContextBase context)
         {
+            if (IsHandled(context))
+            {
+                LogDebug("Already handled.", context);
+                return;
+            }
+
             if (context?.Response.StatusCode != 404)
             {
                 LogDebug("Not a 404 response.", context);
@@ -73,11 +81,10 @@ namespace BVNetwork.NotFound.Core
             {
                 LogDebug("Handled saved URL", context);
 
-                context.Response.Clear();
-                context.Response.TrySkipIisCustomErrors = true;
-                context.Server.ClearError();
-                context.Response.RedirectPermanent(newUrl.NewUrl);
-                context.Response.End();
+                context
+                    .ClearServerError()
+                    .RedirectPermanent(newUrl.NewUrl)
+                    .End();
             }
             else if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Deleted)
             {
@@ -91,6 +98,19 @@ namespace BVNetwork.NotFound.Core
 
                 SetStatusCodeAndShow404(context);
             }
+
+            MarkHandled(context);
+        }
+
+        private bool IsHandled(HttpContextBase context)
+        {
+            return context.Items.Contains(HandledRequestItemKey)
+                && (bool)context.Items[HandledRequestItemKey];
+        }
+
+        private void MarkHandled(HttpContextBase context)
+        {
+            context.Items[HandledRequestItemKey] = true;
         }
 
         public virtual bool HandleRequest(Uri referrer, Uri urlNotFound, out CustomRedirect foundRedirect)
@@ -135,10 +155,10 @@ namespace BVNetwork.NotFound.Core
 
         public virtual void SetStatusCodeAndShow404(HttpContextBase context, int statusCode = 404)
         {
-            context.Response.TrySkipIisCustomErrors = true;
-            context.Server.ClearError();
-            context.Response.StatusCode = statusCode;
-            context.Response.End();
+            context
+                .ClearServerError()
+                .SetStatusCode(statusCode)
+                .End();
         }
 
         /// <summary>
