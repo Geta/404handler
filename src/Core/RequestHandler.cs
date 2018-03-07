@@ -6,6 +6,7 @@ using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Logging;
+using BVNetwork.NotFound.Core.Web;
 using EPiServer.Logging;
 
 namespace BVNetwork.NotFound.Core
@@ -80,11 +81,10 @@ namespace BVNetwork.NotFound.Core
             {
                 LogDebug("Handled saved URL", context);
 
-                context.Response.Clear();
-                context.Response.TrySkipIisCustomErrors = true;
-                context.Server.ClearError();
-                context.Response.RedirectPermanent(newUrl.NewUrl);
-                context.Response.End();
+                context
+                    .ClearServerError()
+                    .RedirectPermanent(newUrl.NewUrl)
+                    .End();
             }
             else if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Deleted)
             {
@@ -155,10 +155,10 @@ namespace BVNetwork.NotFound.Core
 
         public virtual void SetStatusCodeAndShow404(HttpContextBase context, int statusCode = 404)
         {
-            context.Response.TrySkipIisCustomErrors = true;
-            context.Server.ClearError();
-            context.Response.StatusCode = statusCode;
-            context.Response.End();
+            context
+                .ClearServerError()
+                .SetStatusCode(statusCode)
+                .End();
         }
 
         /// <summary>

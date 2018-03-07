@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Web;
+using BVNetwork.NotFound.Core.Web;
 using EPiServer.Core;
 using EPiServer.Logging;
 
@@ -22,10 +23,7 @@ namespace BVNetwork.NotFound.Core
 
             if (IsNotFoundException(context.Server.GetLastError(), context.Request.Url))
             {
-                context.Response.Clear();
-                context.Response.TrySkipIisCustomErrors = true;
-                context.Response.StatusCode = 404;
-
+                context.SetStatusCode(404);
                 _requestHandler.Handle(context);
             }
         }
