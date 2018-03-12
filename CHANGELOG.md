@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.1.4], [10.3.3]
+
+### Changed
+- Fixed thread abort exception when 404 handled.
+
 ## [11.1.3], [10.3.2]
 
 ### Changed
