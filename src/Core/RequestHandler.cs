@@ -83,8 +83,7 @@ namespace BVNetwork.NotFound.Core
 
                 context
                     .ClearServerError()
-                    .RedirectPermanent(newUrl.NewUrl)
-                    .End();
+                    .RedirectPermanent(newUrl.NewUrl);
             }
             else if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Deleted)
             {
@@ -157,8 +156,7 @@ namespace BVNetwork.NotFound.Core
         {
             context
                 .ClearServerError()
-                .SetStatusCode(statusCode)
-                .End();
+                .SetStatusCode(statusCode);
         }
 
         /// <summary>
