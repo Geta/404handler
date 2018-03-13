@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.1.5], [10.3.4]
+
+### Changed
+- Fixed null reference exception when HttpContext is null.
+
 ## [11.1.4], [10.3.3]
 
 ### Changed
