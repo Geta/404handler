@@ -32,13 +32,15 @@ namespace BVNetwork.NotFound.Core
 
         public virtual void Handle(HttpContextBase context)
         {
+            if (context == null) return;
+
             if (IsHandled(context))
             {
                 LogDebug("Already handled.", context);
                 return;
             }
 
-            if (context?.Response.StatusCode != 404)
+            if (context.Response.StatusCode != 404)
             {
                 LogDebug("Not a 404 response.", context);
                 return;
