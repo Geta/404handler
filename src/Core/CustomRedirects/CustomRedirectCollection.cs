@@ -110,6 +110,11 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                             return cr;
                         }
 
+                        // Lets say we have a redirect: http://foo.no/bar with WildCardSkipAppend = false
+                        // then http://foo.no/barr wil give "ERR_INVALID_REDIRECT"
+                        if (!url.Substring(key.Length).StartsWith("/"))
+                            return null;
+
                         // We need to append the 404 to the end of the
                         // new one. Make a copy of the redir object as we
                         // are changing it.
