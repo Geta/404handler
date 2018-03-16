@@ -22,7 +22,8 @@ namespace BVNetwork.NotFound.Core.Web
         {
             context.Response.Clear();
             context.Response.TrySkipIisCustomErrors = true;
-            context.Response.RedirectPermanent(url);
+            context.Response.RedirectPermanent(url, false);
+            context.ApplicationInstance.CompleteRequest();
             return context;
         }
 
