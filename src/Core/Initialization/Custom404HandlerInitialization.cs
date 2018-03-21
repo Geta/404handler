@@ -20,8 +20,10 @@ namespace BVNetwork.NotFound.Core.Initialization
     {
         private static readonly ILogger Logger = LogManager.GetLogger();
 
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         private static Injected<RequestHandler> RequestHandler { get; set; }
         private static Injected<ErrorHandler> ErrorHandler { get; set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         public void Initialize(InitializationEngine context)
         {
