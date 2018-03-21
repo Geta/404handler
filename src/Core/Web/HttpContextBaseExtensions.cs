@@ -22,13 +22,7 @@ namespace BVNetwork.NotFound.Core.Web
         {
             context.Response.Clear();
             context.Response.TrySkipIisCustomErrors = true;
-            context.Response.RedirectPermanent(url);
-            return context;
-        }
-
-        public static HttpContextBase End(this HttpContextBase context)
-        {
-            context.Response.End();
+            context.Response.RedirectPermanent(url, endResponse: false);
             return context;
         }
     }
