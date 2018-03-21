@@ -18,5 +18,11 @@ namespace BVNetwork.NotFound.Tests.Base.Http
             RedirectLocation = url;
             StatusCode = 301;
         }
+
+        public override void RedirectPermanent(string url, bool endResponse)
+        {
+            RedirectLocation = url;
+            StatusCode = 301;
+        }
     }
 }
