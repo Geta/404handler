@@ -270,6 +270,15 @@ namespace BVNetwork.NotFound.Controllers
         public FileUploadJsonResult ImportRedirects(HttpPostedFileBase xmlfile)
         {
             CheckAccess();
+
+            if (!IsXml(xmlfile))
+            {
+                return new FileUploadJsonResult
+                {
+                    Data = new { message = LocalizationService.Current.GetString("/gadget/redirects/invalidxmlfile") }
+                };
+            }
+
             // Read all redirects from xml file
             RedirectsXmlParser parser = new RedirectsXmlParser(xmlfile.InputStream);
             // Save all redirects from xml file
@@ -303,6 +312,15 @@ namespace BVNetwork.NotFound.Controllers
         public FileUploadJsonResult ImportDeleted(HttpPostedFileBase txtFile)
         {
             CheckAccess();
+
+            if (!IsTxt(txtFile))
+            {
+                return new FileUploadJsonResult
+                {
+                    Data = new { message = LocalizationService.Current.GetString("/gadget/redirects/invalidtxtfile") }
+                };
+            }
+
             var redirects = new CustomRedirectCollection();
             using (var streamReader = new StreamReader(txtFile.InputStream))
             {
@@ -332,6 +350,27 @@ namespace BVNetwork.NotFound.Controllers
             return new FileUploadJsonResult { Data = new { message = message } };
         }
 
+        private bool IsXml(HttpPostedFileBase file)
+        {
+            return FileIsOfType(file, new[] {"text/xml", "application/xml"}, new[] {"xml"});
+        }
+
+        private bool IsTxt(HttpPostedFileBase file)
+        {
+            return FileIsOfType(file, new[] {"text/plain"}, new[] {"txt"});
+        }
+
+        private bool FileIsOfType(HttpPostedFileBase file, string[] allowedContentTypes, string[] allowedExtensions)
+        {
+            var isAllowedContentType = allowedContentTypes.Any(
+                x => file.ContentType.Equals(x, StringComparison.InvariantCultureIgnoreCase));
+            if (isAllowedContentType)
+            {
+                return true;
+            }
+
+            return allowedExtensions.Any(x => file.FileName.EndsWith(x, StringComparison.OrdinalIgnoreCase));
+        }
 
         public ActionResult DeleteSuggestions(int maxErrors, int minimumDays)
         {

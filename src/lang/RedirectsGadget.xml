@@ -55,6 +55,8 @@
                 <Administerinfo>Clean up redirect suggestions or ignored urls, or import/export redirects from/to an XML file.</Administerinfo>
                 <deletedurls>There are currently &lt;b&gt;{0}&lt;/b&gt; urls that return a Deleted response. This tells crawlers to remove these urls from their index.</deletedurls>
                 <exportredirects>Export redirects to an XML-file</exportredirects>
+                <invalidxmlfile>The uploaded file is not a valid XML file. Please upload a valid XML file.</invalidxmlfile>
+                <invalidtxtfile>The uploaded file is not a valid TXT file. Please upload a valid TXT file.</invalidtxtfile>
             </redirects>
         </gadget>
     </language>
