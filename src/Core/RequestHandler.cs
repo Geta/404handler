@@ -116,7 +116,7 @@ namespace BVNetwork.NotFound.Core
 
         public virtual bool HandleRequest(Uri referrer, Uri urlNotFound, out CustomRedirect foundRedirect)
         {
-            var redirect = _redirectHandler.Find(urlNotFound, referrer);
+            var redirect = _redirectHandler.Find(urlNotFound);
 
             foundRedirect = null;
             var pathAndQuery = urlNotFound.PathAndQuery;

@@ -25,9 +25,14 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// </summary>
         public CustomRedirectCollection CustomRedirects => _customRedirects;
 
+        public CustomRedirect Find(Uri urlNotFound)
+        {
+            return CustomRedirects.Find(urlNotFound);
+        }
+
         public CustomRedirect Find(Uri urlNotFound, Uri referrer)
         {
-            return CustomRedirects.Find(urlNotFound, referrer);
+            return CustomRedirects.Find(urlNotFound);
         }
 
         /// <summary>
@@ -72,8 +77,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 Logger.Debug("Begin: Get Current CustomRedirectHandler");
                 // First check if there is a cached version of
                 // this object
-                CustomRedirectHandler handler = null;
-                handler = GetHandlerFromCache();
+                var handler = GetHandlerFromCache();
                 if (handler != null)
                 {
                     Logger.Debug("Returning cached handler.");

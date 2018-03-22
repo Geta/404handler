@@ -218,7 +218,7 @@ namespace BVNetwork.NotFound.Tests
 
         private void WhenRedirectFound(CustomRedirect redirect)
         {
-            A.CallTo(() => _redirectHandler.Find(A<Uri>._, A<Uri>._)).Returns(redirect);
+            A.CallTo(() => _redirectHandler.Find(A<Uri>._)).Returns(redirect);
         }
 
         private void AssertRequestNotLogged(Uri referrer, Uri urlNotFound)
@@ -245,7 +245,7 @@ namespace BVNetwork.NotFound.Tests
 
         private void WhenRedirectNotFound()
         {
-            A.CallTo(() => _redirectHandler.Find(A<Uri>._, A<Uri>._)).Returns(null);
+            A.CallTo(() => _redirectHandler.Find(A<Uri>._)).Returns(null);
         }
 
         private void AssertRequestHandledOnce()
