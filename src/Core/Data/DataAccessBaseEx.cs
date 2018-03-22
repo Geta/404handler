@@ -197,7 +197,7 @@ namespace BVNetwork.NotFound.Core.Data
                        var requstedParam = CreateParameter("requested", DbType.DateTime, 0);
                        requstedParam.Value = now;
                        var refererParam = CreateParameter("referer", DbType.String, 4000);
-                       refererParam.Value = referer;
+                       refererParam.Value = referer ?? string.Empty;
                        var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
                        oldUrlParam.Value = oldUrl;
                        command.Parameters.Add(requstedParam);
