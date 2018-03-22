@@ -43,7 +43,8 @@ namespace BVNetwork.NotFound.Controllers
             {
                 return Content("An error has occured in the dynamic data store: " + CustomRedirectHandler.CustomRedirectHandlerException);
             }
-            var suggestion = false; ;
+
+            var suggestion = false;
             List<CustomRedirect> customRedirectList;
 
             if (isSuggestions.HasValue && isSuggestions.Value)
@@ -52,22 +53,21 @@ namespace BVNetwork.NotFound.Controllers
 
                 suggestion = true;
                 var viewData = GetRedirectIndexViewData(pageNumber, customRedirectList, GetSearchResultInfo(searchWord, customRedirectList.Count, suggestion), searchWord, pageSize, suggestion, showRedirects);
-                if (customRedirectList != null && customRedirectList.Count > 0)
+                if (customRedirectList.Count > 0)
                 {
                     viewData.HighestSuggestionValue = customRedirectList.First().NotfoundErrorCount;
                     viewData.LowestSuggestionValue = customRedirectList.Last().NotfoundErrorCount;
                 }
                 return View("Index", viewData);
             }
-            else
+
+            if (!(showRedirects.HasValue && showRedirects.Value))
             {
-                if (!(showRedirects.HasValue && showRedirects.Value))
-                {
-                    customRedirectList = new List<CustomRedirect>();
-                    return View("Index", GetRedirectIndexViewData(pageNumber, customRedirectList, LocalizationService.Current.GetString("/gadget/redirects/inactiveredirects"), searchWord, pageSize, suggestion, showRedirects));
-                }
-                customRedirectList = GetData(searchWord);
+                customRedirectList = new List<CustomRedirect>();
+                return View("Index", GetRedirectIndexViewData(pageNumber, customRedirectList, LocalizationService.Current.GetString("/gadget/redirects/inactiveredirects"), searchWord, pageSize, suggestion, showRedirects));
             }
+
+            customRedirectList = GetData(searchWord);
             return View("Index", GetRedirectIndexViewData(pageNumber, customRedirectList, GetSearchResultInfo(searchWord, customRedirectList.Count, suggestion), searchWord, pageSize, suggestion, showRedirects));
         }
 
@@ -85,8 +85,11 @@ namespace BVNetwork.NotFound.Controllers
             string actionInfo = string.Format(LocalizationService.Current.GetString("/gadget/redirects/saveredirect"), oldUrl, newUrl);
             DataStoreEventHandlerHook.DataStoreUpdated();
             var viewData = GetRedirectIndexViewData(pageNumber, customRedirectList, actionInfo, null, pageSize, true, true);
-            viewData.HighestSuggestionValue = customRedirectList.First().NotfoundErrorCount;
-            viewData.LowestSuggestionValue = customRedirectList.Last().NotfoundErrorCount;
+            if (customRedirectList.Count > 0)
+            {
+                viewData.HighestSuggestionValue = customRedirectList.First().NotfoundErrorCount;
+                viewData.LowestSuggestionValue = customRedirectList.Last().NotfoundErrorCount;
+            }
             return View("Index", viewData);
         }
 
