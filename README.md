@@ -61,6 +61,13 @@ The `httpErrors` section is responsible for showing a custom 404 page. If you do
 
 Make sure that you have _BVNetwork.404Handler_ added as a protected module. The NuGet package has automatic Web.config transformation which adds it but sometimes it does not.
 
+**Important!** If you notice that 404 page is hanging for a long time, then you might need to add this configuration to the Web.config:
+
+```xml
+<applicationSettings globalErrorHandling="Off" />
+```
+Read more here: [https://world.episerver.com/support/Bug-list/bug/CMS-1119](https://world.episerver.com/support/Bug-list/bug/CMS-1119)
+
 ## Logging
 Suggestions for 404 rules require 404 requests to be logged to the database.
 
