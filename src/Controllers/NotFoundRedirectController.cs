@@ -36,9 +36,9 @@ namespace BVNetwork.NotFound.Controllers
 
         public ActionResult Index(int? pageNumber, string searchWord, int? pageSize, bool? isSuggestions, bool? showRedirects)
         {
-
             CheckAccess();
 
+            CustomRedirectHandler.ReloadCustomRedirectHandler();
             if (!string.IsNullOrEmpty(CustomRedirectHandler.CustomRedirectHandlerException))
             {
                 return Content("An error has occured in the dynamic data store: " + CustomRedirectHandler.CustomRedirectHandlerException);

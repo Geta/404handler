@@ -119,6 +119,15 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         }
 
         /// <summary>
+        /// Reload handler in case if it has error and handler was not created properly.
+        /// </summary>
+        public static void ReloadCustomRedirectHandler()
+        {
+            CustomRedirectHandlerException = string.Empty;
+            var temp = Current;
+        }
+
+        /// <summary>
         /// Gets the handler from the cache, if it has been stored there.
         /// </summary>
         /// <returns>An instanciated CustomRedirectHandler if found in the cache, null if not found</returns>
