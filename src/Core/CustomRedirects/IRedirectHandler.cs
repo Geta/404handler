@@ -8,8 +8,10 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// Returns custom redirect for the not found url
         /// </summary>
         /// <param name="urlNotFound"></param>
-        /// <param name="referrer"></param>
         /// <returns></returns>
+        CustomRedirect Find(Uri urlNotFound);
+
+        [Obsolete("Will be removed in the next major version.")]
         CustomRedirect Find(Uri urlNotFound, Uri referrer);
 
         /// <summary>

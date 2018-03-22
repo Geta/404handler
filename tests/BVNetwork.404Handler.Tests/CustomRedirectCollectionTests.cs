@@ -15,7 +15,6 @@ namespace BVNetwork.NotFound.Tests
     {
         private static readonly Uri DefaultNewUri = new Uri("http://example.com/new");
         private static readonly Uri DefaultOldUri = new Uri("http://example.com/old");
-        private static readonly Uri DefaultReferrer = new Uri("http://example.com/referrer");
         private static readonly string RelativeUrlWithParams = "/old?param1=value1&param2=value2";
         private readonly IConfiguration _configuration;
 
@@ -41,7 +40,7 @@ namespace BVNetwork.NotFound.Tests
             var redirect = new CustomRedirect(storedUrl, DefaultNewUri.ToString());
             _sut.Add(redirect);
 
-            var actual = _sut.Find(notFoundUrl.ToUri(), DefaultReferrer);
+            var actual = _sut.Find(notFoundUrl.ToUri());
 
             Assert.Equal(redirect.NewUrl, actual.NewUrl);
         }
@@ -56,7 +55,7 @@ namespace BVNetwork.NotFound.Tests
             };
             _sut.Add(redirect);
 
-            var actual = _sut.Find($"{storedUrl}/page".ToUri(), DefaultReferrer);
+            var actual = _sut.Find($"{storedUrl}/page".ToUri());
 
             Assert.Equal(redirect.NewUrl, actual.NewUrl);
         }
@@ -69,7 +68,7 @@ namespace BVNetwork.NotFound.Tests
             var newRedirectUrlWithPath = $"{redirect.NewUrl}/page";
             _sut.Add(redirect);
 
-            var actual = _sut.Find($"{storedUrl}/page".ToUri(), DefaultReferrer);
+            var actual = _sut.Find($"{storedUrl}/page".ToUri());
 
             Assert.Equal(newRedirectUrlWithPath, actual.NewUrl);
         }
@@ -84,7 +83,7 @@ namespace BVNetwork.NotFound.Tests
             };
             _sut.Add(redirect);
 
-            var actual = _sut.Find($"{storedUrl}/page".ToUri(), DefaultReferrer);
+            var actual = _sut.Find($"{storedUrl}/page".ToUri());
 
             Assert.Null(actual);
         }
@@ -96,7 +95,7 @@ namespace BVNetwork.NotFound.Tests
             var newUrl = "http://example.com/new";
             WithProvider(oldUrl, newUrl);
 
-            var actual = _sut.Find(oldUrl.ToUri(), DefaultReferrer);
+            var actual = _sut.Find(oldUrl.ToUri());
 
             Assert.Equal(newUrl, actual.NewUrl);
         }
@@ -107,7 +106,7 @@ namespace BVNetwork.NotFound.Tests
             var oldUrl = "http://example.com/old";
             WithProvider(oldUrl, null);
 
-            var actual = _sut.Find(oldUrl.ToUri(), DefaultReferrer);
+            var actual = _sut.Find(oldUrl.ToUri());
 
             Assert.Null(actual);
         }
@@ -116,19 +115,23 @@ namespace BVNetwork.NotFound.Tests
 
         /// <summary>
         /// https://github.com/Geta/404handler/issues/46
+        /// https://github.com/Geta/404handler/issues/90
         /// </summary>
         [Theory]
-        [InlineData("http://localhost:80/en/about-us/news-events-wrong-word")]
-        [InlineData("http://localhost:80/en/about-us/news-events/wrong-page")]
-        public void Find_should_not_cause_redirect_loop(string notFoundUrl)
+        [InlineData("/en/about-us/", "/en/about-us/news-events", "http://localhost:80/en/about-us/news-events-wrong-word")]
+        [InlineData("/en/about-us/", "/en/about-us/news-events", "http://localhost:80/en/about-us/news-events/wrong-page")]
+        [InlineData("/resources/b", "/resources/blog", "http://localhost:80/resources/blog/thisisablog")]
+        [InlineData("/product/health", "/product/health-insurance", "http://localhost:80/product/health-insurance-article/what-hipaa-and-how-will-it-affect-your-small-business?q=article/what-hipaa-and-how-will-it-affect-your-small-business")]
+        [InlineData("/resources/articles/smal", "/resources/articles/small-business", "http://localhost:80/resources/articles/small-business/understanding-financial-statements")]
+        [InlineData("/bar", "/blog", "http://localhost:80/barr")]
+        public void Find_should_not_cause_redirect_loop(string fromUrl, string toUrl, string notFoundUrl)
         {
-            var redirect = new CustomRedirect("/en/about-us/", "/en/about-us/news-events");
+            var redirect = new CustomRedirect(fromUrl, toUrl);
             _sut.Add(redirect);
 
-            var first = _sut.Find(notFoundUrl.ToUri(), DefaultReferrer);
-            var second = _sut.Find(first.NewUrl.ToUri(), notFoundUrl.ToUri());
+            var actual = _sut.Find(notFoundUrl.ToUri());
 
-            Assert.Null(second);
+            Assert.Null(actual);
         }
 
         /// <summary>
@@ -156,7 +159,7 @@ namespace BVNetwork.NotFound.Tests
             var redirect = new CustomRedirect("/something", expected);
             _sut.Add(redirect);
 
-            var actual = _sut.Find(redirect.OldUrl.ToUri(), DefaultReferrer);
+            var actual = _sut.Find(redirect.OldUrl.ToUri());
 
             Assert.Equal(expected, actual.NewUrl);
         }

@@ -29,17 +29,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// </summary>
         private readonly Dictionary<string, CustomRedirect> _quickLookupTable = new Dictionary<string, CustomRedirect>(StringComparer.OrdinalIgnoreCase);
 
-        public CustomRedirect Find(Uri urlNotFound, Uri referrer)
-        {
-            if (IsLoop(referrer))
-            {
-                return null;
-            }
-
-            return Find(urlNotFound);
-        }
-
-        private CustomRedirect Find(Uri urlNotFound)
+        public CustomRedirect Find(Uri urlNotFound)
         {
             // Handle absolute addresses first
             var url = urlNotFound.AbsoluteUri;
@@ -94,31 +84,40 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             using (var enumerator = _quickLookupTable.GetEnumerator())
                 while (enumerator.MoveNext())
                 {
-                    var key = enumerator.Current.Key;
+                    var oldUrl = enumerator.Current.Key;
                     // See if this "old" url (the one that cannot be found) starts with one
-                    if (key != null && url.StartsWith(key, StringComparison.InvariantCultureIgnoreCase))
+                    if (oldUrl != null && url.StartsWith(oldUrl, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        var foundRedirect = _quickLookupTable[key];
-                        var cr = foundRedirect;
-                        if (cr != null && cr.State == (int)DataStoreHandler.State.Ignored)
+                        var cr = _quickLookupTable[oldUrl];
+                        if (cr.State == (int)DataStoreHandler.State.Ignored)
                         {
                             return null;
                         }
-                        if (cr != null && cr.WildCardSkipAppend)
+                        if (cr.WildCardSkipAppend)
                         {
                             // We'll redirect without appending the 404 url
                             return cr;
+                        }
+
+                        if (!UrlIsOldUrlsSubSegment(url, oldUrl))
+                        {
+                            return null;
                         }
 
                         // We need to append the 404 to the end of the
                         // new one. Make a copy of the redir object as we
                         // are changing it.
                         var redirCopy = new CustomRedirect(cr);
-                        redirCopy.NewUrl = redirCopy.NewUrl + url.Substring(key.Length);
+                        redirCopy.NewUrl = redirCopy.NewUrl + url.Substring(oldUrl.Length);
                         return redirCopy;
                     }
                 }
             return null;
+        }
+
+        private static bool UrlIsOldUrlsSubSegment(string url, string fromUrl)
+        {
+            return url.Substring(fromUrl.Length).StartsWith("/");
         }
 
         private CustomRedirect FindInProviders(string oldUrl)
@@ -130,13 +129,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 if (newUrl != null) return new CustomRedirect(oldUrl, newUrl);
             }
             return null;
-        }
-
-        private bool IsLoop(Uri referrer)
-        {
-            if (referrer == null) return false;
-            var previousRedirect = Find(referrer);
-            return previousRedirect != null;
         }
 
         public IEnumerator<CustomRedirect> GetEnumerator()
