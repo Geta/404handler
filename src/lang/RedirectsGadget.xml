@@ -101,7 +101,7 @@
                 <importdeletedsuccess>{0} URLer ble importert.</importdeletedsuccess>
                 <importnone>Ingen videresendimnger kunne bli importert</importnone>
                 <importinfo>Importer videresendinger fra en XML-fil </importinfo>
-                <importDeleted>Importering slettet {0} URLer fra en tekstfil</importDeleted>
+                <importDeleted>Importering slettet (410) URLer fra en tekstfil</importDeleted>
                 <ignoredremoved>Alle {0} ignorerte forslag ble permanent slettet</ignoredremoved>
                 <suggestionsdeleted>Forslag ble slettet</suggestionsdeleted>
                 <redirectsdeleted>Videresendinger ble slettet</redirectsdeleted>
