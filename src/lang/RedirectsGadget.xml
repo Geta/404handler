@@ -60,4 +60,63 @@
             </redirects>
         </gadget>
     </language>
+    <language name="Norsk" id="NO">
+        <gadget>
+            <redirects>
+                <ignored>Ignorert</ignored>
+                <title>Tilpassede videresendinger</title>
+                <name>Administrér videresendingsregler</name>
+                <description>Administrasjon av tilpassede videresendinger</description>
+                <count>Antall videresendinger:</count>
+                <oldurl>Gammel URL</oldurl>
+                <newurl>Ny URL</newurl>
+                <info>
+                    Med gadgeten for håndtering av 404-feil kan du legge til nye videresendinger, slette eller søke opp eksisterende videresendingsregler.
+                    «Gammel URL» er unik, noe som betyr at om du legger til videresendingsregler for samme (gamle) URL, så vil den siste skrive over den første.
+                </info>
+                <delete>Slett</delete>
+                <configure>Slett alle</configure>
+                <cleartext>Velg «OK» for å slette alle videresendingsregler</cleartext>
+                <note>Dette kan du ikke angre på, kompis.</note>
+                <search>Søk</search>
+                <searchresult>Ditt søk etter &lt;b&gt;{0}&lt;/b&gt; ga &lt;b&gt;{1}&lt;/b&gt; treff.</searchresult>
+                <wildcard>Jokertegn («wiildcard»)</wildcard>
+                <storedredirects>Det er for tiden lagret &lt;b&gt;{0}&lt;/b&gt; videresendingsregler</storedredirects>
+                <saveredirect>Videresendingsregel med gammel URL &lt;b&gt;{0}&lt;/b&gt; og ny URL &lt;b&gt;{1}&lt;/b&gt; ble lagret.</saveredirect>
+                <inactiveredirects>For å se videresendingsregler, huk av for «Vis videresendinger»</inactiveredirects>
+                <showredirects>Vis videresendinger</showredirects>
+                <redirectscount>Viser videresendinger  {0}-{1} av {2}</redirectscount>
+                <suggestionscount>Forslag: {0}-{1} av {2}</suggestionscount>
+                <split>…</split>
+                <ignoreexplanation>Ved å ignorere ett forslag, vil det ikke bli logget noe mer for den gitte URLen. Forslaget vil også bli sletta fra listen</ignoreexplanation>
+                <ignoreredirect>Videresending med URL &lt;b&gt;{0}&lt;/b&gt; ble lagt til i ignorér-lista</ignoreredirect>
+                <ignore>Ignorér</ignore>
+                <storedsuggestions>Basert på de loggede 404-feilene, er det &lt;b&gt;{0}&lt;/b&gt; forslag til tilpassede videresendinger.</storedsuggestions>
+                <andsuggestions>og &lt;b&gt;{0}&lt;/b&gt; forslag til tilpassede videresendinger</andsuggestions>
+                <searchsuggestions>Ditt søk etter &lt;b&gt;{0}&lt;/b&gt; ga &lt;b&gt;{1}&lt;/b&gt; forslag.</searchsuggestions>
+                <ignoredsuggestions>Det er for tiden lagret &lt;b&gt;{0}&lt;/b&gt; ignorerte forslag til videresendinger.</ignoredsuggestions>
+                <unignore>Ikke ignorér</unignore>
+                <url>URL</url>
+                <importsuccess>{0} videresendinger ble importert.</importsuccess>
+                <importdeletedsuccess>{0} URLer ble importert.</importdeletedsuccess>
+                <importnone>Ingen videresendimnger kunne bli importert</importnone>
+                <importinfo>Importer videresendinger fra en XML-fil </importinfo>
+                <importDeleted>Importering slettet (410) URLer fra en tekstfil</importDeleted>
+                <ignoredremoved>Alle {0} ignorerte forslag ble permanent slettet</ignoredremoved>
+                <suggestionsdeleted>Forslag ble slettet</suggestionsdeleted>
+                <redirectsdeleted>Videresendinger ble slettet</redirectsdeleted>
+                <suggesteionsdeleteinfo1>Permanent sletting av alle forslag med mindre enn</suggesteionsdeleteinfo1>
+                <suggesteionsdeleteinfo2>feilmeldinger eldre enn</suggesteionsdeleteinfo2>
+                <suggesteionsdeleteinfo3>dager</suggesteionsdeleteinfo3>
+                <deleteignoreinfo>Permanent sletting av alle ignorerte forslag</deleteignoreinfo>
+                <deleteallSuggestions>Permanent sletting av alle forslag</deleteallSuggestions>
+                <deleteallredirects>Permanent sletting av alle tilpassede videreseninger</deleteallredirects>
+                <Administerinfo>Rydd opp alle videresendingsforslag eller ignorerte URLer, eller importer/eksporter videresendinger fra/til en XML-fil.</Administerinfo>
+                <deletedurls>Det er for tiden &lt;b&gt;{0}&lt;/b&gt; URLer som returnerer en Slettet-respons. Dette forteller søkemotrer (crawlers) at disse URLene skal slettes fra søkeindeksen.</deletedurls>
+                <exportredirects>Eksporter videresendinger til en XML-fil</exportredirects>
+                <invalidxmlfile>Filen som ble lasta opp er ikke en gyldig XML-fil. Vennligst last opp en som funker.</invalidxmlfile>
+                <invalidtxtfile>Filen som ble lasta opp er ikke en gyldig tekstfil. Vennligst last opp en som funker.</invalidtxtfile>
+            </redirects>
+        </gadget>
+    </language>
 </languages>
