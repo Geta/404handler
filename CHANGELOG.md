@@ -9,10 +9,10 @@ All notable changes to this project will be documented in this file.
 - Uploaded file type checks
 
 ### Changed
-- Fixed thread abort exception in log
-- Fixed exception when referrer parameter is null
-- Fixed suggestion list fail when no suggestions
-- Fixed redirect loops
+- [#89](https://github.com/Geta/404handler/issues/89) Fixed thread abort exception in log
+- [#84](https://github.com/Geta/404handler/issues/84) Fixed exception when referrer parameter is null
+- [#92](https://github.com/Geta/404handler/issues/92) Fixed suggestion list fail when no suggestions
+- [#93](https://github.com/Geta/404handler/issues/93) Fixed redirect loops
 
 ## [11.1.5], [10.3.4]
 
