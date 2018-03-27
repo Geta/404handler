@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.1.8], [10.3.7]
+
+### Added
+- Norwegian translation for widget
+- Uploaded file type checks
+
+### Changed
+- Fixed thread abort exception in log
+- Fixed exception when referrer parameter is null
+- Fixed suggestion list fail when no suggestions
+- Fixed redirect loops
+
 ## [11.1.5], [10.3.4]
 
 ### Changed
