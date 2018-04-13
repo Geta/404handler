@@ -166,13 +166,23 @@ namespace BVNetwork.NotFound.Tests
             Assert.Equal(expected, actual.NewUrl);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
         [Fact]
         public void Find_finds_redirect_ignoring_query_string()
         {
             var requestUrl = "/old/?param1=value1&param2=value2";
+            var storedUrl = "/old/";
+            var redirect = new CustomRedirect(storedUrl, DefaultNewUri.PathAndQuery);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(requestUrl.ToUri());
+
+            Assert.NotNull(actual);
+        }
+
+        [Fact]
+        public void Find_finds_redirect_with_sub_segment_ignoring_query_string()
+        {
+            var requestUrl = "/old/segment/?param1=value1&param2=value2";
             var storedUrl = "/old/";
             var redirect = new CustomRedirect(storedUrl, DefaultNewUri.PathAndQuery);
             _sut.Add(redirect);

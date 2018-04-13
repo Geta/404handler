@@ -121,12 +121,12 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             {
                 var i = u.IndexOf("?", StringComparison.Ordinal);
                 return i < 0 ? u : u.Substring(0, i);
-
             }
 
-            var urlWithoutQuery = RemoveQueryString(url);
-            var isSameUrl = urlWithoutQuery.Equals(oldUrl, StringComparison.OrdinalIgnoreCase);
-            var isPartOfOldUrl = urlWithoutQuery.Substring(oldUrl.Length).StartsWith("/");
+            var normalizedUrlWithoutQuery = RemoveQueryString(url).TrimEnd('/');
+            var normalizedOldUrl = oldUrl.TrimEnd('/');
+            var isSameUrl = normalizedUrlWithoutQuery.Equals(normalizedOldUrl, StringComparison.OrdinalIgnoreCase);
+            var isPartOfOldUrl = normalizedUrlWithoutQuery.Substring(normalizedOldUrl.Length).StartsWith("/");
             return isSameUrl || isPartOfOldUrl;
         }
 
