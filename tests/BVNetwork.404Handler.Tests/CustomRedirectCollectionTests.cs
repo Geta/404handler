@@ -16,6 +16,7 @@ namespace BVNetwork.NotFound.Tests
         private static readonly Uri DefaultNewUri = new Uri("http://example.com/new");
         private static readonly Uri DefaultOldUri = new Uri("http://example.com/old");
         private static readonly string RelativeUrlWithParams = "/old?param1=value1&param2=value2";
+        private static readonly string RelativeUrlWithSlashAndParams = "/old/?param1=value1&param2=value2";
         private readonly IConfiguration _configuration;
 
         private readonly CustomRedirectCollection _sut;
@@ -30,7 +31,8 @@ namespace BVNetwork.NotFound.Tests
         {
             new object[] { DefaultOldUri.AbsoluteUri, DefaultOldUri.AbsoluteUri },
             new object[] { DefaultOldUri.PathAndQuery, DefaultOldUri.PathAndQuery },
-            new object[] { HttpUtility.HtmlEncode(RelativeUrlWithParams), RelativeUrlWithParams }
+            new object[] { HttpUtility.HtmlEncode(RelativeUrlWithParams), RelativeUrlWithParams },
+            new object[] { HttpUtility.HtmlEncode(RelativeUrlWithSlashAndParams), RelativeUrlWithSlashAndParams }
         };
 
         [Theory]
@@ -162,6 +164,22 @@ namespace BVNetwork.NotFound.Tests
             var actual = _sut.Find(redirect.OldUrl.ToUri());
 
             Assert.Equal(expected, actual.NewUrl);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [Fact]
+        public void Find_finds_redirect_ignoring_query_string()
+        {
+            var requestUrl = "/old/?param1=value1&param2=value2";
+            var storedUrl = "/old/";
+            var redirect = new CustomRedirect(storedUrl, DefaultNewUri.PathAndQuery);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(requestUrl.ToUri());
+
+            Assert.NotNull(actual);
         }
 
         private void WithProvider(string oldUrl, string newUrl)

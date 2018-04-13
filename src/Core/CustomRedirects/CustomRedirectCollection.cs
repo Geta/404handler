@@ -115,9 +115,19 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return null;
         }
 
-        private static bool UrlIsOldUrlsSubSegment(string url, string fromUrl)
+        private static bool UrlIsOldUrlsSubSegment(string url, string oldUrl)
         {
-            return url.Substring(fromUrl.Length).StartsWith("/");
+            string RemoveQueryString(string u)
+            {
+                var i = u.IndexOf("?", StringComparison.Ordinal);
+                return i < 0 ? u : u.Substring(0, i);
+
+            }
+
+            var urlWithoutQuery = RemoveQueryString(url);
+            var isSameUrl = urlWithoutQuery.Equals(oldUrl, StringComparison.OrdinalIgnoreCase);
+            var isPartOfOldUrl = urlWithoutQuery.Substring(oldUrl.Length).StartsWith("/");
+            return isSameUrl || isPartOfOldUrl;
         }
 
         private CustomRedirect FindInProviders(string oldUrl)
