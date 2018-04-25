@@ -48,7 +48,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 // Add redirect
                 dynamicHandler.SaveCustomRedirect(redirect);
             }
-            DataStoreEventHandlerHook.DataStoreUpdated();
+            ClearCache();
         }
 
         /// <summary>

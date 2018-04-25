@@ -83,7 +83,7 @@ namespace BVNetwork.NotFound.Controllers
             //
             List<CustomRedirect> customRedirectList = GetSuggestions(null);
             string actionInfo = string.Format(LocalizationService.Current.GetString("/gadget/redirects/saveredirect"), oldUrl, newUrl);
-            DataStoreEventHandlerHook.DataStoreUpdated();
+            CustomRedirectHandler.ClearCache();
             var viewData = GetRedirectIndexViewData(pageNumber, customRedirectList, actionInfo, null, pageSize, true, true);
             if (customRedirectList.Count > 0)
             {
@@ -124,7 +124,7 @@ namespace BVNetwork.NotFound.Controllers
             // Get hold of the datastore
             DataStoreHandler dsHandler = new DataStoreHandler();
             dsHandler.SaveCustomRedirect(new CustomRedirect(oldUrl.Trim(), newUrl.Trim(), skipWildCardAppend == null ? false : true));
-            DataStoreEventHandlerHook.DataStoreUpdated();
+            CustomRedirectHandler.ClearCache();
 
         }
 
@@ -141,7 +141,7 @@ namespace BVNetwork.NotFound.Controllers
             redirect.State = Convert.ToInt32(DataStoreHandler.State.Ignored);
             DataStoreHandler dsHandler = new DataStoreHandler();
             dsHandler.SaveCustomRedirect(redirect);
-            DataStoreEventHandlerHook.DataStoreUpdated();
+            CustomRedirectHandler.ClearCache();
 
             List<CustomRedirect> customRedirectList = GetSuggestions(searchWord);
             string actionInfo = string.Format(LocalizationService.Current.GetString("/gadget/redirects/ignoreredirect"), oldUrl);
@@ -160,7 +160,7 @@ namespace BVNetwork.NotFound.Controllers
 
             DataStoreHandler dsHandler = new DataStoreHandler();
             dsHandler.DeleteCustomRedirect(oldUrl);
-            DataStoreEventHandlerHook.DataStoreUpdated();
+            CustomRedirectHandler.ClearCache();
             List<CustomRedirect> customRedirectList = GetData(searchWord);
             //Make sure that the searchinfo is contained after an item has been deleted - if there is any.
             return View("Index", GetRedirectIndexViewData(pageNumber, customRedirectList, GetSearchResultInfo(searchWord, customRedirectList.Count, false), searchWord, pageSize, false, true));
@@ -248,7 +248,7 @@ namespace BVNetwork.NotFound.Controllers
             CheckAccess();
             DataStoreHandler dsHandler = new DataStoreHandler();
             dsHandler.DeleteAllCustomRedirects();
-            DataStoreEventHandlerHook.DataStoreUpdated();
+            CustomRedirectHandler.ClearCache();
             ViewData["information"] = LocalizationService.Current.GetString("/gadget/redirects/redirectsdeleted");
             return View("Administer");
         }
@@ -470,7 +470,7 @@ namespace BVNetwork.NotFound.Controllers
             redirect.State = Convert.ToInt32(DataStoreHandler.State.Deleted);
             DataStoreHandler dsHandler = new DataStoreHandler();
             dsHandler.SaveCustomRedirect(redirect);
-            DataStoreEventHandlerHook.DataStoreUpdated();
+            CustomRedirectHandler.ClearCache();
 
             // delete rows from DB
             var dbAccess = DataAccessBaseEx.GetWorker();
@@ -478,7 +478,7 @@ namespace BVNetwork.NotFound.Controllers
 
             //
             List<CustomRedirect> customRedirectList = GetDeletedUrls();
-            DataStoreEventHandlerHook.DataStoreUpdated();
+            CustomRedirectHandler.ClearCache();
             return Deleted();
         }
     }
