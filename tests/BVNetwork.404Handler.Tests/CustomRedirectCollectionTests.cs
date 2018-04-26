@@ -117,11 +117,26 @@ namespace BVNetwork.NotFound.Tests
 
         /// <summary>
         /// https://github.com/Geta/404handler/issues/46
+        /// </summary>
+        [Theory]
+        [InlineData("/en/about-us/", "/en/about-us/news-events", "http://localhost:80/en/about-us/news-events-wrong-word",
+                    "/en/about-us/news-events/news-events-wrong-word")]
+        [InlineData("/en/about-us/", "/en/about-us/news-events", "http://localhost:80/en/about-us/news-events/wrong-page",
+                    "/en/about-us/news-events/news-events/wrong-page")]
+        public void Find_should_append_sub_segment(string fromUrl, string toUrl, string notFoundUrl, string expected)
+        {
+            var redirect = new CustomRedirect(fromUrl, toUrl);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(notFoundUrl.ToUri());
+
+            Assert.Equal(expected, actual.NewUrl);
+        }
+
+        /// <summary>
         /// https://github.com/Geta/404handler/issues/90
         /// </summary>
         [Theory]
-        [InlineData("/en/about-us/", "/en/about-us/news-events", "http://localhost:80/en/about-us/news-events-wrong-word")]
-        [InlineData("/en/about-us/", "/en/about-us/news-events", "http://localhost:80/en/about-us/news-events/wrong-page")]
         [InlineData("/resources/b", "/resources/blog", "http://localhost:80/resources/blog/thisisablog")]
         [InlineData("/product/health", "/product/health-insurance", "http://localhost:80/product/health-insurance-article/what-hipaa-and-how-will-it-affect-your-small-business?q=article/what-hipaa-and-how-will-it-affect-your-small-business")]
         [InlineData("/resources/articles/smal", "/resources/articles/small-business", "http://localhost:80/resources/articles/small-business/understanding-financial-statements")]
