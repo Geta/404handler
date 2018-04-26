@@ -99,20 +99,32 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                             return cr;
                         }
 
-                        if (!UrlIsOldUrlsSubSegment(url, oldUrl))
+                        if (UrlIsOldUrlsSubSegment(url, oldUrl))
                         {
-                            return null;
+                            return CreateSubSegmentRedirect(url, cr, oldUrl);
                         }
-
-                        // We need to append the 404 to the end of the
-                        // new one. Make a copy of the redir object as we
-                        // are changing it.
-                        var redirCopy = new CustomRedirect(cr);
-                        redirCopy.NewUrl = redirCopy.NewUrl + url.Substring(oldUrl.Length);
-                        return redirCopy;
                     }
                 }
             return null;
+        }
+
+        private static CustomRedirect CreateSubSegmentRedirect(string url, CustomRedirect cr, string oldUrl)
+        {
+            string AppendSlash(string s)
+            {
+                return s.EndsWith("/") ? s : $"{s}/";
+            }
+
+            string RemoveSlash(string s)
+            {
+                return s.StartsWith("/") ? s.TrimStart('/') : s;
+            }
+
+            var redirCopy = new CustomRedirect(cr);
+            var newUrl = AppendSlash(redirCopy.NewUrl);
+            var appendSegment = RemoveSlash(url.Substring(oldUrl.Length));
+            redirCopy.NewUrl = $"{newUrl}{appendSegment}";
+            return redirCopy;
         }
 
         private static bool UrlIsOldUrlsSubSegment(string url, string oldUrl)
