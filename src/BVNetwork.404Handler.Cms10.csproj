@@ -171,7 +171,6 @@
     <Compile Include="Core\NotFoundPage\PageContent.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Data\DataStoreEventHandler.cs" />
     <Compile Include="Core\Data\DataStoreFactory.cs" />
     <Compile Include="Core\Data\DataStoreHandler.cs" />
     <Compile Include="Core\Data\DataAccessBaseEx.cs" />
