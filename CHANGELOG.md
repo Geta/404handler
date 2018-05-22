@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.1.12], [10.3.11]
+
+### Changed
+- [#106](https://github.com/Geta/404handler/issues/106) Fixed validation error appearance on the search field when submitting new redirect.
+
 ## [11.1.8], [10.3.7]
 
 ### Added
