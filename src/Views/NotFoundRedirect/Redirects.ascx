@@ -23,7 +23,7 @@
                          "", // css class
                         "Index",
                         new { showRedirects = !Model.ShowRedirects })%> |
-                    <input type="text" class="notfound-search" name="searchWord" required/>
+                     <input type="text" class="notfound-search" name="searchWord" />
                      <button type="submit" class="notfoundbutton search"><%=Html.Translate("/gadget/redirects/search")%></button>
                     <input type="hidden" name="pageSize" value='<%=Model.PageSize %>' />
                     <input type="hidden" name="isSuggestions" value='<%=Model.IsSuggestions %>' />
