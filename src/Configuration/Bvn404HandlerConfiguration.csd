@@ -48,6 +48,11 @@
             <externalTypeMoniker name="/d0ed9acb-0435-4532-afdd-b5115bc4d562/String" />
           </type>
         </attributeProperty>
+        <attributeProperty name="LogWithHostname" isRequired="false" isKey="false" isDefaultCollection="false" xmlName="logWithHostname" isReadOnly="false" defaultValue="false">
+          <type>
+            <externalTypeMoniker name="/d0ed9acb-0435-4532-afdd-b5115bc4d562/Boolean" />
+          </type>
+        </attributeProperty>
       </attributeProperties>
       <elementProperties>
         <elementProperty name="Bvn404HandlerProviders" isRequired="false" isKey="false" isDefaultCollection="true" xmlName="providers" isReadOnly="false">

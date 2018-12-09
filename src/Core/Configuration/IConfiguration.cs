@@ -13,5 +13,6 @@ namespace BVNetwork.NotFound.Core.Configuration
         LoggerMode Logging { get; }
         int ThreshHold { get; }
         IEnumerable<INotFoundHandler> Providers { get; }
+        bool LogWithHostname { get; }
     }
 }

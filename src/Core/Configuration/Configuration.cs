@@ -25,6 +25,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         private static bool _fallbackToEPiServerErrorIsRead;
         private const string DefIgnoredExtensions = "jpg,gif,png,css,js,ico,swf,woff";
         private static List<string> _ignoredResourceExtensions;
+        private static bool? _logWithHostname;
 
         public const int CurrentVersion = 3;
 
@@ -119,6 +120,17 @@ namespace BVNetwork.NotFound.Core.Configuration
                 }
 
                 return _logging;
+            }
+        }
+
+        /// <summary>
+        /// Will hostname be included when logging unhandled 404s.
+        /// </summary>
+        public bool LogWithHostname
+        {
+            get
+            {
+                return Bvn404HandlerConfiguration.Instance.LogWithHostname;
             }
         }
 
