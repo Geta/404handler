@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using BVNetwork.NotFound.Core.CustomRedirects;
+using EPiServer.Data;
 
 namespace BVNetwork.NotFound.Core.Data
 {
     public class DataStoreHandler : IRedirectsService
     {
+        private readonly IRepository<CustomRedirect, Identity> _repository;
+
+        public DataStoreHandler()
+        {
+            _repository = new DdsRedirectRepository();
+        }
+
         public IEnumerable<CustomRedirect> GetAll()
         {
             return GetCustomRedirects(false);
@@ -63,12 +71,9 @@ namespace BVNetwork.NotFound.Core.Data
             //if there is a match, replace the value.
             if (match != null)
             {
-                store.Save(currentCustomRedirect, match.Id);
+                currentCustomRedirect.Id = match.Id;
             }
-            else
-            {
-                store.Save(currentCustomRedirect);
-            }
+            _repository.Save(currentCustomRedirect);
         }
 
         /// <summary>
