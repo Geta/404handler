@@ -6,6 +6,8 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
     {
         IEnumerable<CustomRedirect> GetAll();
         IEnumerable<CustomRedirect> GetAllExcludingIgnored();
+        IEnumerable<CustomRedirect> GetIgnored();
+        IEnumerable<CustomRedirect> GetDeleted();
         void AddOrUpdate(CustomRedirect redirect);
     }
 }

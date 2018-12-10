@@ -199,18 +199,16 @@ namespace BVNetwork.NotFound.Controllers
         public ActionResult Ignored()
         {
             CheckAccess();
-            DataStoreHandler dsHandler = new DataStoreHandler();
-            var ignoredRedirects = dsHandler.GetIgnoredRedirect();
+            var ignoredRedirects = _redirectsService.GetIgnored().ToList();
             return View("Ignored", ignoredRedirects);
         }
+
         public ActionResult Deleted()
         {
             CheckAccess();
-            DataStoreHandler dsHandler = new DataStoreHandler();
-            var deletedRedirects = dsHandler.GetDeletedRedirect();
+            var deletedRedirects = _redirectsService.GetDeleted().ToList();
             return View("Deleted", deletedRedirects);
         }
-
 
         public ActionResult Unignore(string url)
         {
@@ -437,14 +435,8 @@ namespace BVNetwork.NotFound.Controllers
 
             return customRedirectList;
         }
-        public List<CustomRedirect> GetDeletedUrls()
-        {
-            DataStoreHandler dsHandler = new DataStoreHandler();
-            List<CustomRedirect> customRedirectList;
-            customRedirectList = dsHandler.GetDeletedRedirect();
 
-            return customRedirectList;
-        }
+        public List<CustomRedirect> GetDeletedUrls() => _redirectsService.GetDeleted().ToList();
 
         public static string GadgetEditMenuName
         {
