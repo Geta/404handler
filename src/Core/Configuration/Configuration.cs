@@ -25,7 +25,6 @@ namespace BVNetwork.NotFound.Core.Configuration
         private static bool _fallbackToEPiServerErrorIsRead;
         private const string DefIgnoredExtensions = "jpg,gif,png,css,js,ico,swf,woff";
         private static List<string> _ignoredResourceExtensions;
-        private static bool? _logWithHostname;
 
         public const int CurrentVersion = 3;
 
