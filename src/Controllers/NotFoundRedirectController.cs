@@ -23,7 +23,7 @@ namespace BVNetwork.NotFound.Controllers
     [Authorize]
     public class NotFoundRedirectController : Controller
     {
-        private IRedirectsService _redirectsService;
+        private readonly IRedirectsService _redirectsService;
         private static readonly ILogger Logger = LogManager.GetLogger();
 
         public NotFoundRedirectController()
