@@ -6,5 +6,6 @@ namespace BVNetwork.NotFound.Core.Data
         where TEntity : class
     {
         void Save(CustomRedirect customRedirect);
+        void Delete(CustomRedirect customRedirect);
     }
 }

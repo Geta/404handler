@@ -16,6 +16,11 @@ namespace BVNetwork.NotFound.Core.Data
             Store.Save(customRedirect);
         }
 
+        public void Delete(CustomRedirect customRedirect)
+        {
+            Store.Delete(customRedirect);
+        }
+
         public CustomRedirect GetByOldUrl(string oldUrl)
         {
             return Store.Find<CustomRedirect>(OldUrlPropertyName, oldUrl.ToLower()).SingleOrDefault();

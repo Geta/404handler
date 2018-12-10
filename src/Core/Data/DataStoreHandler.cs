@@ -135,11 +135,10 @@ namespace BVNetwork.NotFound.Core.Data
         private int DeleteAllCustomRedirectsInternal()
         {
             // In order to avoid a database timeout, we delete the items one by one.
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
             var redirects = GetAll().ToList();
             foreach (var redirect in redirects)
             {
-                store.Delete(redirect);
+                _repository.Delete(redirect);
             }
             return redirects.Count;
         }
@@ -148,11 +147,10 @@ namespace BVNetwork.NotFound.Core.Data
         public int DeleteAllIgnoredRedirects()
         {
             // In order to avoid a database timeout, we delete the items one by one.
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
             var ignoredRedirects = GetIgnored().ToList();
             foreach (var redirect in ignoredRedirects)
             {
-                store.Delete(redirect);
+                _repository.Delete(redirect);
             }
             return ignoredRedirects.Count;
         }
