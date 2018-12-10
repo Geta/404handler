@@ -138,7 +138,7 @@ namespace BVNetwork.NotFound.Controllers
             // add redirect to dds with state "ignored"
             var redirect = new CustomRedirect();
             redirect.OldUrl = oldUrl;
-            redirect.State = Convert.ToInt32(DataStoreHandler.State.Ignored);
+            redirect.State = Convert.ToInt32(DataStoreHandler.RedirectState.Ignored);
             DataStoreHandler dsHandler = new DataStoreHandler();
             dsHandler.SaveCustomRedirect(redirect);
             CustomRedirectHandler.ClearCache();
@@ -332,7 +332,7 @@ namespace BVNetwork.NotFound.Controllers
                         redirects.Add(new CustomRedirect
                         {
                             OldUrl = url,
-                            State = (int)DataStoreHandler.State.Deleted,
+                            State = (int)DataStoreHandler.RedirectState.Deleted,
                         });
                     }
                 }
@@ -430,7 +430,7 @@ namespace BVNetwork.NotFound.Controllers
 
             foreach (KeyValuePair<string, int> redirect in dict)
             {
-                customRedirectList.Add(new CustomRedirect(redirect.Key, Convert.ToInt32(DataStoreHandler.State.Suggestion), redirect.Value));
+                customRedirectList.Add(new CustomRedirect(redirect.Key, Convert.ToInt32(DataStoreHandler.RedirectState.Suggestion), redirect.Value));
             }
 
             return customRedirectList;
@@ -467,7 +467,7 @@ namespace BVNetwork.NotFound.Controllers
             // add redirect to dds with state "deleted"
             var redirect = new CustomRedirect();
             redirect.OldUrl = oldUrl;
-            redirect.State = Convert.ToInt32(DataStoreHandler.State.Deleted);
+            redirect.State = Convert.ToInt32(DataStoreHandler.RedirectState.Deleted);
             DataStoreHandler dsHandler = new DataStoreHandler();
             dsHandler.SaveCustomRedirect(redirect);
             CustomRedirectHandler.ClearCache();

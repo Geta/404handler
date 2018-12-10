@@ -6,7 +6,7 @@ namespace BVNetwork.NotFound.Core.Data
 {
     public class DataStoreHandler
     {
-        public enum State
+        public enum RedirectState
         {
             Saved = 0,
             Suggestion = 1,
@@ -43,7 +43,7 @@ namespace BVNetwork.NotFound.Core.Data
             if (excludeIgnored)
             {
                 customRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                                  where s.State.Equals((int)State.Saved)
+                                  where s.State.Equals((int)RedirectState.Saved)
                                   select s;
             }
             else
@@ -59,7 +59,7 @@ namespace BVNetwork.NotFound.Core.Data
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
 
             var customRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                              where s.State.Equals(State.Ignored)
+                              where s.State.Equals(RedirectState.Ignored)
                               select s;
             return customRedirects.ToList();
         }
@@ -69,7 +69,7 @@ namespace BVNetwork.NotFound.Core.Data
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
 
             var deletedRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                              where s.State.Equals(State.Deleted)
+                              where s.State.Equals(RedirectState.Deleted)
                               select s;
             return deletedRedirects.ToList();
         }
