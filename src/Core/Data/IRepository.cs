@@ -1,11 +1,9 @@
-using BVNetwork.NotFound.Core.CustomRedirects;
-
 namespace BVNetwork.NotFound.Core.Data
 {
-    public interface IRepository<TEntity, TId>
+    public interface IRepository<TEntity>
         where TEntity : class
     {
-        void Save(CustomRedirect customRedirect);
-        void Delete(CustomRedirect customRedirect);
+        void Save(TEntity entity);
+        void Delete(TEntity entity);
     }
 }
