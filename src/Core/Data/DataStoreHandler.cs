@@ -9,10 +9,13 @@ namespace BVNetwork.NotFound.Core.Data
     public class DataStoreHandler : IRedirectsService
     {
         private readonly IRepository<CustomRedirect, Identity> _repository;
+        private readonly IRedirectLoader _redirectLoader;
 
         public DataStoreHandler()
         {
-            _repository = new DdsRedirectRepository();
+            var repository = new DdsRedirectRepository();
+            _repository = repository;
+            _redirectLoader = repository;
         }
 
         public IEnumerable<CustomRedirect> GetAll()
@@ -65,8 +68,7 @@ namespace BVNetwork.NotFound.Core.Data
         [Obsolete]
         public void SaveCustomRedirect(CustomRedirect currentCustomRedirect)
         {
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-            var match = store.Find<CustomRedirect>(OldUrlPropertyName, currentCustomRedirect.OldUrl.ToLower()).SingleOrDefault();
+            var match = _redirectLoader.GetByOldUrl(currentCustomRedirect.OldUrl);
 
             //if there is a match, replace the value.
             if (match != null)
