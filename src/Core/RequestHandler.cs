@@ -119,7 +119,6 @@ namespace BVNetwork.NotFound.Core
             var redirect = _redirectHandler.Find(urlNotFound);
 
             foundRedirect = null;
-            var pathAndQuery = urlNotFound.PathAndQuery;
 
             if (redirect != null)
             {
@@ -134,7 +133,7 @@ namespace BVNetwork.NotFound.Core
                 {
                     // Found it, however, we need to make sure we're not running in an
                     // infinite loop. The new url must not be the referrer to this page
-                    if (string.Compare(redirect.NewUrl, pathAndQuery, StringComparison.InvariantCultureIgnoreCase) != 0)
+                    if (string.Compare(redirect.NewUrl, urlNotFound.PathAndQuery, StringComparison.InvariantCultureIgnoreCase) != 0)
                     {
 
                         foundRedirect = redirect;
@@ -148,7 +147,8 @@ namespace BVNetwork.NotFound.Core
                 if (_configuration.Logging == LoggerMode.On)
                 {
                     // Safe logging
-                    _requestLogger.LogRequest(pathAndQuery, referrer?.ToString());
+                    var logUrl = _configuration.LogWithHostname ? urlNotFound.ToString() : urlNotFound.PathAndQuery;
+                    _requestLogger.LogRequest(logUrl, referrer?.ToString());
                 }
             }
             return false;

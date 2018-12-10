@@ -52,6 +52,11 @@
 				<xs:documentation>The IgnoredResourceExtensions.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="logWithHostname" use="optional" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The LogWithHostname.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="BVNetwork.NotFound.Configuration.Bvn404HandlerProvidersCT">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -62,6 +67,14 @@
 			</xs:element>
 		</xs:choice>
 	</xs:complexType>
+	<xs:complexType name="BVNetwork.NotFound.Configuration.Bvn404HandlerProvidersRemoveCT">
+				<xs:attribute name="name" use="required" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The Name.</xs:documentation>
+				</xs:annotation>
+				</xs:attribute>
+		</xs:complexType>
+	<xs:complexType name="BVNetwork.NotFound.Configuration.Bvn404HandlerProvidersClearCT" />
 	<xs:complexType name="BVNetwork.NotFound.Configuration.Bvn404HandlerProviderCT">
 		<xs:attribute name="name" use="required" type="xs:string">
 			<xs:annotation>

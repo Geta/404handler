@@ -22,19 +22,19 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the Bvn404HandlerConfiguration Configuration Section.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string Bvn404HandlerConfigurationSectionName = "bvn404Handler";
         
         /// <summary>
         /// The XML path of the Bvn404HandlerConfiguration Configuration Section.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string Bvn404HandlerConfigurationSectionPath = "bvn404Handler";
         
         /// <summary>
         /// Gets the Bvn404HandlerConfiguration instance.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public static global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration Instance
         {
             get
@@ -48,7 +48,7 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="Xmlns"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string XmlnsPropertyName = "xmlns";
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace BVNetwork.NotFound.Configuration
         /// This property makes sure that if the configuration file contains the XML namespace,
         /// the parser doesn't throw an exception because it encounters the unknown "xmlns" attribute.
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.XmlnsPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public string Xmlns
         {
@@ -73,7 +73,7 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// Gets a value indicating whether the element is read-only.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public override bool IsReadOnly()
         {
             return false;
@@ -84,13 +84,13 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="RedirectsXmlFile"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string RedirectsXmlFilePropertyName = "redirectsXmlFile";
         
         /// <summary>
         /// Gets or sets the RedirectsXmlFile.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The RedirectsXmlFile.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.RedirectsXmlFilePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public virtual string RedirectsXmlFile
@@ -110,13 +110,13 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="HandlerMode"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string HandlerModePropertyName = "handlerMode";
         
         /// <summary>
         /// Gets or sets the HandlerMode.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The HandlerMode.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.HandlerModePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public virtual string HandlerMode
@@ -136,13 +136,13 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="FileNotFoundPage"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string FileNotFoundPagePropertyName = "fileNotFoundPage";
         
         /// <summary>
         /// Gets or sets the FileNotFoundPage.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The FileNotFoundPage.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.FileNotFoundPagePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public virtual string FileNotFoundPage
@@ -162,13 +162,13 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="Threshold"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string ThresholdPropertyName = "threshold";
         
         /// <summary>
         /// Gets or sets the Threshold.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The Threshold.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.ThresholdPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false, DefaultValue=-1)]
         public virtual int Threshold
@@ -188,13 +188,13 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="BufferSize"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string BufferSizePropertyName = "bufferSize";
         
         /// <summary>
         /// Gets or sets the BufferSize.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The BufferSize.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.BufferSizePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false, DefaultValue=-1)]
         public virtual int BufferSize
@@ -214,13 +214,13 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="Logging"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string LoggingPropertyName = "logging";
         
         /// <summary>
         /// Gets or sets the Logging.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The Logging.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.LoggingPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public virtual string Logging
@@ -240,13 +240,13 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="IgnoredResourceExtensions"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string IgnoredResourceExtensionsPropertyName = "ignoredResourceExtensions";
         
         /// <summary>
         /// Gets or sets the IgnoredResourceExtensions.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The IgnoredResourceExtensions.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.IgnoredResourceExtensionsPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public virtual string IgnoredResourceExtensions
@@ -262,17 +262,43 @@ namespace BVNetwork.NotFound.Configuration
         }
         #endregion
         
+        #region LogWithHostname Property
+        /// <summary>
+        /// The XML name of the <see cref="LogWithHostname"/> property.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
+        internal const string LogWithHostnamePropertyName = "logWithHostname";
+        
+        /// <summary>
+        /// Gets or sets the LogWithHostname.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
+        [global::System.ComponentModel.DescriptionAttribute("The LogWithHostname.")]
+        [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.LogWithHostnamePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false, DefaultValue=false)]
+        public virtual bool LogWithHostname
+        {
+            get
+            {
+                return ((bool)(base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.LogWithHostnamePropertyName]));
+            }
+            set
+            {
+                base[global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.LogWithHostnamePropertyName] = value;
+            }
+        }
+        #endregion
+        
         #region Bvn404HandlerProviders Property
         /// <summary>
         /// The XML name of the <see cref="Bvn404HandlerProviders"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string Bvn404HandlerProvidersPropertyName = "providers";
         
         /// <summary>
         /// Gets or sets the Bvn404HandlerProviders.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The Bvn404HandlerProviders.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration.Bvn404HandlerProvidersPropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=true)]
         public virtual global::BVNetwork.NotFound.Configuration.Bvn404HandlerProviders Bvn404HandlerProviders
@@ -304,7 +330,7 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the individual <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> instances in this collection.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string Bvn404HandlerProviderPropertyName = "add";
         #endregion
         
@@ -313,7 +339,7 @@ namespace BVNetwork.NotFound.Configuration
         /// Gets the type of the <see cref="global::System.Configuration.ConfigurationElementCollection"/>.
         /// </summary>
         /// <returns>The <see cref="global::System.Configuration.ConfigurationElementCollectionType"/> of this collection.</returns>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public override global::System.Configuration.ConfigurationElementCollectionType CollectionType
         {
             get
@@ -325,7 +351,7 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// Gets the name used to identify this collection of elements
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         protected override string ElementName
         {
             get
@@ -341,7 +367,7 @@ namespace BVNetwork.NotFound.Configuration
         /// <returns>
         /// <see langword="true"/> if the element exists in the collection; otherwise, <see langword="false"/>.
         /// </returns>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         protected override bool IsElementName(string elementName)
         {
             return (elementName == global::BVNetwork.NotFound.Configuration.Bvn404HandlerProviders.Bvn404HandlerProviderPropertyName);
@@ -354,7 +380,7 @@ namespace BVNetwork.NotFound.Configuration
         /// <returns>
         /// An <see cref="object"/> that acts as the key for the specified <see cref="global::System.Configuration.ConfigurationElement"/>.
         /// </returns>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         protected override object GetElementKey(global::System.Configuration.ConfigurationElement element)
         {
             return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider)(element)).Name;
@@ -366,7 +392,7 @@ namespace BVNetwork.NotFound.Configuration
         /// <returns>
         /// A new <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/>.
         /// </returns>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         protected override global::System.Configuration.ConfigurationElement CreateNewElement()
         {
             return new global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider();
@@ -378,7 +404,7 @@ namespace BVNetwork.NotFound.Configuration
         /// Gets the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> at the specified index.
         /// </summary>
         /// <param name="index">The index of the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider this[int index]
         {
             get
@@ -391,7 +417,7 @@ namespace BVNetwork.NotFound.Configuration
         /// Gets the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> with the specified key.
         /// </summary>
         /// <param name="name">The key of the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider this[object name]
         {
             get
@@ -406,7 +432,7 @@ namespace BVNetwork.NotFound.Configuration
         /// Adds the specified <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to the <see cref="global::System.Configuration.ConfigurationElementCollection"/>.
         /// </summary>
         /// <param name="add">The <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to add.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public void Add(global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider add)
         {
             base.BaseAdd(add);
@@ -418,7 +444,7 @@ namespace BVNetwork.NotFound.Configuration
         /// Removes the specified <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> from the <see cref="global::System.Configuration.ConfigurationElementCollection"/>.
         /// </summary>
         /// <param name="add">The <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to remove.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public void Remove(global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider add)
         {
             base.BaseRemove(this.GetElementKey(add));
@@ -430,7 +456,7 @@ namespace BVNetwork.NotFound.Configuration
         /// Gets the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> at the specified index.
         /// </summary>
         /// <param name="index">The index of the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider GetItemAt(int index)
         {
             return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(index)));
@@ -440,7 +466,7 @@ namespace BVNetwork.NotFound.Configuration
         /// Gets the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> with the specified key.
         /// </summary>
         /// <param name="name">The key of the <see cref="global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider"/> to retrieve.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider GetItemByKey(string name)
         {
             return ((global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider)(base.BaseGet(((object)(name)))));
@@ -451,7 +477,7 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// Gets a value indicating whether the element is read-only.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public override bool IsReadOnly()
         {
             return false;
@@ -473,7 +499,7 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// Gets a value indicating whether the element is read-only.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         public override bool IsReadOnly()
         {
             return false;
@@ -484,13 +510,13 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="Name"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string NamePropertyName = "name";
         
         /// <summary>
         /// Gets or sets the Name.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The Name.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider.NamePropertyName, IsRequired=true, IsKey=true, IsDefaultCollection=false)]
         public virtual string Name
@@ -510,13 +536,13 @@ namespace BVNetwork.NotFound.Configuration
         /// <summary>
         /// The XML name of the <see cref="Type"/> property.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         internal const string TypePropertyName = "type";
         
         /// <summary>
         /// Gets or sets the Type.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.1.7")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ConfigurationSectionDesigner.CsdFileGenerator", "2.0.3.2")]
         [global::System.ComponentModel.DescriptionAttribute("The Type.")]
         [global::System.Configuration.ConfigurationPropertyAttribute(global::BVNetwork.NotFound.Configuration.Bvn404HandlerProvider.TypePropertyName, IsRequired=false, IsKey=false, IsDefaultCollection=false)]
         public virtual string Type
