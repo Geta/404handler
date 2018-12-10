@@ -5,6 +5,7 @@ using BVNetwork.NotFound.Core.CustomRedirects;
 
 namespace BVNetwork.NotFound.Core.Data
 {
+    [Obsolete]
     public class DataStoreHandler
     {
         private readonly IRedirectsService _redirectsService;
