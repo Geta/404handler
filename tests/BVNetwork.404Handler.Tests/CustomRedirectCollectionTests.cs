@@ -212,7 +212,38 @@ namespace BVNetwork.NotFound.Tests
             var provider = A.Fake<INotFoundHandler>();
             A.CallTo(() => provider.RewriteUrl(A<string>._)).Returns(null);
             A.CallTo(() => provider.RewriteUrl(oldUrl)).Returns(newUrl);
-            A.CallTo(() => _configuration.Providers).Returns(new[] {provider});
+            A.CallTo(() => _configuration.Providers).Returns(new[] { provider });
+        }
+
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/126
+        /// </summary>
+        [Fact]
+        public void Redirect_dont_works_or_not_works_immediately_test_case_one()
+        {
+            var oldUrl = "https://wwww.clicksoftware.com/en/tools-resources/resource-library/landing-pages/";
+            var newUrl = "https://wwww.clicksoftware.com/en/tools-resources/resource-library/";
+            WithProvider(oldUrl, newUrl);
+
+            var actual = _sut.Find(oldUrl.ToUri());
+
+            Assert.Equal(newUrl, actual.NewUrl);
+        }
+
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/126
+        /// </summary>
+        [Theory]
+        [InlineData("/en/tools-resources/resource-library/landing-pages/", "/en/tools-resources/resource-library/", "https://wwww.clicksoftware.com/en/tools-resources/resource-library/landing-pages/",
+            "/en/tools-resources/resource-library/")]
+        public void Redirect_dont_works_or_not_works_immediately_test_case_two(string fromUrl, string toUrl, string notFoundUrl, string expected)
+        {
+            var redirect = new CustomRedirect(fromUrl, toUrl);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(notFoundUrl.ToUri());
+
+            Assert.Equal(expected, actual.NewUrl);
         }
     }
 }
