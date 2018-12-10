@@ -81,7 +81,7 @@
                     <%= Html.Encode(m.OldUrl)%>
                 </td>
                 <td class="longer">
-                    <%if (m.State.Equals((int)DataStoreHandler.RedirectState.Ignored))
+                    <%if (m.State.Equals((int)RedirectState.Ignored))
                       {%>
                     <i>[<%= Html.Translate("/gadget/redirects/ignored")%>]</i>
                     <%}

@@ -81,7 +81,7 @@ namespace BVNetwork.NotFound.Tests
             var storedUrl = "/old";
             var redirect = new CustomRedirect(storedUrl, DefaultNewUri.PathAndQuery)
             {
-                State = (int)DataStoreHandler.RedirectState.Ignored
+                State = (int)RedirectState.Ignored
             };
             _sut.Add(redirect);
 

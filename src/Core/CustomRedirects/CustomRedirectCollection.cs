@@ -89,7 +89,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                     if (oldUrl != null && url.StartsWith(oldUrl, StringComparison.InvariantCultureIgnoreCase))
                     {
                         var cr = _quickLookupTable[oldUrl];
-                        if (cr.State == (int)DataStoreHandler.RedirectState.Ignored)
+                        if (cr.State == (int)RedirectState.Ignored)
                         {
                             return null;
                         }

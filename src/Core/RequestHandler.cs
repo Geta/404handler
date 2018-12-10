@@ -84,7 +84,7 @@ namespace BVNetwork.NotFound.Core
             }
 
             var canHandleRedirect = HandleRequest(context.Request.UrlReferrer, notFoundUri, out var newUrl);
-            if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.RedirectState.Saved)
+            if (canHandleRedirect && newUrl.State == (int)RedirectState.Saved)
             {
                 LogDebug("Handled saved URL", context);
 
@@ -92,7 +92,7 @@ namespace BVNetwork.NotFound.Core
                     .ClearServerError()
                     .RedirectPermanent(newUrl.NewUrl);
             }
-            else if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.RedirectState.Deleted)
+            else if (canHandleRedirect && newUrl.State == (int)RedirectState.Deleted)
             {
                 LogDebug("Handled deleted URL", context);
 
@@ -129,13 +129,13 @@ namespace BVNetwork.NotFound.Core
             if (redirect != null)
             {
                 // Url has been deleted from this site
-                if (redirect.State.Equals((int)DataStoreHandler.RedirectState.Deleted))
+                if (redirect.State.Equals((int)RedirectState.Deleted))
                 {
                     foundRedirect = redirect;
                     return true;
                 }
 
-                if (redirect.State.Equals((int)DataStoreHandler.RedirectState.Saved))
+                if (redirect.State.Equals((int)RedirectState.Saved))
                 {
                     // Found it, however, we need to make sure we're not running in an
                     // infinite loop. The new url must not be the referrer to this page

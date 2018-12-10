@@ -6,14 +6,6 @@ namespace BVNetwork.NotFound.Core.Data
 {
     public class DataStoreHandler
     {
-        public enum RedirectState
-        {
-            Saved = 0,
-            Suggestion = 1,
-            Ignored = 2,
-            Deleted
-        };
-
         private const string OldUrlPropertyName = "OldUrl";
 
         public void SaveCustomRedirect(CustomRedirect currentCustomRedirect)
