@@ -4,8 +4,13 @@ using BVNetwork.NotFound.Core.CustomRedirects;
 
 namespace BVNetwork.NotFound.Core.Data
 {
-    public class DataStoreHandler
+    public class DataStoreHandler : IRedirectsService
     {
+        public void AddOrUpdate(CustomRedirect redirect)
+        {
+            SaveCustomRedirect(redirect);
+        }
+
         private const string OldUrlPropertyName = "OldUrl";
 
         public void SaveCustomRedirect(CustomRedirect currentCustomRedirect)

@@ -24,8 +24,14 @@ namespace BVNetwork.NotFound.Controllers
     [Authorize]
     public class NotFoundRedirectController : Controller
     {
-
+        private IRedirectsService _redirectsService;
         private static readonly ILogger Logger = LogManager.GetLogger();
+
+        public NotFoundRedirectController()
+        {
+            _redirectsService = new DataStoreHandler();
+        }
+
         private void CheckAccess()
         {
             if (!PrincipalInfo.HasEditAccess)
@@ -122,8 +128,7 @@ namespace BVNetwork.NotFound.Controllers
 
             Logger.Debug("Adding redirect: '{0}' -> '{1}'", oldUrl, newUrl);
             // Get hold of the datastore
-            DataStoreHandler dsHandler = new DataStoreHandler();
-            dsHandler.SaveCustomRedirect(new CustomRedirect(oldUrl.Trim(), newUrl.Trim(), skipWildCardAppend == null ? false : true));
+            _redirectsService.AddOrUpdate(new CustomRedirect(oldUrl.Trim(), newUrl.Trim(), skipWildCardAppend == null ? false : true));
             CustomRedirectHandler.ClearCache();
 
         }
@@ -139,8 +144,7 @@ namespace BVNetwork.NotFound.Controllers
             var redirect = new CustomRedirect();
             redirect.OldUrl = oldUrl;
             redirect.State = Convert.ToInt32(RedirectState.Ignored);
-            DataStoreHandler dsHandler = new DataStoreHandler();
-            dsHandler.SaveCustomRedirect(redirect);
+            _redirectsService.AddOrUpdate(redirect);
             CustomRedirectHandler.ClearCache();
 
             List<CustomRedirect> customRedirectList = GetSuggestions(searchWord);
@@ -468,8 +472,7 @@ namespace BVNetwork.NotFound.Controllers
             var redirect = new CustomRedirect();
             redirect.OldUrl = oldUrl;
             redirect.State = Convert.ToInt32(RedirectState.Deleted);
-            DataStoreHandler dsHandler = new DataStoreHandler();
-            dsHandler.SaveCustomRedirect(redirect);
+            _redirectsService.AddOrUpdate(redirect);
             CustomRedirectHandler.ClearCache();
 
             // delete rows from DB

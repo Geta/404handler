@@ -15,6 +15,8 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         private static readonly object CacheLock = new object();
         private const string CacheKeyCustomRedirectHandlerInstance = "BvnCustomRedirectHandler";
         private CustomRedirectCollection _customRedirects;
+        private IRedirectsService _redirectsService;
+        private IRedirectsService RedirectsService => _redirectsService ?? (_redirectsService = new DataStoreHandler());
 
         // Should only be instanciated by the static Current method
         protected CustomRedirectHandler()
@@ -42,11 +44,10 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// <param name="redirects"></param>
         public void SaveCustomRedirects(CustomRedirectCollection redirects)
         {
-            var dynamicHandler = new DataStoreHandler();
             foreach (CustomRedirect redirect in redirects)
             {
                 // Add redirect
-                dynamicHandler.SaveCustomRedirect(redirect);
+                RedirectsService.AddOrUpdate(redirect);
             }
             ClearCache();
         }
