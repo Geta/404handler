@@ -6,6 +6,16 @@ namespace BVNetwork.NotFound.Core.Data
 {
     public class DataStoreHandler : IRedirectsService
     {
+        public IEnumerable<CustomRedirect> GetAll()
+        {
+            return GetCustomRedirects(false);
+        }
+
+        public IEnumerable<CustomRedirect> GetAllExcludingIgnored()
+        {
+            return GetCustomRedirects(true);
+        }
+
         public void AddOrUpdate(CustomRedirect redirect)
         {
             SaveCustomRedirect(redirect);
@@ -96,7 +106,7 @@ namespace BVNetwork.NotFound.Core.Data
         {
             // In order to avoid a database timeout, we delete the items one by one.
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-            foreach (var redirect in GetCustomRedirects(false))
+            foreach (var redirect in GetAll())
             {
                 store.Delete(redirect);
             }

@@ -58,10 +58,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// </summary>
         protected void LoadCustomRedirects()
         {
-            var dynamicHandler = new DataStoreHandler();
             _customRedirects = new CustomRedirectCollection();
 
-            foreach (var redirect in dynamicHandler.GetCustomRedirects(false))
+            foreach (var redirect in RedirectsService.GetAll())
             {
                 _customRedirects.Add(redirect);
             }

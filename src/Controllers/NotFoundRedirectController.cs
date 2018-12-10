@@ -11,7 +11,6 @@ using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Models;
 using EPiServer.Logging;
 using EPiServer.Framework.Localization;
-using EPiServer.Security;
 using EPiServer.Shell.Gadgets;
 
 namespace BVNetwork.NotFound.Controllers
@@ -34,7 +33,7 @@ namespace BVNetwork.NotFound.Controllers
 
         private void CheckAccess()
         {
-            if (!PrincipalInfo.HasEditAccess)
+            if (!EPiServer.Security.PrincipalInfo.HasEditAccess)
             {
                 throw new SecurityException("Access denied");
             }
@@ -303,9 +302,8 @@ namespace BVNetwork.NotFound.Controllers
         public XmlActionResult ExportAllRedirects()
         {
             CheckAccess();
-            DataStoreHandler dsHandler = new DataStoreHandler();
 
-            List<CustomRedirect> redirects = dsHandler.GetCustomRedirects(true);
+            var redirects = _redirectsService.GetAllExcludingIgnored().ToList();
 
             XmlDocument document = new RedirectsXmlParser().Export(redirects);
 
@@ -418,7 +416,7 @@ namespace BVNetwork.NotFound.Controllers
             List<CustomRedirect> customRedirectList;
             if (string.IsNullOrEmpty(searchWord))
             {
-                customRedirectList = dsHandler.GetCustomRedirects(true);
+                customRedirectList = _redirectsService.GetAllExcludingIgnored().ToList();
             }
             else
                 customRedirectList = dsHandler.SearchCustomRedirects(searchWord);
