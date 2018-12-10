@@ -94,6 +94,7 @@
     <Compile Include="Core\Configuration\FileNotFoundMode.cs" />
     <Compile Include="Core\Configuration\IConfiguration.cs" />
     <Compile Include="Core\Configuration\LoggerMode.cs" />
+    <Compile Include="Core\CustomRedirects\DefaultRedirectsService.cs" />
     <Compile Include="Core\CustomRedirects\IRedirectHandler.cs" />
     <Compile Include="Core\CustomRedirects\IRedirectsService.cs" />
     <Compile Include="Core\CustomRedirects\XmlActionResult.cs" />

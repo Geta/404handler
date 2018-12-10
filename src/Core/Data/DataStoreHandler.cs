@@ -2,80 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using BVNetwork.NotFound.Core.CustomRedirects;
-using EPiServer.Data;
 
 namespace BVNetwork.NotFound.Core.Data
 {
-    public class DataStoreHandler : IRedirectsService
+    public class DataStoreHandler
     {
-        private readonly IRepository<CustomRedirect, Identity> _repository;
-        private readonly IRedirectLoader _redirectLoader;
+        private readonly IRedirectsService _redirectsService;
 
         public DataStoreHandler()
         {
             var repository = new DdsRedirectRepository();
-            _repository = repository;
-            _redirectLoader = repository;
+            _redirectsService = new DefaultRedirectsService(repository, repository);
         }
-
-        public IEnumerable<CustomRedirect> GetAll()
-        {
-            return GetCustomRedirects(false);
-        }
-
-        public IEnumerable<CustomRedirect> GetAllExcludingIgnored()
-        {
-            return GetCustomRedirects(true);
-        }
-
-        public IEnumerable<CustomRedirect> GetIgnored()
-        {
-            return GetIgnoredRedirect();
-        }
-
-        public IEnumerable<CustomRedirect> GetDeleted()
-        {
-            return GetDeletedRedirect();
-        }
-
-        public IEnumerable<CustomRedirect> Search(string searchText)
-        {
-            return SearchCustomRedirects(searchText);
-        }
-
-        public void AddOrUpdate(CustomRedirect redirect)
-        {
-            SaveCustomRedirect(redirect);
-        }
-
-        public void DeleteByOldUrl(string oldUrl)
-        {
-            DeleteCustomRedirect(oldUrl);
-        }
-
-        public int DeleteAll()
-        {
-            return DeleteAllCustomRedirectsInternal();
-        }
-
-        public int DeleteAllIgnored()
-        {
-            return DeleteAllIgnoredRedirects();
-        }
-
-        private const string OldUrlPropertyName = "OldUrl";
 
         [Obsolete]
         public void SaveCustomRedirect(CustomRedirect currentCustomRedirect)
         {
-            var match = _redirectLoader.GetByOldUrl(currentCustomRedirect.OldUrl);
-
-            //if there is a match, replace the value.
-            if (match != null)
-            {
-                currentCustomRedirect.Id = match.Id;
-            }
-            _repository.Save(currentCustomRedirect);
+            _redirectsService.AddOrUpdate(currentCustomRedirect);
         }
 
         /// <summary>
@@ -85,22 +28,23 @@ namespace BVNetwork.NotFound.Core.Data
         [Obsolete]
         public List<CustomRedirect> GetCustomRedirects(bool excludeIgnored)
         {
-            var redirects = excludeIgnored ? _redirectLoader.GetByState(RedirectState.Saved) : _redirectLoader.GetAll();
-            return redirects.ToList();
+            return excludeIgnored
+                ? _redirectsService.GetAllExcludingIgnored().ToList()
+                : _redirectsService.GetAll().ToList();
+
         }
 
         [Obsolete]
         public List<CustomRedirect> GetIgnoredRedirect()
         {
-            var customRedirects = _redirectLoader.GetByState(RedirectState.Ignored);
-            return customRedirects.ToList();
+            return _redirectsService.GetIgnored().ToList();
+
         }
 
         [Obsolete]
         public List<CustomRedirect> GetDeletedRedirect()
         {
-            var deletedRedirects = _redirectLoader.GetByState(RedirectState.Deleted);
-            return deletedRedirects.ToList();
+            return _redirectsService.GetDeleted().ToList();
         }
 
         [Obsolete]
@@ -114,13 +58,7 @@ namespace BVNetwork.NotFound.Core.Data
         [Obsolete]
         public void DeleteCustomRedirect(string oldUrl)
         {
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-
-            var match = _redirectLoader.GetByOldUrl(oldUrl);
-            if (match != null)
-            {
-                store.Delete(match);
-            }
+            _redirectsService.DeleteByOldUrl(oldUrl);
         }
 
         /// <summary>
@@ -129,30 +67,13 @@ namespace BVNetwork.NotFound.Core.Data
         [Obsolete]
         public void DeleteAllCustomRedirects()
         {
-            DeleteAllCustomRedirectsInternal();
-        }
-
-        private int DeleteAllCustomRedirectsInternal()
-        {
-            // In order to avoid a database timeout, we delete the items one by one.
-            var redirects = GetAll().ToList();
-            foreach (var redirect in redirects)
-            {
-                _repository.Delete(redirect);
-            }
-            return redirects.Count;
+            _redirectsService.DeleteAll();
         }
 
         [Obsolete]
         public int DeleteAllIgnoredRedirects()
         {
-            // In order to avoid a database timeout, we delete the items one by one.
-            var ignoredRedirects = GetIgnored().ToList();
-            foreach (var redirect in ignoredRedirects)
-            {
-                _repository.Delete(redirect);
-            }
-            return ignoredRedirects.Count;
+            return _redirectsService.DeleteAllIgnored();
         }
 
         /// <summary>
@@ -163,8 +84,7 @@ namespace BVNetwork.NotFound.Core.Data
         [Obsolete]
         public List<CustomRedirect> SearchCustomRedirects(string searchWord)
         {
-            var customRedirects = _redirectLoader.Find(searchWord);
-            return customRedirects.ToList();
+            return _redirectsService.Search(searchWord).ToList();
         }
     }
 }

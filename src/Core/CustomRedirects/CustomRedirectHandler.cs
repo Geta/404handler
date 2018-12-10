@@ -16,7 +16,18 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         private const string CacheKeyCustomRedirectHandlerInstance = "BvnCustomRedirectHandler";
         private CustomRedirectCollection _customRedirects;
         private IRedirectsService _redirectsService;
-        private IRedirectsService RedirectsService => _redirectsService ?? (_redirectsService = new DataStoreHandler());
+        private IRedirectsService RedirectsService
+        {
+            get
+            {
+                if (_redirectsService == null)
+                {
+                    var repository = new DdsRedirectRepository();
+                    _redirectsService = new DefaultRedirectsService(repository, repository);
+                }
+                return _redirectsService;
+            }
+        }
 
         // Should only be instanciated by the static Current method
         protected CustomRedirectHandler()

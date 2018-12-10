@@ -28,7 +28,8 @@ namespace BVNetwork.NotFound.Controllers
 
         public NotFoundRedirectController()
         {
-            _redirectsService = new DataStoreHandler();
+            var repository = new DdsRedirectRepository();
+            _redirectsService = new DefaultRedirectsService(repository, repository);
         }
 
         private void CheckAccess()
