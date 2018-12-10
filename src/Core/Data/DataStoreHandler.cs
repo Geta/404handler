@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BVNetwork.NotFound.Core.CustomRedirects;
 
@@ -53,6 +54,7 @@ namespace BVNetwork.NotFound.Core.Data
 
         private const string OldUrlPropertyName = "OldUrl";
 
+        [Obsolete]
         public void SaveCustomRedirect(CustomRedirect currentCustomRedirect)
         {
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
@@ -73,6 +75,7 @@ namespace BVNetwork.NotFound.Core.Data
         /// Returns a list of all CustomRedirect objects in the Dynamic Data Store.
         /// </summary>
         /// <returns></returns>
+        [Obsolete]
         public List<CustomRedirect> GetCustomRedirects(bool excludeIgnored)
         {
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
@@ -91,6 +94,7 @@ namespace BVNetwork.NotFound.Core.Data
             return customRedirects.ToList();
         }
 
+        [Obsolete]
         public List<CustomRedirect> GetIgnoredRedirect()
         {
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
@@ -101,6 +105,7 @@ namespace BVNetwork.NotFound.Core.Data
             return customRedirects.ToList();
         }
 
+        [Obsolete]
         public List<CustomRedirect> GetDeletedRedirect()
         {
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
@@ -111,6 +116,7 @@ namespace BVNetwork.NotFound.Core.Data
             return deletedRedirects.ToList();
         }
 
+        [Obsolete]
         public void UnignoreRedirect()
         {
         }
@@ -118,6 +124,7 @@ namespace BVNetwork.NotFound.Core.Data
         /// <summary>
         /// Delete CustomObject object from Data Store that has given "OldUrl" property
         /// </summary>
+        [Obsolete]
         public void DeleteCustomRedirect(string oldUrl)
         {
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
@@ -132,6 +139,7 @@ namespace BVNetwork.NotFound.Core.Data
         /// <summary>
         /// Delete all CustomRedirect objects
         /// </summary>
+        [Obsolete]
         public void DeleteAllCustomRedirects()
         {
             DeleteAllCustomRedirectsInternal();
@@ -149,6 +157,7 @@ namespace BVNetwork.NotFound.Core.Data
             return redirects.Count;
         }
 
+        [Obsolete]
         public int DeleteAllIgnoredRedirects()
         {
             // In order to avoid a database timeout, we delete the items one by one.
@@ -166,6 +175,7 @@ namespace BVNetwork.NotFound.Core.Data
         /// </summary>
         /// <param name="searchWord"></param>
         /// <returns></returns>
+        [Obsolete]
         public List<CustomRedirect> SearchCustomRedirects(string searchWord)
         {
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
