@@ -405,14 +405,13 @@ namespace BVNetwork.NotFound.Controllers
         /// <returns></returns>
         public List<CustomRedirect> GetData(String searchWord)
         {
-            DataStoreHandler dsHandler = new DataStoreHandler();
             List<CustomRedirect> customRedirectList;
             if (string.IsNullOrEmpty(searchWord))
             {
                 customRedirectList = _redirectsService.GetAllExcludingIgnored().ToList();
             }
             else
-                customRedirectList = dsHandler.SearchCustomRedirects(searchWord);
+                customRedirectList = _redirectsService.Search(searchWord).ToList();
 
             return customRedirectList;
         }

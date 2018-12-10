@@ -26,6 +26,11 @@ namespace BVNetwork.NotFound.Core.Data
             return GetDeletedRedirect();
         }
 
+        public IEnumerable<CustomRedirect> Search(string searchText)
+        {
+            return SearchCustomRedirects(searchText);
+        }
+
         public void AddOrUpdate(CustomRedirect redirect)
         {
             SaveCustomRedirect(redirect);
