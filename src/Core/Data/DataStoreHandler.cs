@@ -31,6 +31,21 @@ namespace BVNetwork.NotFound.Core.Data
             SaveCustomRedirect(redirect);
         }
 
+        public void DeleteByOldUrl(string oldUrl)
+        {
+            DeleteCustomRedirect(oldUrl);
+        }
+
+        public int DeleteAll()
+        {
+            return DeleteAllCustomRedirectsInternal();
+        }
+
+        public int DeleteAllIgnored()
+        {
+            return DeleteAllIgnoredRedirects();
+        }
+
         private const string OldUrlPropertyName = "OldUrl";
 
         public void SaveCustomRedirect(CustomRedirect currentCustomRedirect)
@@ -114,12 +129,19 @@ namespace BVNetwork.NotFound.Core.Data
         /// </summary>
         public void DeleteAllCustomRedirects()
         {
+            DeleteAllCustomRedirectsInternal();
+        }
+
+        private int DeleteAllCustomRedirectsInternal()
+        {
             // In order to avoid a database timeout, we delete the items one by one.
             var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-            foreach (var redirect in GetAll())
+            var redirects = GetAll().ToList();
+            foreach (var redirect in redirects)
             {
                 store.Delete(redirect);
             }
+            return redirects.Count;
         }
 
         public int DeleteAllIgnoredRedirects()

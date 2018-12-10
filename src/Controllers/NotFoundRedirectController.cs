@@ -161,8 +161,7 @@ namespace BVNetwork.NotFound.Controllers
 
             Logger.Debug("Deleting redirect: '{0}'", oldUrl);
 
-            DataStoreHandler dsHandler = new DataStoreHandler();
-            dsHandler.DeleteCustomRedirect(oldUrl);
+            _redirectsService.DeleteByOldUrl(oldUrl);
             CustomRedirectHandler.ClearCache();
             List<CustomRedirect> customRedirectList = GetData(searchWord);
             //Make sure that the searchinfo is contained after an item has been deleted - if there is any.
@@ -213,8 +212,7 @@ namespace BVNetwork.NotFound.Controllers
         public ActionResult Unignore(string url)
         {
             CheckAccess();
-            DataStoreHandler dsHandler = new DataStoreHandler();
-            dsHandler.DeleteCustomRedirect(url);
+            _redirectsService.DeleteByOldUrl(url);
             return Ignored();
         }
 
@@ -229,8 +227,7 @@ namespace BVNetwork.NotFound.Controllers
         public ActionResult DeleteAllIgnored()
         {
             CheckAccess();
-            var dsHandler = new DataStoreHandler();
-            int deleteCount = dsHandler.DeleteAllIgnoredRedirects();
+            var deleteCount = _redirectsService.DeleteAllIgnored();
             string infoText = string.Format(LocalizationService.Current.GetString("/gadget/redirects/ignoredremoved"), deleteCount);
             ViewData["information"] = infoText;
             return View("Administer");
@@ -247,8 +244,7 @@ namespace BVNetwork.NotFound.Controllers
         public ActionResult DeleteAllRedirects()
         {
             CheckAccess();
-            DataStoreHandler dsHandler = new DataStoreHandler();
-            dsHandler.DeleteAllCustomRedirects();
+            _redirectsService.DeleteAll();
             CustomRedirectHandler.ClearCache();
             ViewData["information"] = LocalizationService.Current.GetString("/gadget/redirects/redirectsdeleted");
             return View("Administer");
@@ -262,8 +258,7 @@ namespace BVNetwork.NotFound.Controllers
         public ActionResult DeleteDeleted(string url)
         {
             CheckAccess();
-            var dsHandler = new DataStoreHandler();
-            dsHandler.DeleteCustomRedirect(url);
+            _redirectsService.DeleteByOldUrl(url);
             return Deleted();
         }
 
