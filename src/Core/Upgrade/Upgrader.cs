@@ -89,7 +89,6 @@ namespace BVNetwork.NotFound.Core.Upgrade
             var created = dba.ExecuteNonQuery(clusteredIndex);
             if (!created)
             {
-                created = false;
                 Log.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
             }
 
