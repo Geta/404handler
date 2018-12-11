@@ -44,11 +44,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return CustomRedirects.Find(urlNotFound);
         }
 
-        public CustomRedirect Find(Uri urlNotFound, Uri referrer)
-        {
-            return CustomRedirects.Find(urlNotFound);
-        }
-
         /// <summary>
         /// Read the custom redirects from the dynamic data store, and
         /// stores them in the CustomRedirect property
