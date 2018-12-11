@@ -117,24 +117,31 @@ namespace BVNetwork.NotFound.Core.Upgrade
         {
             var dba = DataAccessBaseEx.GetWorker();
 
+            if (!SuggestionsTableIndexExists(dba))
+            {
+                Valid = CreateSuggestionsTableIndex(dba);
+            }
+
+            if (Valid)
+            {
+                UpdateVersionNumber(dba);
+            }
+        }
+
+        private static bool SuggestionsTableIndexExists(DataAccessBaseEx dba)
+        {
             var indexCheck =
                 "SELECT COUNT(*) FROM sys.indexes WHERE name='NotFoundRequests_ID' AND object_id = OBJECT_ID('[dbo].[BVN.NotFoundRequests]')";
 
             var num = dba.ExecuteScalar(indexCheck);
-            if (num == 0)
-            {
-                if (!dba.ExecuteNonQuery("CREATE CLUSTERED INDEX NotFoundRequests_ID ON [dbo].[BVN.NotFoundRequests] (ID)"))
-                {
-                    Valid = false;
-                    Log.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
-                }
-                Log.Information("Create Clustered index END");
-            }
-            if (Valid)
-            {
-                var versionSp = @"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN " + Configuration.Configuration.CurrentVersion;
-                Valid = dba.ExecuteNonQuery(versionSp);
-            }
+            return num != 0;
+        }
+
+        private static void UpdateVersionNumber(DataAccessBaseEx dba)
+        {
+            var versionSp =
+                $@"ALTER PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN {Configuration.Configuration.CurrentVersion}";
+            Valid = dba.ExecuteNonQuery(versionSp);
         }
     }
 }
