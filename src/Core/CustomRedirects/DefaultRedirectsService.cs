@@ -54,6 +54,14 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             _repository.Save(redirect);
         }
 
+        public void AddOrUpdate(IEnumerable<CustomRedirect> redirects)
+        {
+            foreach (var redirect in redirects)
+            {
+                AddOrUpdate(redirect);
+            }
+        }
+
         public void DeleteByOldUrl(string oldUrl)
         {
             var match = _redirectLoader.GetByOldUrl(oldUrl);

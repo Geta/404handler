@@ -10,6 +10,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         IEnumerable<CustomRedirect> GetDeleted();
         IEnumerable<CustomRedirect> Search(string searchText);
         void AddOrUpdate(CustomRedirect redirect);
+        void AddOrUpdate(IEnumerable<CustomRedirect> redirects);
         void DeleteByOldUrl(string oldUrl);
         int DeleteAll();
         int DeleteAllIgnored();

@@ -50,20 +50,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         }
 
         /// <summary>
-        /// Save a collection of redirects, and call method to raise an event in order to clear cache on all servers.
-        /// </summary>
-        /// <param name="redirects"></param>
-        public void SaveCustomRedirects(CustomRedirectCollection redirects)
-        {
-            foreach (CustomRedirect redirect in redirects)
-            {
-                // Add redirect
-                RedirectsService.AddOrUpdate(redirect);
-            }
-            ClearCache();
-        }
-
-        /// <summary>
         /// Read the custom redirects from the dynamic data store, and
         /// stores them in the CustomRedirect property
         /// </summary>

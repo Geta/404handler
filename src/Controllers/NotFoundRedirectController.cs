@@ -283,7 +283,8 @@ namespace BVNetwork.NotFound.Controllers
             string message;
             if (redirects != null || redirects.Count() != 0)
             {
-                CustomRedirectHandler.Current.SaveCustomRedirects(redirects);
+                _redirectsService.AddOrUpdate(redirects);
+                CustomRedirectHandler.ClearCache();
                 message = string.Format(LocalizationService.Current.GetString("/gadget/redirects/importsuccess"), redirects.Count());
             }
             else
@@ -336,7 +337,8 @@ namespace BVNetwork.NotFound.Controllers
             string message;
             if (redirects.Count() != 0)
             {
-                CustomRedirectHandler.Current.SaveCustomRedirects(redirects);
+                _redirectsService.AddOrUpdate(redirects);
+                CustomRedirectHandler.ClearCache();
                 message = string.Format(LocalizationService.Current.GetString("/gadget/redirects/importdeletedsuccess"), redirects.Count());
             }
             else
