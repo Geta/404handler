@@ -48,8 +48,8 @@ namespace BVNetwork.NotFound.Core.Upgrade
             Log.Information("Create 404 handler redirects table START");
             var createTableScript = @"CREATE TABLE [dbo].[404Handler.Redirects](
                                         [Id] [uniqueidentifier] NOT NULL,
-                                        [OldUrl] [nchar](2000) NOT NULL,
-                                        [NewUrl] [nchar](2000) NOT NULL,
+                                        [OldUrl] [nvarchar](2000) NOT NULL,
+                                        [NewUrl] [nvarchar](2000) NOT NULL,
                                         [State] [int] NOT NULL,
                                         [WildCardSkipAppend] [bit] NOT NULL,
                                         CONSTRAINT [PK_404HandlerRedirects] PRIMARY KEY CLUSTERED ([Id] ASC) ON [PRIMARY]
