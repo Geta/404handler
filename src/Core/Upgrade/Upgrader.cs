@@ -117,6 +117,11 @@ namespace BVNetwork.NotFound.Core.Upgrade
         {
             var dba = DataAccessBaseEx.GetWorker();
 
+            if (!TableExists("404Handler.Redirects", dba))
+            {
+                Valid = CreateRedirectsTable(dba);
+            }
+
             if (!SuggestionsTableIndexExists(dba))
             {
                 Valid = CreateSuggestionsTableIndex(dba);
@@ -128,10 +133,22 @@ namespace BVNetwork.NotFound.Core.Upgrade
             }
         }
 
+        private static bool TableExists(string tableName, DataAccessBaseEx dba)
+        {
+            var cmd = $@"SELECT *
+                 FROM INFORMATION_SCHEMA.TABLES
+                 WHERE TABLE_SCHEMA = 'dbo'
+                 AND  TABLE_NAME = '{tableName}'";
+            var num = dba.ExecuteScalar(cmd);
+            return num != 0;
+        }
+
         private static bool SuggestionsTableIndexExists(DataAccessBaseEx dba)
         {
             var indexCheck =
-                "SELECT COUNT(*) FROM sys.indexes WHERE name='NotFoundRequests_ID' AND object_id = OBJECT_ID('[dbo].[BVN.NotFoundRequests]')";
+                $@"SELECT COUNT(*)
+                 FROM sys.indexes
+                 WHERE name='NotFoundRequests_ID' AND object_id = OBJECT_ID('[dbo].[BVN.NotFoundRequests]')";
 
             var num = dba.ExecuteScalar(indexCheck);
             return num != 0;
