@@ -28,7 +28,12 @@ namespace BVNetwork.NotFound.Core.Upgrade
         {
             var dba = DataAccessBaseEx.GetWorker();
 
-            var created = CreateSuggestionsTable(dba);
+            var created = CreateRedirectsTable(dba);
+
+            if (created)
+            {
+                created = CreateSuggestionsTable(dba);
+            }
 
             if (created)
             {
@@ -36,6 +41,23 @@ namespace BVNetwork.NotFound.Core.Upgrade
             }
 
             Valid = created;
+        }
+
+        private static bool CreateRedirectsTable(DataAccessBaseEx dba)
+        {
+            Log.Information("Create 404 handler redirects table START");
+            var createTableScript = @"CREATE TABLE [dbo].[404Handler.Redirects](
+                                        [Id] [uniqueidentifier] NOT NULL,
+                                        [OldUrl] [nchar](2000) NOT NULL,
+                                        [NewUrl] [nchar](2000) NOT NULL,
+                                        [State] [int] NOT NULL,
+                                        [WildCardSkipAppend] [bit] NOT NULL,
+                                        CONSTRAINT [PK_404HandlerRedirects] PRIMARY KEY CLUSTERED ([Id] ASC) ON [PRIMARY]
+                                        ) ON [PRIMARY]";
+            var created = dba.ExecuteNonQuery(createTableScript);
+            Log.Information("Create 404 handler redirects table END");
+
+            return created;
         }
 
         private static bool CreateSuggestionsTable(DataAccessBaseEx dba)
