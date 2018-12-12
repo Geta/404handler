@@ -136,7 +136,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             }
 
             var normalizedUrlWithoutQuery = RemoveQueryString(url).TrimEnd('/');
-            var normalizedOldUrl = oldUrl.TrimEnd('/');
+            var normalizedOldUrl = RemoveQueryString(oldUrl).TrimEnd('/');
             var isSameUrl = normalizedUrlWithoutQuery.Equals(normalizedOldUrl, StringComparison.OrdinalIgnoreCase);
             var isPartOfOldUrl = normalizedUrlWithoutQuery.Substring(normalizedOldUrl.Length).StartsWith("/");
             return isSameUrl || isPartOfOldUrl;
