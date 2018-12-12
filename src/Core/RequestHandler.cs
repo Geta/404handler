@@ -46,6 +46,11 @@ namespace BVNetwork.NotFound.Core
                 return;
             }
 
+            if (_configuration.FileNotFoundHandlerMode == FileNotFoundMode.Off)
+            {
+                LogDebug("Not handled, custom redirect manager is set to off.", context);
+                return;
+            }
             // If we're only doing this for remote users, we need to test for local host
             if (_configuration.FileNotFoundHandlerMode == FileNotFoundMode.RemoteOnly)
             {
@@ -101,6 +106,7 @@ namespace BVNetwork.NotFound.Core
             }
 
             MarkHandled(context);
+
         }
 
         private bool IsHandled(HttpContextBase context)

@@ -27,7 +27,7 @@ namespace BVNetwork.NotFound.Tests
             _requestLogger = A.Fake<IRequestLogger>();
             _configuration = A.Fake<IConfiguration>();
             _sut = A.Fake<RequestHandler>(
-                o => o.WithArgumentsForConstructor(new object[] {_redirectHandler, _requestLogger, _configuration})
+                o => o.WithArgumentsForConstructor(new object[] { _redirectHandler, _requestLogger, _configuration })
                     .CallsBaseMethods());
             _httpContext = new FakeHttpContext();
             _httpContext.Response.StatusCode = 404;
@@ -49,6 +49,16 @@ namespace BVNetwork.NotFound.Tests
         public void Handle_returns_when_is_localhost()
         {
             WhenIsLocalhost();
+
+            _sut.Handle(_httpContext);
+
+            AssertNotHandled(_httpContext);
+        }
+
+        [Fact]
+        public void Handle_returns_when_is_off()
+        {
+            WhenIsOff();
 
             _sut.Handle(_httpContext);
 
@@ -160,7 +170,7 @@ namespace BVNetwork.NotFound.Tests
         [Fact]
         public void HandleRequest_returns_true_when_redirect_found_with_deleted_state()
         {
-            var redirect = new CustomRedirect("http://example.com/missing", (int) DataStoreHandler.State.Deleted, 1);
+            var redirect = new CustomRedirect("http://example.com/missing", (int)DataStoreHandler.State.Deleted, 1);
             WhenRedirectFound(redirect);
 
             var actual = _sut.HandleRequest(DefaultOldUri, new Uri("http://example.com/path"), out var _);
@@ -171,7 +181,7 @@ namespace BVNetwork.NotFound.Tests
         [Fact]
         public void HandleRequest_returns_redirect_when_redirect_found_with_deleted_state()
         {
-            var redirect = new CustomRedirect("http://example.com/missing", (int) DataStoreHandler.State.Deleted, 1);
+            var redirect = new CustomRedirect("http://example.com/missing", (int)DataStoreHandler.State.Deleted, 1);
             WhenRedirectFound(redirect);
 
             _sut.HandleRequest(DefaultOldUri, new Uri("http://example.com/path"), out var actual);
@@ -182,7 +192,7 @@ namespace BVNetwork.NotFound.Tests
         [Fact]
         public void HandleRequest_returns_true_when_redirect_found_with_saved_state()
         {
-            var redirect = new CustomRedirect("http://example.com/found", (int) DataStoreHandler.State.Saved, 1);
+            var redirect = new CustomRedirect("http://example.com/found", (int)DataStoreHandler.State.Saved, 1);
             WhenRedirectFound(redirect);
 
             var actual = _sut.HandleRequest(DefaultOldUri, new Uri("http://example.com/path"), out var _);
@@ -205,7 +215,7 @@ namespace BVNetwork.NotFound.Tests
         public void HandleRequest_returns_false_when_redirect_is_same_as_not_found()
         {
             var sameUri = new Uri("http://example.com/same");
-            var redirect = new CustomRedirect(sameUri.ToString(), (int) DataStoreHandler.State.Saved, 1)
+            var redirect = new CustomRedirect(sameUri.ToString(), (int)DataStoreHandler.State.Saved, 1)
             {
                 NewUrl = sameUri.PathAndQuery
             };
@@ -296,6 +306,12 @@ namespace BVNetwork.NotFound.Tests
         {
             A.CallTo(() => _sut.IsLocalhost(A<HttpContextBase>._)).Returns(false);
             A.CallTo(() => _configuration.FileNotFoundHandlerMode).Returns(FileNotFoundMode.On);
+        }
+
+        private void WhenIsOff()
+        {
+            A.CallTo(() => _sut.IsLocalhost(A<HttpContextBase>._)).Returns(false);
+            A.CallTo(() => _configuration.FileNotFoundHandlerMode).Returns(FileNotFoundMode.Off);
         }
 
         private void AssertRedirected(FakeHttpContext context, CustomRedirect redirect)
