@@ -212,7 +212,23 @@ namespace BVNetwork.NotFound.Tests
             var provider = A.Fake<INotFoundHandler>();
             A.CallTo(() => provider.RewriteUrl(A<string>._)).Returns(null);
             A.CallTo(() => provider.RewriteUrl(oldUrl)).Returns(newUrl);
-            A.CallTo(() => _configuration.Providers).Returns(new[] {provider});
+            A.CallTo(() => _configuration.Providers).Returns(new[] { provider });
+        }
+
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/117
+        /// </summary>
+        [Fact]
+        public void Find_should_not_throw_on_query_string_prefix_for_same_segment()
+        {
+            var requestUrl = "/old/?param1=value1&param2=value2";
+            var storedUrl = "/old/?param1=value1";
+            var redirect = new CustomRedirect(storedUrl, DefaultNewUri.PathAndQuery);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(requestUrl.ToUri());
+
+            Assert.NotNull(actual);
         }
     }
 }
