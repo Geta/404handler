@@ -112,6 +112,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         {
             string AppendSlash(string s)
             {
+                if(s == null)
+                    return s;
+
                 return s.EndsWith("/") ? s : $"{s}/";
             }
 

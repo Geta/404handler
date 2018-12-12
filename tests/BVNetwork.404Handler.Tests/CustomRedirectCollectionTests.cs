@@ -214,5 +214,34 @@ namespace BVNetwork.NotFound.Tests
             A.CallTo(() => provider.RewriteUrl(oldUrl)).Returns(newUrl);
             A.CallTo(() => _configuration.Providers).Returns(new[] {provider});
         }
+
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/118
+        /// </summary>
+        [Fact]
+        public void Find_does_not_give_nullreferenceexception_with_exact_deleted_hit()
+        {
+            var storedUrl = "/contentassets";
+            var requesttUrl = "/contentassets";
+            var redirect = new CustomRedirect(storedUrl, (int)DataStoreHandler.State.Deleted, 1);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(requesttUrl.ToUri());
+
+            Assert.NotNull(actual);
+        }
+
+        [Fact]
+        public void Find_gives_nullreferenceexception_with_partial_deleted_hit()
+        {
+            var storedUrl = "/contentassets";
+            var requesttUrl = "/contentassets/moreurl";
+            var redirect = new CustomRedirect(storedUrl, (int)DataStoreHandler.State.Deleted, 1);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(requesttUrl.ToUri());
+
+            Assert.NotNull(actual);
+        }
     }
 }
