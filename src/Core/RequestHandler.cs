@@ -49,68 +49,63 @@ namespace BVNetwork.NotFound.Core
             if (_configuration.FileNotFoundHandlerMode == FileNotFoundMode.Off)
             {
                 LogDebug("Not handled, custom redirect manager is set to off.", context);
-                SetStatusCodeAndShow404(context);
+                return;
+            }
+            // If we're only doing this for remote users, we need to test for local host
+            if (_configuration.FileNotFoundHandlerMode == FileNotFoundMode.RemoteOnly)
+            {
+                // Determine if we're on localhost
+                var localHost = IsLocalhost(context);
+                if (localHost)
+                {
+                    LogDebug("Determined to be localhost, returning.", context);
+                    return;
+                }
+                LogDebug("Not a localhost, handling error.", context);
+            }
 
-                MarkHandled(context);
+            LogDebug("Handling 404 request.", context);
+
+            var notFoundUri = context.Request.Url;
+
+            if (IsResourceFile(notFoundUri))
+            {
+                LogDebug("Skipping resource file.", context);
+                return;
+            }
+
+            var query = context.Request.ServerVariables["QUERY_STRING"];
+
+            // avoid duplicate log entries
+            if (query != null && query.StartsWith("404;"))
+            {
+                LogDebug("Skipping request with 404; in the query string.", context);
+                return;
+            }
+
+            var canHandleRedirect = HandleRequest(context.Request.UrlReferrer, notFoundUri, out var newUrl);
+            if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Saved)
+            {
+                LogDebug("Handled saved URL", context);
+
+                context
+                    .ClearServerError()
+                    .RedirectPermanent(newUrl.NewUrl);
+            }
+            else if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Deleted)
+            {
+                LogDebug("Handled deleted URL", context);
+
+                SetStatusCodeAndShow404(context, 410);
             }
             else
             {
-                // If we're only doing this for remote users, we need to test for local host
-                if (_configuration.FileNotFoundHandlerMode == FileNotFoundMode.RemoteOnly)
-                {
-                    // Determine if we're on localhost
-                    var localHost = IsLocalhost(context);
-                    if (localHost)
-                    {
-                        LogDebug("Determined to be localhost, returning.", context);
-                        return;
-                    }
-                    LogDebug("Not a localhost, handling error.", context);
-                }
+                LogDebug("Not handled. Current URL is ignored or no redirect found.", context);
 
-                LogDebug("Handling 404 request.", context);
-
-                var notFoundUri = context.Request.Url;
-
-                if (IsResourceFile(notFoundUri))
-                {
-                    LogDebug("Skipping resource file.", context);
-                    return;
-                }
-
-                var query = context.Request.ServerVariables["QUERY_STRING"];
-
-                // avoid duplicate log entries
-                if (query != null && query.StartsWith("404;"))
-                {
-                    LogDebug("Skipping request with 404; in the query string.", context);
-                    return;
-                }
-
-                var canHandleRedirect = HandleRequest(context.Request.UrlReferrer, notFoundUri, out var newUrl);
-                if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Saved)
-                {
-                    LogDebug("Handled saved URL", context);
-
-                    context
-                        .ClearServerError()
-                        .RedirectPermanent(newUrl.NewUrl);
-                }
-                else if (canHandleRedirect && newUrl.State == (int)DataStoreHandler.State.Deleted)
-                {
-                    LogDebug("Handled deleted URL", context);
-
-                    SetStatusCodeAndShow404(context, 410);
-                }
-                else
-                {
-                    LogDebug("Not handled. Current URL is ignored or no redirect found.", context);
-
-                    SetStatusCodeAndShow404(context);
-                }
-
-                MarkHandled(context);
+                SetStatusCodeAndShow404(context);
             }
+
+            MarkHandled(context);
 
         }
 
