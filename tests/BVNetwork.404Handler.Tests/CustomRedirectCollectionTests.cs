@@ -215,7 +215,6 @@ namespace BVNetwork.NotFound.Tests
             A.CallTo(() => _configuration.Providers).Returns(new[] { provider });
         }
 
-
         /// <summary>
         /// https://github.com/Geta/404handler/issues/117
         /// </summary>
