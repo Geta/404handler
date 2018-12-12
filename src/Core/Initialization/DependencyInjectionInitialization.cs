@@ -1,5 +1,6 @@
 ﻿using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.CustomRedirects;
+using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Logging;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
@@ -15,6 +16,9 @@ namespace BVNetwork.NotFound.Core.Initialization
             context.Services.AddSingleton<IConfiguration>(Configuration.Configuration.Instance);
             context.Services.AddSingleton<IRequestLogger>(RequestLogger.Instance);
             context.Services.AddTransient<IRedirectHandler>(_ => CustomRedirectHandler.Current); // Load per-request as it is read from the cache
+
+            context.Services.AddTransient<IRepository<CustomRedirect>, SqlRedirectRepository>();
+            context.Services.AddTransient<IRedirectLoader, SqlRedirectRepository>();
         }
 
         public void Initialize(InitializationEngine context)
