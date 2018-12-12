@@ -2,6 +2,7 @@ using System;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Upgrade;
 using EPiServer.Logging;
+using EPiServer.ServiceLocation;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
 {
@@ -22,7 +23,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             {
                 if (_redirectsService == null)
                 {
-                    var repository = new DdsRedirectRepository();
+                    var repository = ServiceLocator.Current.GetInstance<SqlRedirectRepository>();
                     _redirectsService = new DefaultRedirectsService(repository, repository);
                 }
                 return _redirectsService;

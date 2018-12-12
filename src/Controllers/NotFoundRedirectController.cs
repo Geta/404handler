@@ -11,6 +11,7 @@ using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Models;
 using EPiServer.Logging;
 using EPiServer.Framework.Localization;
+using EPiServer.ServiceLocation;
 using EPiServer.Shell.Gadgets;
 
 namespace BVNetwork.NotFound.Controllers
@@ -28,7 +29,7 @@ namespace BVNetwork.NotFound.Controllers
 
         public NotFoundRedirectController()
         {
-            var repository = new DdsRedirectRepository();
+            var repository = ServiceLocator.Current.GetInstance<SqlRedirectRepository>();
             _redirectsService = new DefaultRedirectsService(repository, repository);
         }
 

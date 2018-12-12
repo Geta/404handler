@@ -102,6 +102,7 @@
     <Compile Include="Core\Data\IRedirectLoader.cs" />
     <Compile Include="Core\Data\IRepository.cs" />
     <Compile Include="Core\Data\RedirectState.cs" />
+    <Compile Include="Core\Data\SqlRedirectRepository.cs" />
     <Compile Include="Core\ErrorHandler.cs" />
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
     <Compile Include="Core\Initialization\DependencyInjectionInitialization.cs" />
