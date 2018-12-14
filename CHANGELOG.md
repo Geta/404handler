@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.1.13], [10.3.12]
+
+### Changed
+- [#118](https://github.com/Geta/404handler/issues/118) Fixed partial match on deleted-urls always gives NullReferenceException.
+- [#117](https://github.com/Geta/404handler/issues/117) Fixed System.ArgumentOutOfRangeException when stored URL is same as new URL.
+- [#115](https://github.com/Geta/404handler/issues/115) Fixed Off mode.
+
 ## [11.1.12], [10.3.11]
 
 ### Changed
