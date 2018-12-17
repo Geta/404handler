@@ -184,6 +184,7 @@ namespace BVNetwork.NotFound.Core.Data
                 catch (Exception ex)
                 {
                     Logger.Error(errorMessage, ex);
+                    throw;
                 }
             });
         }
@@ -199,7 +200,7 @@ namespace BVNetwork.NotFound.Core.Data
                 catch (Exception ex)
                 {
                     Logger.Error("An error occured while retrieving redirects.", ex);
-                    return Enumerable.Empty<CustomRedirect>();
+                    throw;
                 }
             });
         }
