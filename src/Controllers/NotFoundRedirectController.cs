@@ -24,11 +24,15 @@ namespace BVNetwork.NotFound.Controllers
     public class NotFoundRedirectController : Controller
     {
         private readonly IRedirectsService _redirectsService;
+        private readonly DdsRedirectRepository _ddsRedirectRepository;
         private static readonly ILogger Logger = LogManager.GetLogger();
 
-        public NotFoundRedirectController(DefaultRedirectsService redirectsService)
+        public NotFoundRedirectController(
+            DefaultRedirectsService redirectsService,
+            DdsRedirectRepository ddsRedirectRepository)
         {
             _redirectsService = redirectsService ?? throw new ArgumentNullException(nameof(redirectsService));
+            _ddsRedirectRepository = ddsRedirectRepository ?? throw new ArgumentNullException(nameof(ddsRedirectRepository));
         }
 
         private void CheckAccess()
@@ -469,6 +473,32 @@ namespace BVNetwork.NotFound.Controllers
             List<CustomRedirect> customRedirectList = GetDeletedUrls();
             CustomRedirectHandler.ClearCache();
             return Deleted();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MigrateDdsToSql()
+        {
+            CheckAccess();
+
+            var ddsRequests = _ddsRedirectRepository.GetAll().ToList();
+            var count = ddsRequests.Count;
+            foreach (var ddsRequest in ddsRequests)
+            {
+                _redirectsService.AddOrUpdate(new CustomRedirect
+                {
+                    State = ddsRequest.State,
+                    NewUrl = ddsRequest.NewUrl,
+                    OldUrl = ddsRequest.OldUrl,
+                    WildCardSkipAppend = ddsRequest.WildCardSkipAppend
+                });
+
+                _ddsRedirectRepository.Delete(ddsRequest);
+            }
+
+            ViewData["information"] = $"Migrated {count} redirects from DDS to SQL";
+
+            CustomRedirectHandler.ClearCache();
+            return View("Administer");
         }
     }
 
