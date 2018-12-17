@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.2.0], [10.4.0]
+
+### Changed
+- Changed DDS store to SQL store for redirects. A data migration is not done automatically. Open administration view on the gadget and under "Migrate redirects from DDS to SQL." click "Migrate." It will take some time depending on how many redirects you have. After the migration, the message will be displayed with information about how many redirects were moved to the SQL store. The message looks like - "Migrated 1000 redirects from DDS to SQL".
+
 ## [11.1.13], [10.3.12]
 
 ### Changed
