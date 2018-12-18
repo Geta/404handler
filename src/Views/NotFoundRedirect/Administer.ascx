@@ -191,6 +191,19 @@
                 </div>
             </td>
         </tr>
+
+        <tr>
+            <td>
+                <div class="longer">
+                    <%= Html.Translate("/gadget/redirects/migrateddstosql") %>
+                </div>
+                <div class="shorter delete">
+                    <% Html.BeginGadgetForm("MigrateDdsToSql"); %>
+                    <button type="submit" class="notfoundbutton" style="float: right">Migrate</button>
+                    <% Html.EndForm(); %>
+                </div>
+            </td>
+        </tr>
     </table>
 
 </div>

@@ -81,7 +81,7 @@ namespace BVNetwork.NotFound.Tests
             var storedUrl = "/old";
             var redirect = new CustomRedirect(storedUrl, DefaultNewUri.PathAndQuery)
             {
-                State = (int)DataStoreHandler.State.Ignored
+                State = (int)RedirectState.Ignored
             };
             _sut.Add(redirect);
 
@@ -239,7 +239,7 @@ namespace BVNetwork.NotFound.Tests
         {
             var storedUrl = "/contentassets";
             var requesttUrl = "/contentassets";
-            var redirect = new CustomRedirect(storedUrl, (int)DataStoreHandler.State.Deleted, 1);
+            var redirect = new CustomRedirect(storedUrl, (int)RedirectState.Deleted, 1);
             _sut.Add(redirect);
 
             var actual = _sut.Find(requesttUrl.ToUri());
@@ -252,7 +252,7 @@ namespace BVNetwork.NotFound.Tests
         {
             var storedUrl = "/contentassets";
             var requesttUrl = "/contentassets/moreurl";
-            var redirect = new CustomRedirect(storedUrl, (int)DataStoreHandler.State.Deleted, 1);
+            var redirect = new CustomRedirect(storedUrl, (int)RedirectState.Deleted, 1);
             _sut.Add(redirect);
 
             var actual = _sut.Find(requesttUrl.ToUri());

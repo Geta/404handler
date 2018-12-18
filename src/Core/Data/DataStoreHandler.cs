@@ -1,79 +1,54 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BVNetwork.NotFound.Core.CustomRedirects;
+using EPiServer.ServiceLocation;
 
 namespace BVNetwork.NotFound.Core.Data
 {
+    [Obsolete]
     public class DataStoreHandler
     {
-        public enum State
+        private readonly IRedirectsService _redirectsService;
+
+        public DataStoreHandler()
         {
-            Saved = 0,
-            Suggestion = 1,
-            Ignored = 2,
-            Deleted
-        };
+            _redirectsService = ServiceLocator.Current.GetInstance<DefaultRedirectsService>();
+        }
 
-        private const string OldUrlPropertyName = "OldUrl";
-
+        [Obsolete]
         public void SaveCustomRedirect(CustomRedirect currentCustomRedirect)
         {
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-            var match = store.Find<CustomRedirect>(OldUrlPropertyName, currentCustomRedirect.OldUrl.ToLower()).SingleOrDefault();
-
-            //if there is a match, replace the value.
-            if (match != null)
-            {
-                store.Save(currentCustomRedirect, match.Id);
-            }
-            else
-            {
-                store.Save(currentCustomRedirect);
-            }
+            _redirectsService.AddOrUpdate(currentCustomRedirect);
         }
 
         /// <summary>
         /// Returns a list of all CustomRedirect objects in the Dynamic Data Store.
         /// </summary>
         /// <returns></returns>
+        [Obsolete]
         public List<CustomRedirect> GetCustomRedirects(bool excludeIgnored)
         {
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-            IEnumerable<CustomRedirect> customRedirects;
-            if (excludeIgnored)
-            {
-                customRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                                  where s.State.Equals((int)State.Saved)
-                                  select s;
-            }
-            else
-            {
-                customRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                                  select s;
-            }
-            return customRedirects.ToList();
+            return excludeIgnored
+                ? _redirectsService.GetSaved().ToList()
+                : _redirectsService.GetAll().ToList();
+
         }
 
+        [Obsolete]
         public List<CustomRedirect> GetIgnoredRedirect()
         {
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
+            return _redirectsService.GetIgnored().ToList();
 
-            var customRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                              where s.State.Equals(State.Ignored)
-                              select s;
-            return customRedirects.ToList();
         }
 
+        [Obsolete]
         public List<CustomRedirect> GetDeletedRedirect()
         {
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-
-            var deletedRedirects = from s in store.Items<CustomRedirect>().OrderBy(cr => cr.OldUrl)
-                              where s.State.Equals(State.Deleted)
-                              select s;
-            return deletedRedirects.ToList();
+            return _redirectsService.GetDeleted().ToList();
         }
 
+        [Obsolete]
         public void UnignoreRedirect()
         {
         }
@@ -81,40 +56,25 @@ namespace BVNetwork.NotFound.Core.Data
         /// <summary>
         /// Delete CustomObject object from Data Store that has given "OldUrl" property
         /// </summary>
+        [Obsolete]
         public void DeleteCustomRedirect(string oldUrl)
         {
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-
-            var match = store.Find<CustomRedirect>(OldUrlPropertyName, oldUrl.ToLower()).SingleOrDefault();
-            if (match != null)
-            {
-                store.Delete(match);
-            }
+            _redirectsService.DeleteByOldUrl(oldUrl);
         }
 
         /// <summary>
         /// Delete all CustomRedirect objects
         /// </summary>
+        [Obsolete]
         public void DeleteAllCustomRedirects()
         {
-            // In order to avoid a database timeout, we delete the items one by one.
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-            foreach (var redirect in GetCustomRedirects(false))
-            {
-                store.Delete(redirect);
-            }
+            _redirectsService.DeleteAll();
         }
 
+        [Obsolete]
         public int DeleteAllIgnoredRedirects()
         {
-            // In order to avoid a database timeout, we delete the items one by one.
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-            var ignoredRedirects = GetIgnoredRedirect();
-            foreach (var redirect in ignoredRedirects)
-            {
-                store.Delete(redirect);
-            }
-            return ignoredRedirects.Count;
+            return _redirectsService.DeleteAllIgnored();
         }
 
         /// <summary>
@@ -122,14 +82,10 @@ namespace BVNetwork.NotFound.Core.Data
         /// </summary>
         /// <param name="searchWord"></param>
         /// <returns></returns>
+        [Obsolete]
         public List<CustomRedirect> SearchCustomRedirects(string searchWord)
         {
-            var store = DataStoreFactory.GetStore(typeof(CustomRedirect));
-            var customRedirects = from s in store.Items<CustomRedirect>()
-                                  where s.NewUrl.Contains(searchWord) || s.OldUrl.Contains(searchWord)
-                                  select s;
-
-            return customRedirects.ToList();
+            return _redirectsService.Search(searchWord).ToList();
         }
     }
 }

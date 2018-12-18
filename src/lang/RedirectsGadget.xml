@@ -57,6 +57,7 @@
                 <exportredirects>Export redirects to an XML-file</exportredirects>
                 <invalidxmlfile>The uploaded file is not a valid XML file. Please upload a valid XML file.</invalidxmlfile>
                 <invalidtxtfile>The uploaded file is not a valid TXT file. Please upload a valid TXT file.</invalidtxtfile>
+                <migrateddstosql>Migrate redirects from DDS to SQL.</migrateddstosql>
             </redirects>
         </gadget>
     </language>

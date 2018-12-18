@@ -94,8 +94,15 @@
     <Compile Include="Core\Configuration\FileNotFoundMode.cs" />
     <Compile Include="Core\Configuration\IConfiguration.cs" />
     <Compile Include="Core\Configuration\LoggerMode.cs" />
+    <Compile Include="Core\CustomRedirects\DefaultRedirectsService.cs" />
     <Compile Include="Core\CustomRedirects\IRedirectHandler.cs" />
+    <Compile Include="Core\CustomRedirects\IRedirectsService.cs" />
     <Compile Include="Core\CustomRedirects\XmlActionResult.cs" />
+    <Compile Include="Core\Data\DdsRedirectRepository.cs" />
+    <Compile Include="Core\Data\IRedirectLoader.cs" />
+    <Compile Include="Core\Data\IRepository.cs" />
+    <Compile Include="Core\Data\RedirectState.cs" />
+    <Compile Include="Core\Data\SqlRedirectRepository.cs" />
     <Compile Include="Core\ErrorHandler.cs" />
     <Compile Include="Core\Initialization\Custom404HandlerInitialization.cs" />
     <Compile Include="Core\Initialization\DependencyInjectionInitialization.cs" />
@@ -281,6 +288,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Data.SqlClient, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Data.SqlClient.4.4.0\lib\net461\System.Data.SqlClient.dll</HintPath>

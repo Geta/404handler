@@ -10,14 +10,5 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// <param name="urlNotFound"></param>
         /// <returns></returns>
         CustomRedirect Find(Uri urlNotFound);
-
-        [Obsolete("Will be removed in the next major version.")]
-        CustomRedirect Find(Uri urlNotFound, Uri referrer);
-
-        /// <summary>
-        /// Save a collection of redirects, and call method to raise an event in order to clear cache on all servers.
-        /// </summary>
-        /// <param name="redirects"></param>
-        void SaveCustomRedirects(CustomRedirectCollection redirects);
     }
 }

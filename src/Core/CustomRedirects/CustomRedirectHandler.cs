@@ -2,6 +2,7 @@ using System;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Core.Upgrade;
 using EPiServer.Logging;
+using EPiServer.ServiceLocation;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
 {
@@ -15,6 +16,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         private static readonly object CacheLock = new object();
         private const string CacheKeyCustomRedirectHandlerInstance = "BvnCustomRedirectHandler";
         private CustomRedirectCollection _customRedirects;
+        private IRedirectsService _redirectsService;
+        private IRedirectsService RedirectsService => _redirectsService ??
+                                                      (_redirectsService = ServiceLocator.Current.GetInstance<DefaultRedirectsService>());
 
         // Should only be instanciated by the static Current method
         protected CustomRedirectHandler()
@@ -31,36 +35,15 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return CustomRedirects.Find(urlNotFound);
         }
 
-        public CustomRedirect Find(Uri urlNotFound, Uri referrer)
-        {
-            return CustomRedirects.Find(urlNotFound);
-        }
-
-        /// <summary>
-        /// Save a collection of redirects, and call method to raise an event in order to clear cache on all servers.
-        /// </summary>
-        /// <param name="redirects"></param>
-        public void SaveCustomRedirects(CustomRedirectCollection redirects)
-        {
-            var dynamicHandler = new DataStoreHandler();
-            foreach (CustomRedirect redirect in redirects)
-            {
-                // Add redirect
-                dynamicHandler.SaveCustomRedirect(redirect);
-            }
-            ClearCache();
-        }
-
         /// <summary>
         /// Read the custom redirects from the dynamic data store, and
         /// stores them in the CustomRedirect property
         /// </summary>
         protected void LoadCustomRedirects()
         {
-            var dynamicHandler = new DataStoreHandler();
             _customRedirects = new CustomRedirectCollection();
 
-            foreach (var redirect in dynamicHandler.GetCustomRedirects(false))
+            foreach (var redirect in RedirectsService.GetAll())
             {
                 _customRedirects.Add(redirect);
             }
