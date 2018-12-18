@@ -30,7 +30,7 @@ namespace BVNetwork.NotFound.Core.Data
         public List<CustomRedirect> GetCustomRedirects(bool excludeIgnored)
         {
             return excludeIgnored
-                ? _redirectsService.GetAllExcludingIgnored().ToList()
+                ? _redirectsService.GetSaved().ToList()
                 : _redirectsService.GetAll().ToList();
 
         }

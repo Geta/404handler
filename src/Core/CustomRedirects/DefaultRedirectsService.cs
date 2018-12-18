@@ -22,7 +22,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return _redirectLoader.GetAll();
         }
 
-        public IEnumerable<CustomRedirect> GetAllExcludingIgnored()
+        public IEnumerable<CustomRedirect> GetSaved()
         {
             return _redirectLoader.GetByState(RedirectState.Saved);
         }

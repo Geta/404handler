@@ -301,7 +301,7 @@ namespace BVNetwork.NotFound.Controllers
         {
             CheckAccess();
 
-            var redirects = _redirectsService.GetAllExcludingIgnored().ToList();
+            var redirects = _redirectsService.GetSaved().ToList();
 
             XmlDocument document = new RedirectsXmlParser().Export(redirects);
 
@@ -414,7 +414,7 @@ namespace BVNetwork.NotFound.Controllers
             List<CustomRedirect> customRedirectList;
             if (string.IsNullOrEmpty(searchWord))
             {
-                customRedirectList = _redirectsService.GetAllExcludingIgnored().ToList();
+                customRedirectList = _redirectsService.GetSaved().ToList();
             }
             else
                 customRedirectList = _redirectsService.Search(searchWord).ToList();

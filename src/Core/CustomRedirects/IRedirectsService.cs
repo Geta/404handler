@@ -5,7 +5,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
     public interface IRedirectsService
     {
         IEnumerable<CustomRedirect> GetAll();
-        IEnumerable<CustomRedirect> GetAllExcludingIgnored();
+        IEnumerable<CustomRedirect> GetSaved();
         IEnumerable<CustomRedirect> GetIgnored();
         IEnumerable<CustomRedirect> GetDeleted();
         IEnumerable<CustomRedirect> Search(string searchText);
