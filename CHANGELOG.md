@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.2.1], [10.4.1]
+
+### Changed
+- Fixed DI for IRequestService.
+- Logging headers written exceptions separately and not throwing to fix #134.
+
 ## [11.2.0], [10.4.0]
 
 ### Changed
