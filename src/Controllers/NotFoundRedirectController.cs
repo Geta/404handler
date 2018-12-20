@@ -28,7 +28,7 @@ namespace BVNetwork.NotFound.Controllers
         private static readonly ILogger Logger = LogManager.GetLogger();
 
         public NotFoundRedirectController(
-            DefaultRedirectsService redirectsService,
+            IRedirectsService redirectsService,
             DdsRedirectRepository ddsRedirectRepository)
         {
             _redirectsService = redirectsService ?? throw new ArgumentNullException(nameof(redirectsService));

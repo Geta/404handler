@@ -18,7 +18,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         private CustomRedirectCollection _customRedirects;
         private IRedirectsService _redirectsService;
         private IRedirectsService RedirectsService => _redirectsService ??
-                                                      (_redirectsService = ServiceLocator.Current.GetInstance<DefaultRedirectsService>());
+                                                      (_redirectsService = ServiceLocator.Current.GetInstance<IRedirectsService>());
 
         // Should only be instanciated by the static Current method
         protected CustomRedirectHandler()

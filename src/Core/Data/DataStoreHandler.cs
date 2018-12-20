@@ -13,7 +13,7 @@ namespace BVNetwork.NotFound.Core.Data
 
         public DataStoreHandler()
         {
-            _redirectsService = ServiceLocator.Current.GetInstance<DefaultRedirectsService>();
+            _redirectsService = ServiceLocator.Current.GetInstance<IRedirectsService>();
         }
 
         [Obsolete]

@@ -17,6 +17,7 @@ namespace BVNetwork.NotFound.Core.Initialization
             context.Services.AddSingleton<IRequestLogger>(RequestLogger.Instance);
             context.Services.AddTransient<IRedirectHandler>(_ => CustomRedirectHandler.Current); // Load per-request as it is read from the cache
 
+            context.Services.AddTransient<IRedirectsService, DefaultRedirectsService>();
             context.Services.AddTransient<IRepository<CustomRedirect>, SqlRedirectRepository>();
             context.Services.AddTransient<IRedirectLoader, SqlRedirectRepository>();
         }
