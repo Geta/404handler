@@ -78,7 +78,7 @@ Logging of 404 requests is buffered to shield your application from Denial of Se
 ![](https://raw.githubusercontent.com/BVNetwork/404handler/master/doc/img/Administer.png)
 
 ```xml
-<bvn404Handler handlerMode="On" logging="On" bufferSize="30" threshold="5">
+<bvn404Handler handlerMode="On" logging="On" bufferSize="30" threshold="5" logWithHostname="false">
 </bvn404Handler>
 ```
 
@@ -98,6 +98,8 @@ Logging of 404 requests is buffered to shield your application from Denial of Se
    * 100 / 15 = 6. Error frequency is within threshold value. Buffered requests will get logged.
    
 If the `bufferSize` is set to 0, the `threshold` value will be ignored, and every request will be logged immediately.
+
+**logWithHostname**: Set to `true` to include hostname in the log. Useful in a multisite environment with several hostnames/domains. Default is `false` 
 
 ## Specifying ignored resources
 By default, requests to files with the following extensions will be ignored by the redirect module: `jpg,gif,png,css,js,ico,swf,woff`
