@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [11.2.2], [10.4.2]
 
 ### Changed
-- Fixed language detection when using NotFoundPageAttribute.
+- Fixed language detection when using NotFoundPageAttribute [#145](https://github.com/Geta/404handler/issues/145).
 
 ## [11.2.1], [10.4.1]
 
