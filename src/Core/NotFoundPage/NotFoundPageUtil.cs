@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
+using EPiServer;
 using EPiServer.Framework;
 using EPiServer.ServiceLocation;
 using EPiServer.Web;
@@ -115,8 +116,8 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
 
         public static void SetCurrentLanguage(HttpContextBase context)
         {
-            var urlNotFound = new Uri($"{SiteDefinition.Current.SiteUrl}{GetUrlNotFound(context.Request)}");
-            SetCurrentLanguage(urlNotFound.ToString());
+            var urlNotFound = GetUrlNotFound(context.Request);
+            SetCurrentLanguage(new Uri(urlNotFound).PathAndQuery);
         }
 
         public static string GetStatus(int statusCode)

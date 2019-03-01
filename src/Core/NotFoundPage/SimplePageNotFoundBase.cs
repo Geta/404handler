@@ -1,6 +1,5 @@
 using System;
 using System.Web;
-using EPiServer.Web;
 
 namespace BVNetwork.NotFound.Core.NotFoundPage
 {
@@ -21,7 +20,7 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
         /// </summary>
         public Uri UrlNotFound => _urlNotFound
                                     ?? (_urlNotFound =
-                                        new Uri($"{SiteDefinition.Current.SiteUrl}{NotFoundPageUtil.GetUrlNotFound(new HttpRequestWrapper(Page.Request))}"));
+                                        new Uri(NotFoundPageUtil.GetUrlNotFound(new HttpRequestWrapper(Page.Request))));
 
         /// <summary>
         /// The refering url
