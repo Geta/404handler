@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using BVNetwork.NotFound.Core;
 using BVNetwork.NotFound.Tests.Base.Http;
@@ -102,12 +103,19 @@ namespace BVNetwork.NotFound.Tests
 
         private void WhenNoNotFoundExceptionIsThrown()
         {
-            A.CallTo(() => _sut.IsNotFoundException(A<Exception>._, A<Uri>._)).Returns(false);
+            AddServerException(new ArgumentException("Some argument missing"));
         }
 
         private void WhenNotFoundExceptionIsThrown()
         {
-            A.CallTo(() => _sut.IsNotFoundException(A<Exception>._, A<Uri>._)).Returns(true);
+            AddServerException(new ContentNotFoundException());
+        }
+
+        private void AddServerException(Exception exception)
+        {
+            var server = ((FakeHttpServerUtility) _httpContext.Server);
+            server.Errors.Clear();
+            server.Errors.Add(exception);
         }
     }
 }
