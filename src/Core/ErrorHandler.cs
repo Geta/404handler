@@ -23,7 +23,9 @@ namespace BVNetwork.NotFound.Core
 
             if (IsNotFoundException(context.Server.GetLastError(), context.Request.Url))
             {
-                context.SetStatusCode(404);
+                context
+                    .ClearServerError()
+                    .SetStatusCode(404);
                 _requestHandler.Handle(context);
             }
         }

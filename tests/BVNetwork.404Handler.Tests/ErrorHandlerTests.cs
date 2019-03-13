@@ -68,6 +68,16 @@ namespace BVNetwork.NotFound.Tests
         }
 
         [Fact]
+        public void HandleNotFoundException_clears_server_errors_when_not_found_exception_is_thrown()
+        {
+            WhenNotFoundExceptionIsThrown();
+
+            _sut.Handle(_httpContext);
+
+            AssertServerErrorsCleared(_httpContext);
+        }
+
+        [Fact]
         public void HandleNotFoundException_does_not_set_not_found_response_when_not_found_exception_is_not_thrown()
         {
             WhenNoNotFoundExceptionIsThrown();
@@ -99,6 +109,11 @@ namespace BVNetwork.NotFound.Tests
         {
             Assert.True(context.Response.TrySkipIisCustomErrors);
             Assert.Equal(404, context.Response.StatusCode);
+        }
+
+        private void AssertServerErrorsCleared(FakeHttpContext httpContext)
+        {
+            Assert.Null(_httpContext.Server.GetLastError());
         }
 
         private void WhenNoNotFoundExceptionIsThrown()
