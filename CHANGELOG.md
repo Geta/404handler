@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.2.3], [10.4.3]
+
+### Changed
+- Fixed issue unable to ignore suggestions [#142](https://github.com/Geta/404handler/issues/142).
+- Fixed issue when Episerver continued to log static resource 404 errors as exceptions.
+
 ## [11.2.2], [10.4.2]
 
 ### Changed
