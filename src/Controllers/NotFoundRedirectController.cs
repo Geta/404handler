@@ -144,17 +144,23 @@ namespace BVNetwork.NotFound.Controllers
             dbAccess.DeleteRowsForRequest(oldUrl);
 
             // add redirect to dds with state "ignored"
-            var redirect = new CustomRedirect();
-            redirect.OldUrl = oldUrl;
-            redirect.State = Convert.ToInt32(RedirectState.Ignored);
+            var redirect = new CustomRedirect
+            {
+                OldUrl = oldUrl,
+                NewUrl = string.Empty,
+                State = Convert.ToInt32(RedirectState.Ignored)
+            };
             _redirectsService.AddOrUpdate(redirect);
             CustomRedirectHandler.ClearCache();
 
             List<CustomRedirect> customRedirectList = GetSuggestions(searchWord);
             string actionInfo = string.Format(LocalizationService.Current.GetString("/gadget/redirects/ignoreredirect"), oldUrl);
             RedirectIndexViewData viewData = GetRedirectIndexViewData(pageNumber, customRedirectList, actionInfo, searchWord, pageSize, true, true);
-            viewData.HighestSuggestionValue = customRedirectList.First().NotfoundErrorCount;
-            viewData.LowestSuggestionValue = customRedirectList.Last().NotfoundErrorCount;
+            if (customRedirectList.Count > 0)
+            {
+                viewData.HighestSuggestionValue = customRedirectList.First().NotfoundErrorCount;
+                viewData.LowestSuggestionValue = customRedirectList.Last().NotfoundErrorCount;
+            }
             return View("Index", viewData);
         }
 
@@ -332,7 +338,8 @@ namespace BVNetwork.NotFound.Controllers
                         redirects.Add(new CustomRedirect
                         {
                             OldUrl = url,
-                            State = (int)RedirectState.Deleted,
+                            NewUrl = string.Empty,
+                            State = (int)RedirectState.Deleted
                         });
                     }
                 }
@@ -457,11 +464,13 @@ namespace BVNetwork.NotFound.Controllers
         {
             CheckAccess();
 
-
             // add redirect to dds with state "deleted"
-            var redirect = new CustomRedirect();
-            redirect.OldUrl = oldUrl;
-            redirect.State = Convert.ToInt32(RedirectState.Deleted);
+            var redirect = new CustomRedirect
+            {
+                OldUrl = oldUrl,
+                NewUrl = string.Empty,
+                State = Convert.ToInt32(RedirectState.Deleted)
+            };
             _redirectsService.AddOrUpdate(redirect);
             CustomRedirectHandler.ClearCache();
 
