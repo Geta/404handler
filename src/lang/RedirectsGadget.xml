@@ -120,4 +120,64 @@
             </redirects>
         </gadget>
     </language>
+    <language name="Svenska" id="SV">
+        <gadget>
+            <redirects>
+                <ignored>Ignorerad</ignored>
+                <title>Custom Redirects</title>
+                <name>Custom Redirects Manager</name>
+                <description>Administrering av anpassade omdirigeringar</description>
+                <count>Antal omdirigeringar:</count>
+                <oldurl>Gammal URL</oldurl>
+                <newurl>Ny URL</newurl>
+                <info>
+                    Med 404-hanteringsverktyget kan du lägga till nya anpassade omdirigeringar, radera eller söka efter befintliga omdirigeringar. 
+                    Den "Gamla URL:en" är unik, vilket innebär att om du registrerar två anpassade omdirigeringar med samma gamla URL, kommer den senare att skriva över den första.
+                </info>
+                <delete>Radera</delete>
+                <configure>Ta bort alla</configure>
+                <cleartext>Välj 'OK' för att ta bort ALL anpassade omdirigeringar</cleartext>
+                <note>Detta går inte att ångra.</note>
+                <search>Sök</search>
+                <searchresult>Din sökning efter &lt;b&gt; {0} &lt;/b&gt; returnerade &lt;b&gt; {1} &lt;/b&gt; resultat.</searchresult>
+                <wildcard>Jokertecken («Wildcard»)</wildcard>
+                <storedredirects>Det finns för tillfället lagrat &lt;b&gt; {0} &lt;/b&gt; anpassade omdirigeringar</storedredirects>
+                <saveredirect>Anpassad omdirigering med gammal URL &lt;b&gt; {0} &lt;/b&gt; och ny webbadress &lt;b&gt; {1} &lt;/b&gt; lyckades spara.</saveredirect>
+                <inactiveredirects>Om du vill se anpassade omdirigeringar markerar du kryssrutan 'Visa omdirigeringar'</inactiveredirects>
+                <showredirects>Visa omdirigeringar</showredirects>
+                <redirectscount>Visar omdirigeringar {0} - {1} av {2}</redirectscount>
+                <suggestionscount>Förslag: {0} - {1} av {2}</suggestionscount>
+                <split>...</split>
+                <ignoreexplanation>Genom att ignorera ett förslag läggs det inte till någon loggning för den angivna webbadressen. Förslaget kommer också att tas bort från listan</ignoreexplanation>
+                <ignoreredirect>Omdirigera med url &lt;b&gt; {0} &lt;/b&gt; läggs till för att ignorera listan</ignoreredirect>
+                <ignore>Ignorera</ignore>
+                <storedsuggestions>Baserat på de loggade 404-felen finns det &lt;b&gt; {0} &lt;/b&gt; anpassade omdirigeringsförslag.</storedsuggestions>
+                <andsuggestions>och &lt;b&gt; {0} &lt;/b&gt; anpassade omdirigeringsförslag</andsuggestions>
+                <searchsuggestions>Din sökning efter &lt;b&gt; {0} &lt;/b&gt; returnerade &lt;b&gt; {1} &lt;/b&gt; förslag.</searchsuggestions>
+                <ignoredsuggestions>Det finns för närvarande &lt;b&gt; {0} &lt;/b&gt; lagrade ignorerade förslag.</ignoredsuggestions>
+                <unignore>Sluta ignorera</unignore>
+                <url>URL</url>
+                <importsuccess>{0} omdirigeringar importerades.</importsuccess>
+                <importdeletedsuccess>{0} webbadresser importerades.</importdeletedsuccess>
+                <importnone>Inga omdirigeringar kunde importeras</importnone>
+                <importinfo>Importera omdirigeringar från en XML-fil</importinfo>
+                <importDeleted>Importera borttagna (410) webbadresser från en textfil</importDeleted>
+                <ignoredremoved>Alla {0} ignorerade förslag tas bort permanent</ignoredremoved>
+                <suggestionsdeleted>Förslag som har tagits bort</suggestionsdeleted>
+                <redirectsdeleted>Omdirigeringar borttagna</redirectsdeleted>
+                <suggesteionsdeleteinfo1>Ta bort alla förslag permanent med mindre än</suggesteionsdeleteinfo1>
+                <suggesteionsdeleteinfo2>felräkningar och äldre än</suggesteionsdeleteinfo2>
+                <suggesteionsdeleteinfo3>dagar</suggesteionsdeleteinfo3>
+                <deleteignoreinfo>Ta bort alla ignorerade förslag permanent</deleteignoreinfo>
+                <deleteallSuggestions>Ta bort alla förslag permanent</deleteallSuggestions>
+                <deleteallredirects>Ta bort alla anpassade omdirigeringar permanent</deleteallredirects>
+                <Administerinfo>Rensa omdirigeringsförslag eller ignorera webbadresser, eller importera/exportera omdirigeringar från/till en XML-fil.</Administerinfo>
+                <deletedurls>Det finns för närvarande &lt;b&gt; {0} &lt;/b&gt; webbadresser som returnerar ett borttaget svar. Detta meddelar sökmotorer (crawlers) att dessa webbadresser ska raderas från deras sökindex.</deletedurls>
+                <exportredirects>Exportera omdirigeringar till en XML-fil</exportredirects>
+                <invalidxmlfile>Den uppladdade filen är inte en giltig XML-fil. Var god ladda upp en giltig XML-fil.</invalidxmlfile>
+                <invalidtxtfile>Den uppladdade filen är inte en giltig TXT-fil. Var god ladda upp en giltig TXT-fil.</invalidtxtfile>
+                <migrateddstosql>Migrera omdirigeringar från DDS till SQL.</migrateddstosql>
+            </redirects>
+        </gadget>
+    </language>
 </languages>
