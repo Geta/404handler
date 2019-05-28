@@ -136,7 +136,7 @@
                 </info>
                 <delete>Radera</delete>
                 <configure>Ta bort alla</configure>
-                <cleartext>Välj 'OK' för att ta bort ALL anpassade omdirigeringar</cleartext>
+                <cleartext>Välj 'OK' för att ta bort alla anpassade omdirigeringar</cleartext>
                 <note>Detta går inte att ångra.</note>
                 <search>Sök</search>
                 <searchresult>Din sökning efter &lt;b&gt; {0} &lt;/b&gt; returnerade &lt;b&gt; {1} &lt;/b&gt; resultat.</searchresult>
