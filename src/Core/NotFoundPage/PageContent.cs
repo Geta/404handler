@@ -33,7 +33,7 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
 
             if (cultureInfo == null) return;
 
-            languageService.TryGetStringByCulture("/templates/notfound/title1", cultureInfo, out _title);
+            languageService.TryGetStringByCulture("/templates/notfound/title", cultureInfo, out _title);
             languageService.TryGetStringByCulture("/templates/notfound/toptext", cultureInfo, out _topText);
             languageService.TryGetStringByCulture("/templates/notfound/lookingfor", cultureInfo, out _lookingFor);
             languageService.TryGetStringByCulture("/templates/notfound/referer", cultureInfo, out _cameFrom);
