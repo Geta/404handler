@@ -24,8 +24,8 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         public string OldUrl
         {
-            get => _oldUrl.ToLower();
-            set => _oldUrl = value;
+            get => _oldUrl;
+            set => _oldUrl = value?.ToLower();
         }
 
         public string NewUrl { get; set; }
