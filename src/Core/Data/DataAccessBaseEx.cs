@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using EPiServer.Data;
 using EPiServer.Logging;
@@ -24,39 +25,51 @@ namespace BVNetwork.NotFound.Core.Data
 
         private static readonly ILogger Logger = LogManager.GetLogger();
 
-        public DataSet ExecuteSql(string sqlCommand, List<IDbDataParameter> parameters)
+        public DataSet ExecuteSql(string sqlCommand, params IDbDataParameter[] parameters)
         {
             return Executor.Execute(delegate
             {
-                using (var ds = new DataSet())
+                var ds = new DataSet();
+                try
                 {
-                    try
+                    using (var command = CreateCommand(sqlCommand, parameters))
                     {
-                        var command = CreateCommand(sqlCommand);
-                        if (parameters != null)
+                        using (var da = CreateDataAdapter(command))
                         {
-                            foreach (var dbDataParameter in parameters)
-                            {
-                                var parameter = (SqlParameter) dbDataParameter;
-                                command.Parameters.Add(parameter);
-                            }
+                            da.Fill(ds);
                         }
-                        command.CommandType = CommandType.Text;
-                        CreateDataAdapter(command).Fill(ds);
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(
-                            $"An error occureding in the ExecuteSQL method with the following sql{sqlCommand}. Exception:{ex}");
-                    }
-
-                    return ds;
                 }
+                catch (Exception ex)
+                {
+                    Logger.Error(
+                        $"An error occureding in the ExecuteSQL method with the following sql{sqlCommand}. Exception:{ex}");
+                }
+
+                return ds;
             });
 
         }
 
-        public bool ExecuteNonQuery(string sqlCommand)
+        private DbCommand CreateCommand(string sqlCommand, params IDbDataParameter[] parameters)
+        {
+            var command = base.CreateCommand(sqlCommand);
+
+            if (parameters != null)
+            {
+                foreach (var dbDataParameter in parameters)
+                {
+                    var parameter = (SqlParameter)dbDataParameter;
+                    command.Parameters.Add(parameter);
+                }
+            }
+
+            command.CommandType = CommandType.Text;
+
+            return command;
+        }
+
+        public bool ExecuteNonQuery(string sqlCommand, params IDbDataParameter[] parameters)
         {
             return Executor.Execute(delegate
             {
@@ -64,9 +77,10 @@ namespace BVNetwork.NotFound.Core.Data
 
                 try
                 {
-                    IDbCommand command = CreateCommand(sqlCommand);
-                    command.CommandType = CommandType.Text;
-                    command.ExecuteNonQuery();
+                    using (var command = CreateCommand(sqlCommand, parameters))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -85,9 +99,10 @@ namespace BVNetwork.NotFound.Core.Data
                 int result;
                 try
                 {
-                    IDbCommand dbCommand = CreateCommand(sqlCommand);
-                    dbCommand.CommandType = CommandType.Text;
-                    result = (int)dbCommand.ExecuteScalar();
+                    using (var command = CreateCommand(sqlCommand))
+                    {
+                        result = (int)command.ExecuteScalar();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -103,7 +118,7 @@ namespace BVNetwork.NotFound.Core.Data
         {
             var sqlCommand =
                 $"SELECT [OldUrl], COUNT(*) as Requests FROM {Redirectstable} GROUP BY [OldUrl] order by Requests desc";
-            return ExecuteSql(sqlCommand, null);
+            return ExecuteSql(sqlCommand);
         }
 
         public void DeleteRowsForRequest(string oldUrl)
@@ -111,8 +126,8 @@ namespace BVNetwork.NotFound.Core.Data
             var sqlCommand = $"DELETE FROM {Redirectstable} WHERE [OldUrl] = @oldurl";
             var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
             oldUrlParam.Value = oldUrl;
-            var parameters = new List<IDbDataParameter> {oldUrlParam};
-            ExecuteSql(sqlCommand, parameters);
+
+            ExecuteNonQuery(sqlCommand, oldUrlParam);
         }
 
         public void DeleteSuggestions(int maxErrors, int minimumDaysOld)
@@ -128,12 +143,12 @@ namespace BVNetwork.NotFound.Core.Data
                                                       having count(*) <= {maxErrors}
                                                       ) t
                                                 )";
-            ExecuteSql(sqlCommand, null);
+            ExecuteNonQuery(sqlCommand);
         }
         public void DeleteAllSuggestions()
         {
             var sqlCommand = $@"delete from {Redirectstable}";
-            ExecuteSql(sqlCommand, null);
+            ExecuteNonQuery(sqlCommand);
         }
 
         public DataSet GetRequestReferers(string url)
@@ -143,14 +158,13 @@ namespace BVNetwork.NotFound.Core.Data
             var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
             oldUrlParam.Value = url;
 
-            var parameters = new List<IDbDataParameter> {oldUrlParam};
-            return ExecuteSql(sqlCommand, parameters);
+            return ExecuteSql(sqlCommand, oldUrlParam);
         }
 
-        public DataSet GetTotalNumberOfSuggestions()
+        public int GetTotalNumberOfSuggestions()
         {
             var sqlCommand = $"SELECT COUNT(DISTINCT [OldUrl]) FROM {Redirectstable}";
-            return ExecuteSql(sqlCommand, null);
+            return ExecuteScalar(sqlCommand);
         }
 
         public int Check404Version()
@@ -161,13 +175,14 @@ namespace BVNetwork.NotFound.Core.Data
                 var version = -1;
                 try
                 {
-                    var command = CreateCommand();
-
-                    command.Parameters.Add(CreateReturnParameter());
-                    command.CommandText = sqlCommand;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.ExecuteNonQuery();
-                    version = Convert.ToInt32(GetReturnValue(command).ToString());
+                    using (var command = CreateCommand())
+                    {
+                        command.Parameters.Add(CreateReturnParameter());
+                        command.CommandText = sqlCommand;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.ExecuteNonQuery();
+                        version = Convert.ToInt32(GetReturnValue(command).ToString());
+                    }
                 }
                 catch (SqlException)
                 {
@@ -192,20 +207,19 @@ namespace BVNetwork.NotFound.Core.Data
                                     (@requested, @oldurl, @referer)";
                    try
                    {
-                       IDbCommand command = CreateCommand();
-
                        var requstedParam = CreateParameter("requested", DbType.DateTime, 0);
                        requstedParam.Value = now;
+
                        var refererParam = CreateParameter("referer", DbType.String, 4000);
                        refererParam.Value = referer ?? string.Empty;
+
                        var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
                        oldUrlParam.Value = oldUrl;
-                       command.Parameters.Add(requstedParam);
-                       command.Parameters.Add(refererParam);
-                       command.Parameters.Add(oldUrlParam);
-                       command.CommandText = sqlCommand;
-                       command.CommandType = CommandType.Text;
-                       command.ExecuteNonQuery();
+
+                       using (var command = CreateCommand(sqlCommand, requstedParam, refererParam, oldUrlParam))
+                       {
+                           command.ExecuteNonQuery();
+                       }
                    }
                    catch (Exception ex)
                    {
