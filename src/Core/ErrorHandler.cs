@@ -43,17 +43,17 @@ namespace BVNetwork.NotFound.Core
                     case ContentNotFoundException _:
                         // Should be a normal 404 handler
                         Logger.Information("404 ContentNotFoundException - Url: {0}", notFoundUri.ToString());
-                        Logger.Debug("404 ContentNotFoundException - Exception: {0}", innerEx.ToString());
+                        Logger.Debug("404 ContentNotFoundException - Exception", innerEx);
                         return true;
                     case FileNotFoundException _:
                         Logger.Information("404 FileNotFoundException - Url: {0}", notFoundUri.ToString());
-                        Logger.Debug("404 FileNotFoundException - Exception: {0}", innerEx.ToString());
+                        Logger.Debug("404 FileNotFoundException - Exception", innerEx);
                         return true;
                     case HttpException httpEx:
                         if (httpEx.GetHttpCode() == 404)
                         {
                             Logger.Information("404 HttpException - Url: {0}", notFoundUri.ToString());
-                            Logger.Debug("404 HttpException - Exception: {0}", httpEx.ToString());
+                            Logger.Debug("404 HttpException - Exception", httpEx);
                             return true;
                         }
                         break;

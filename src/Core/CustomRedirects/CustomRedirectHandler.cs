@@ -92,7 +92,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error("An error occured while loading redirects from dds. CustomRedirectHandlerException has now been set. Exception:" + ex);
+                        Logger.Error("An error occurred while loading redirects from dds. CustomRedirectHandlerException has now been set.", ex);
                         CustomRedirectHandlerException = ex.ToString();
                         Upgrader.Valid = false;
                     }

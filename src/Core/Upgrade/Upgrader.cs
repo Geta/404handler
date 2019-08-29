@@ -6,7 +6,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
 {
     public static class Upgrader
     {
-        private static readonly ILogger Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Logger = LogManager.GetLogger();
 
         public static bool Valid { get; set; }
 
@@ -45,7 +45,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
 
         private static bool CreateRedirectsTable(DataAccessBaseEx dba)
         {
-            Log.Information("Create 404 handler redirects table START");
+            Logger.Information("Create 404 handler redirects table START");
             var createTableScript = @"CREATE TABLE [dbo].[404Handler.Redirects](
                                         [Id] [uniqueidentifier] NOT NULL,
                                         [OldUrl] [nvarchar](2000) NOT NULL,
@@ -55,14 +55,14 @@ namespace BVNetwork.NotFound.Core.Upgrade
                                         CONSTRAINT [PK_404HandlerRedirects] PRIMARY KEY CLUSTERED ([Id] ASC) ON [PRIMARY]
                                         ) ON [PRIMARY]";
             var created = dba.ExecuteNonQuery(createTableScript);
-            Log.Information("Create 404 handler redirects table END");
+            Logger.Information("Create 404 handler redirects table END");
 
             return created;
         }
 
         private static bool CreateSuggestionsTable(DataAccessBaseEx dba)
         {
-            Log.Information("Create 404 handler suggestions table START");
+            Logger.Information("Create 404 handler suggestions table START");
             var createTableScript = @"CREATE TABLE [dbo].[BVN.NotFoundRequests](
                                         [ID] [int] IDENTITY(1,1) NOT NULL,
                                         [OldUrl] [nvarchar](2000) NOT NULL,
@@ -70,7 +70,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
                                         [Referer] [nvarchar](2000) NULL
                                         ) ON [PRIMARY]";
             var created = dba.ExecuteNonQuery(createTableScript);
-            Log.Information("Create 404 handler suggestions table END");
+            Logger.Information("Create 404 handler suggestions table END");
 
             if (created)
             {
@@ -82,23 +82,23 @@ namespace BVNetwork.NotFound.Core.Upgrade
 
         private static bool CreateSuggestionsTableIndex(DataAccessBaseEx dba)
         {
-            Log.Information("Create suggestions table clustered index START");
+            Logger.Information("Create suggestions table clustered index START");
             var clusteredIndex =
                 "CREATE CLUSTERED INDEX NotFoundRequests_ID ON [dbo].[BVN.NotFoundRequests] (ID)";
 
             var created = dba.ExecuteNonQuery(clusteredIndex);
             if (!created)
             {
-                Log.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
+                Logger.Error("An error occurred during the creation of the 404 handler redirects clustered index. Canceling.");
             }
 
-            Log.Information("Create suggestions table clustered index END");
+            Logger.Information("Create suggestions table clustered index END");
             return created;
         }
 
         private static bool CreateVersionNumberSp(DataAccessBaseEx dba)
         {
-            Log.Information("Create 404 handler version SP START");
+            Logger.Information("Create 404 handler version SP START");
             var versionSp =
                 $@"CREATE PROCEDURE [dbo].[bvn_notfoundversion] AS RETURN {Configuration.Configuration.CurrentVersion}";
 
@@ -106,10 +106,10 @@ namespace BVNetwork.NotFound.Core.Upgrade
 
             if (!created)
             {
-                Log.Error("An error occured during the creation of the 404 handler version stored procedure. Canceling.");
+                Logger.Error("An error occurred during the creation of the 404 handler version stored procedure. Canceling.");
             }
 
-            Log.Information("Create 404 handler version SP END");
+            Logger.Information("Create 404 handler version SP END");
             return created;
         }
 
