@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using EPiServer.Editor;
 using EPiServer.Logging;
 
@@ -7,13 +6,13 @@ namespace BVNetwork.NotFound.Core.NotFoundPage
 {
     public class NotFoundPageAttribute : ActionFilterAttribute
     {
-        private static readonly ILogger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Logger = LogManager.GetLogger();
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (PageEditing.PageIsInEditMode) return;
 
-            Log.Debug("Starting 404 handler action filter");
+            Logger.Debug("Starting 404 handler action filter");
             var request = filterContext.HttpContext.Request;
             filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
             var statusCode = NotFoundPageUtil.GetStatusCode(request);

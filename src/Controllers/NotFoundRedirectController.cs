@@ -50,7 +50,7 @@ namespace BVNetwork.NotFound.Controllers
             CustomRedirectHandler.ReloadCustomRedirectHandler();
             if (!string.IsNullOrEmpty(CustomRedirectHandler.CustomRedirectHandlerException))
             {
-                return Content("An error has occured in the dynamic data store: " + CustomRedirectHandler.CustomRedirectHandlerException);
+                return Content("An error has occurred in the dynamic data store" + CustomRedirectHandler.CustomRedirectHandlerException);
             }
 
             var suggestion = false;

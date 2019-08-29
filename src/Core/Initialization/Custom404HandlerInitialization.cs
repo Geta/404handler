@@ -66,13 +66,13 @@ namespace BVNetwork.NotFound.Core.Initialization
             {
                 RequestHandler.Service.Handle(GetContext());
             }
-            catch (HttpException e)
+            catch (HttpException ex)
             {
-                Logger.Warning("Http error (headers already written or similar) on 404 handling.", e);
+                Logger.Warning("Http error (headers already written or similar) on 404 handling.", ex);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Logger.Error("Error on 404 handling.", e);
+                Logger.Error("Error on 404 handling.", ex);
                 throw;
             }
         }
@@ -83,13 +83,13 @@ namespace BVNetwork.NotFound.Core.Initialization
             {
                 ErrorHandler.Service.Handle(GetContext());
             }
-            catch (HttpException e)
+            catch (HttpException ex)
             {
-                Logger.Warning("Http error (headers already written or similar) on 404 handling.", e);
+                Logger.Warning("Http error (headers already written or similar) on 404 handling.", ex);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Logger.Error("Error on 404 handling.", e);
+                Logger.Error("Error on 404 handling.", ex);
                 throw;
             }
         }

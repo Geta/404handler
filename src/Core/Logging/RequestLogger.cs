@@ -32,7 +32,7 @@ namespace BVNetwork.NotFound.Core.Logging
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error("An error occured while trying to log 404 errors. ", ex);
+                        Logger.Error("An error occurred while trying to log 404 errors. ", ex);
                     }
                 }
             }

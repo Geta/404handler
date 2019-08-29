@@ -43,7 +43,7 @@ namespace BVNetwork.NotFound.Core.Data
                 catch (Exception ex)
                 {
                     Logger.Error(
-                        $"An error occureding in the ExecuteSQL method with the following sql{sqlCommand}. Exception:{ex}");
+                        $"An error occurred in the ExecuteSQL method with the following sql: {sqlCommand}", ex);
                 }
 
                 return ds;
@@ -86,7 +86,7 @@ namespace BVNetwork.NotFound.Core.Data
                 {
                     success = false;
                     Logger.Error(
-                        $"An error occureding in the ExecuteSQL method with the following sql{sqlCommand}. Exception:{ex}");
+                        $"An error occurred in the ExecuteSQL method with the following sql: {sqlCommand}", ex);
                 }
                 return success;
             });
@@ -108,7 +108,7 @@ namespace BVNetwork.NotFound.Core.Data
                 {
                     result = 0;
                     Logger.Error(
-                        $"An error occureding in the ExecuteScalar method with the following sql{sqlCommand}. Exception:{ex}");
+                        $"An error occurred in the ExecuteScalar method with the following sql: {sqlCommand}", ex);
                 }
                 return result;
             });
@@ -191,7 +191,7 @@ namespace BVNetwork.NotFound.Core.Data
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error($"Error during NotFoundHandler version check:{ex}");
+                    Logger.Error("Error during NotFoundHandler version check", ex);
                 }
                 return version;
             });
@@ -224,7 +224,7 @@ namespace BVNetwork.NotFound.Core.Data
                    catch (Exception ex)
                    {
 
-                       Logger.Error("An error occured while logging a 404 handler error. Ex:" + ex);
+                       Logger.Error("An error occurred while logging a 404 handler error.", ex);
                    }
                    return true;
                });

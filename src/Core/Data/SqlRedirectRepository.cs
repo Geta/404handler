@@ -49,7 +49,7 @@ namespace BVNetwork.NotFound.Core.Data
                     CreateStringParameter("newurl", entity.NewUrl),
                     CreateIntParameter("state", entity.State),
                     CreateBoolParameter("wildcardskipappend", entity.WildCardSkipAppend)),
-                    "An error occured while creating a redirect.");
+                    "An error occurred while creating a redirect.");
         }
 
         private void Update(CustomRedirect entity)
@@ -69,7 +69,7 @@ namespace BVNetwork.NotFound.Core.Data
                     CreateStringParameter("newurl", entity.NewUrl),
                     CreateIntParameter("state", entity.State),
                     CreateBoolParameter("wildcardskipappend", entity.WildCardSkipAppend)),
-                    "An error occured while updating a redirect.");
+                    "An error occurred while updating a redirect.");
         }
 
         public void Delete(CustomRedirect entity)
@@ -81,7 +81,7 @@ namespace BVNetwork.NotFound.Core.Data
                 CreateCommand(
                     sqlCommand,
                     CreateGuidParameter("id", entity.Id.ExternalId)),
-                    "An error occured while deleting a redirect.");
+                    "An error occurred while deleting a redirect.");
         }
 
         public CustomRedirect GetByOldUrl(string oldUrl)
@@ -199,7 +199,7 @@ namespace BVNetwork.NotFound.Core.Data
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("An error occured while retrieving redirects.", ex);
+                    Logger.Error("An error occurred while retrieving redirects.", ex);
                     throw;
                 }
             });
