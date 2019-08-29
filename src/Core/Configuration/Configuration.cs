@@ -14,7 +14,6 @@ namespace BVNetwork.NotFound.Core.Configuration
         private const string DefRedirectsXmlFile = "~/CustomRedirects.config";
         private const string DefNotfoundPage = "~/bvn/filenotfound/notfound.aspx";
         private const LoggerMode DefLogging = LoggerMode.On;
-        private static LoggerMode _logging = DefLogging;
         private const int DefBufferSize = 30;
         private const int DefThreshhold = 5;
         private const string KeyErrorFallback = "EPfBVN404UseStdErrorHandlerAsFallback";
@@ -107,18 +106,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         {
             get
             {
-                var mode = Bvn404HandlerConfiguration.Instance.Logging ?? DefLogging.ToString();
-
-                try
-                {
-                    _logging = (LoggerMode)Enum.Parse(typeof(LoggerMode), mode, true /* Ignores case */);
-                }
-                catch
-                {
-                    _logging = DefLogging;
-                }
-
-                return _logging;
+                return Enum.TryParse<LoggerMode>(Bvn404HandlerConfiguration.Instance.Logging, true, out var result) ? result : DefLogging;
             }
         }
 
