@@ -63,6 +63,23 @@ namespace BVNetwork.NotFound.Tests
         }
 
         [Fact]
+        public void Find_finds_most_specific_redirect_when_not_found_url_starts_with_stored_url()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/oldsegment1/", "/newsegment1/"),
+                new CustomRedirect("/oldsegment1/oldsegment2/", "/newsegment1/newsegment2/"),
+            };
+
+            var urlToFind = "/oldsegment1/oldsegment2/?test=q";
+            var expected = "/newsegment1/newsegment2/?test=q";
+
+            var actual = collection.Find(urlToFind.ToUri());
+
+            Assert.Equal(expected, actual.NewUrl);
+        }
+
+        [Fact]
         public void Find_finds_redirect_and_appends_relative_path_when_not_found_url_starts_with_stored_url()
         {
             var storedUrl = "/old";

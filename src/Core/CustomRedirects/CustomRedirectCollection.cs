@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.Data;
@@ -28,6 +29,11 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// Hashtable for quick lookup of old urls
         /// </summary>
         private readonly Dictionary<string, CustomRedirect> _quickLookupTable = new Dictionary<string, CustomRedirect>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Cache of URLs sorted ZA for look up of partially matched URLs
+        /// </summary>
+        private KeyValuePair<string, CustomRedirect>[] _redirectsZACache;
 
         public CustomRedirect Find(Uri urlNotFound)
         {
@@ -62,6 +68,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         {
             // Add to quick look up table too
             _quickLookupTable.Add(customRedirect.OldUrl, customRedirect);
+
+            // clean cache
+            _redirectsZACache = null;
         }
 
         private CustomRedirect FindInternal(string url)
@@ -69,6 +78,14 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             if (_quickLookupTable.TryGetValue(url, out var redirect))
             {
                 return redirect;
+            }
+
+            // working with local copy to avoid multi-threading issues
+            var redirectsZA = _redirectsZACache;
+            if (redirectsZA == null)
+            {
+                redirectsZA = _quickLookupTable.OrderByDescending(x => x.Key, StringComparer.OrdinalIgnoreCase).ToArray();
+                _redirectsZACache = redirectsZA;
             }
 
             // No exact match could be done, so we'll check if the 404 url
@@ -81,30 +98,30 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             // Depending on the skip wild card append setting, we will either
             // redirect using the <new> url as is, or we'll append the 404
             // url to the <new> url.
-            using (var enumerator = _quickLookupTable.GetEnumerator())
-                while (enumerator.MoveNext())
+            foreach (var redirectPair in redirectsZA)
+            {
+                var oldUrl = redirectPair.Key;
+                // See if this "old" url (the one that cannot be found) starts with one
+                if (oldUrl != null && url.StartsWith(oldUrl, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var oldUrl = enumerator.Current.Key;
-                    // See if this "old" url (the one that cannot be found) starts with one
-                    if (oldUrl != null && url.StartsWith(oldUrl, StringComparison.InvariantCultureIgnoreCase))
+                    var cr = redirectPair.Value;
+                    if (cr.State == (int)RedirectState.Ignored)
                     {
-                        var cr = _quickLookupTable[oldUrl];
-                        if (cr.State == (int)RedirectState.Ignored)
-                        {
-                            return null;
-                        }
-                        if (cr.WildCardSkipAppend)
-                        {
-                            // We'll redirect without appending the 404 url
-                            return cr;
-                        }
+                        return null;
+                    }
+                    if (cr.WildCardSkipAppend)
+                    {
+                        // We'll redirect without appending the 404 url
+                        return cr;
+                    }
 
-                        if (UrlIsOldUrlsSubSegment(url, oldUrl))
-                        {
-                            return CreateSubSegmentRedirect(url, cr, oldUrl);
-                        }
+                    if (UrlIsOldUrlsSubSegment(url, oldUrl))
+                    {
+                        return CreateSubSegmentRedirect(url, cr, oldUrl);
                     }
                 }
+            }
+
             return null;
         }
 
