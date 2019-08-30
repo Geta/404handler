@@ -111,6 +111,23 @@ If you want to specify this yourself, add `ignoredResourceExtensions` to the con
 </bvn404Handler>
 ```
 
+## Restricting access to the Custom Redirect Manager
+
+The Custom Redirect Manager is an Episerver gadget. Access to it can be controlled by configuring the dashboard in the _Web.config_. 
+
+```xml
+<episerver.shell>
+    <viewManager>
+      <securedComponents>
+        <add definitionName="BVNetwork.NotFound.Controllers.NotFoundRedirectController" allowedRoles="Administrators" />
+      </securedComponents>
+    </viewManager>
+</episerver.shell>
+```
+
+For more info, check - [Configuring the dashboard](https://world.episerver.com/documentation/developer-guides/CMS/user-interface/views/Configuring-the-dashboard/).
+
+
 # Custom 404 Page
 You probably want to change the path to the 404 page to something else, typically a view in your project, or even a page in Episerver. Example:
 
