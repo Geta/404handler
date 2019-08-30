@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [11.3.0], [10.5.0]
+
+### Changed
+
+- Fixed issue when least specific URLs were handled before most specific [#158](https://github.com/Geta/404handler/issues/158).
+- Performance fix: do not call ToLower on every get, do it once during set [#162](https://github.com/Geta/404handler/issues/162).
+- Incorrect language path for NotFound page Title fixed [#161](https://github.com/Geta/404handler/issues/161).
+- Refactoring [#164](https://github.com/Geta/404handler/issues/164), [#165](https://github.com/Geta/404handler/issues/165), [#166](https://github.com/Geta/404handler/issues/166).
+
 ## [11.2.3], [10.4.3]
 
 ### Changed
