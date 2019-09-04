@@ -80,6 +80,142 @@ namespace BVNetwork.NotFound.Tests
         }
 
         [Fact]
+        public void Find_uses_exact_protocol_and_domain_match_for_old_absolute_urls()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("http://domain.com/oldurl", "/newurl1_http_absolute/"),
+                new CustomRedirect("http://domain.com/oldurl-http", "/newurl2_http_absolute/"),
+                new CustomRedirect("https://domain.com/oldurl", "/newurl1_https_absolute/"),
+                new CustomRedirect("https://domain.com/oldurl-https", "/newurl2_https_absolute/"),
+            };
+
+            Assert.Equal("/newurl1_http_absolute/", collection.Find("http://domain.com/oldurl"));
+            Assert.Equal("/newurl1_http_absolute/additional_segment/", collection.Find("http://domain.com/oldurl/additional_segment/"));
+            Assert.Null(collection.Find("http://another-domain.com/oldurl"));
+
+            Assert.Equal("/newurl1_https_absolute/", collection.Find("https://domain.com/oldurl"));
+            Assert.Equal("/newurl1_https_absolute/additional_segment/", collection.Find("https://domain.com/oldurl/additional_segment/"));
+            Assert.Null(collection.Find("https://another-domain.com/oldurl"));
+
+            Assert.Equal("/newurl2_http_absolute/", collection.Find("http://domain.com/oldurl-http"));
+            Assert.Null(collection.Find("https://domain.com/oldurl-http"));
+
+            Assert.Equal("/newurl2_https_absolute/", collection.Find("https://domain.com/oldurl-https"));
+            Assert.Null(collection.Find("http://domain.com/oldurl-https"));
+        }
+
+        // TODO: order of parameters in query string should not be respected during match
+        [Fact]
+        public void Find_uses_exact_match_for_query_parameters_order()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/oldurl?q1=value1&q2=value2", "/newurl"),
+            };
+
+            Assert.Equal("/newurl", collection.Find("/oldurl?q1=value1&q2=value2"));
+            Assert.Null(collection.Find("/oldurl?name=value&q1=value1&q2=value2"));
+            Assert.Null(collection.Find("/oldurl?q2=value2&q1=value1"));
+        }
+
+        [Fact]
+        public void Find_appends_additional_params_during_pattern_matching_with_query()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/oldurl1", "/newurl1"),
+                new CustomRedirect("/oldurl1?q1=value1", "/newurl2?newparam=value"),
+                new CustomRedirect("/oldurl1?q1=value1&q2=value2", "/newurl3"),
+            };
+
+            // Exact matches
+            Assert.Equal("/newurl1", collection.Find("/oldurl1"));
+            Assert.Equal("/newurl2?newparam=value", collection.Find("/oldurl1?q1=value1"));
+            Assert.Equal("/newurl3", collection.Find("/oldurl1?q1=value1&q2=value2"));
+
+            // Pattern matching in query
+
+            // TODO: Incorrectly appends `/` before `?` now
+            Assert.Equal("/newurl1/?name=value", collection.Find("/oldurl1?name=value"));
+
+            // TODO: Incorrectly appends `/&` instead of `&`
+            Assert.Equal("/newurl2?newparam=value/&q3=value3", collection.Find("/oldurl1?q1=value1&q3=value3"));
+
+            // TODO: Incorrectly starts query with `/&` instead of `?`
+            Assert.Equal("/newurl3/&q3=value", collection.Find("/oldurl1?q1=value1&q2=value2&q3=value"));
+        }
+
+        [Fact]
+        public void Find_doesnot_find_url_with_the_same_segment_start()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/oldurl", "/newurl"),
+            };
+
+            Assert.Equal("/newurl", collection.Find("/oldurl"));
+            Assert.Null(collection.Find("/oldurl_segment"));
+        }
+
+        [Fact]
+        public void Find_doesnot_find_old_url_without_slash_at_the_start()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("oldurl", "newurl"),
+            };
+
+            // TODO: should not be like this - either disable adding in UI (migration needed?) or treat that as "usual" relative URL
+            Assert.Null(collection.Find("http://domain.com/oldurl"));
+        }
+
+        [Fact]
+        public void Find_doesnot_append_leading_slash_to_new_relative_url()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/oldurl", "newurl"),
+            };
+
+            // TODO: while it is allowed, having NEW URL to NOT start with slash make not much sense -
+            // it will produce "relative" redirect, so new url in client's browser will always be /oldurl/newurl
+            Assert.Equal("newurl", collection.Find("/oldurl"));
+            Assert.Equal("newurl/segment", collection.Find("/oldurl/segment"));
+        }
+
+        // TODO: URL segments are case sensitive by RFC - need a setting on CustomRedirect level of how that should be treated?
+        [Fact]
+        public void Find_ignores_url_case()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/oldurl", "/newurl"),
+            };
+
+            Assert.Equal("/newurl", collection.Find("http://domain.com/oldurl"));
+            Assert.Equal("/newurl", collection.Find("http://domain.com/OldUrl"));
+            Assert.Equal("/newurl", collection.Find("http://domain.com/OLDURL"));
+        }
+
+        // TODO: query case (both params and values) are case sensitive by RFC - need a setting on CustomRedirect level of how that should be treated?
+        [Fact]
+        public void Find_ignores_query_case()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/oldurl?query1=test", "/newurl_query_without_slash"),
+                new CustomRedirect("/oldurl/?query2=test", "/newurl_query_with_slash"),
+            };
+
+            Assert.Null(collection.Find(new Uri("http://domain.com/oldurl")));
+            Assert.Equal("/newurl_query_without_slash", collection.Find("http://domain.com/oldurl?query1=test"));
+            Assert.Equal("/newurl_query_without_slash", collection.Find("http://domain.com/oldurl?QuErY1=TeSt"));
+            Assert.Equal("/newurl_query_with_slash", collection.Find("http://domain.com/oldurl/?query2=test"));
+            Assert.Equal("/newurl_query_with_slash", collection.Find("http://domain.com/oldurl/?QuErY2=TeSt"));
+        }
+
+        [Fact]
         public void Find_finds_redirect_and_appends_relative_path_when_not_found_url_starts_with_stored_url()
         {
             var storedUrl = "/old";
