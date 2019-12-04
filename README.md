@@ -1,6 +1,6 @@
 
 ## Important Security Notice!
-The default [notfound.aspx](https://github.com/BVNetwork/404handler/blob/master/src/NotFound.aspx) page has an XSS vulnerability. If you are using this page, please change it according to [this commit](https://github.com/BVNetwork/404handler/commit/02419c904db096a607ba6775b04db7fdf042002a#diff-4cf2534cd91830ac43ef09100c7a18d8).
+The default [notfound.aspx](src/NotFound.aspx) page has an XSS vulnerability. If you are using this page, please change it according to [this commit](https://github.com/Geta/404handler/commit/02419c904db096a607ba6775b04db7fdf042002a#diff-4cf2534cd91830ac43ef09100c7a18d8).
 
 # 404 Handler for EPiServer
 
@@ -14,7 +14,7 @@ The popular 404 handler for EPiServer, enabling better control over your 404 pag
 
 The perfect companion if you're transitioning to EPiServer from another system and cannot keep the URL structure, or plan to do major re-structuring of your content.
 
-![](https://raw.githubusercontent.com/BVNetwork/404handler/master/doc/img/Redirects.png)
+![](https://raw.githubusercontent.com/Geta/404handler/master/doc/img/Redirects.png)
 
 ## Features
 
@@ -75,7 +75,7 @@ Logging of 404 requests is buffered to shield your application from Denial of Se
 
 **Important!** Even if the threshold is set low, you can still receive a lot of requests in the 404 log. In the Admin view (follow "Administer" link in gadget) you can delete suggestions (logged 404 requests). You can find all the logged items in the `BVN.NotFoundRequests` table in your CMS database if you want to manually clear the logged requests (this will not remove any redirects).
 
-![](https://raw.githubusercontent.com/BVNetwork/404handler/master/doc/img/Administer.png)
+![](https://raw.githubusercontent.com/Geta/404handler/master/doc/img/Administer.png)
 
 ```xml
 <bvn404Handler handlerMode="On" logging="On" bufferSize="30" threshold="5" logWithHostname="false">
