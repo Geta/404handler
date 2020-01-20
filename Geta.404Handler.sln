@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BVNetwork.404Handler", "BVNetwork.404Handler.csproj", "{DFBF0553-7E44-44BF-A59F-F94F9493FC17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geta.404Handler", "src\Geta.404Handler\Geta.404Handler.csproj", "{DFBF0553-7E44-44BF-A59F-F94F9493FC17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BVNetwork.404Handler.Tests", "..\tests\BVNetwork.404Handler.Tests\BVNetwork.404Handler.Tests.csproj", "{1E8472FF-8DBC-4BDF-BB96-F68A0598C7CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geta.404Handler.Tests", "tests\Geta.404Handler.Tests\Geta.404Handler.Tests.csproj", "{1E8472FF-8DBC-4BDF-BB96-F68A0598C7CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
