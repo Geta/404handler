@@ -128,6 +128,10 @@ The Custom Redirect Manager is an Episerver gadget. Access to it can be controll
 For more info, check - [Configuring the dashboard](https://world.episerver.com/documentation/developer-guides/CMS/user-interface/views/Configuring-the-dashboard/).
 
 
+## Import
+
+For details see [Import redirects for 404 handler](https://getadigital.com/blog/import-redirects-for-404-handler/) article.
+
 # Custom 404 Page
 You probably want to change the path to the 404 page to something else, typically a view in your project, or even a page in Episerver. Example:
 
