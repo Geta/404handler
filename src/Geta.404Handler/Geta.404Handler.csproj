@@ -372,7 +372,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- This holds the version of the package -->
   <Import Project="$(ProjectDir)\$(ProjectName).Version.targets" Condition="Exists('$(SolutionDir)\$(ProjectName).Version.targets')" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" Condition="Exists('$($(SolutionDir)\.nuget\nuget.targets')" />
   <Import Project="$(ProjectDir)\packageTools.targets" />
   <!-- Pack -->
   <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Configuration)' == 'Release' ">
