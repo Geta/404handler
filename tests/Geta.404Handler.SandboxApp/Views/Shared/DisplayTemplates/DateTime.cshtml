@@ -1,0 +1,2 @@
+@model DateTime
+@Model.ToString("d MMMM yyyy")
