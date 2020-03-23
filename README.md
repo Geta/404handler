@@ -224,6 +224,17 @@ The module has extensive logging. Turn on debug logging for the `BVNetwork.NotFo
 </logger>
 ```
 
+# Sandbox App
+Sandbox application is testing poligon for pacakge new features and bug fixes.
+
+CMS username: admin
+
+Password: P@ssw0rd123!
+
+# Contributing
+If you can help please do so by contributing to the package!
+Reach out package maintainer for additional details if needed.
+
 ## Package Maintainer
 
 https://github.com/marisks
