@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>BVN.404Handler</id>
+        <id>Geta.404Handler</id>
         <title>404 Handler for EPiServer</title>
         <version>$version$</version>
         <authors>$author$</authors>
@@ -20,7 +20,7 @@
       </dependencies>
     </metadata>
     <files>
-        <file src="bin\$configuration$\BVNetwork.EPi404.dll" target="lib\net45\" />
+        <file src="bin\$configuration$\BVNetwork.EPi404.dll" target="lib\net46\" />
         <file src="bin\$configuration$\BVNetwork.404Handler.zip" target="content\modules\_protected\BVNetwork.404Handler\" />
         <file src="NotFound.aspx" target="content\NotFound.aspx" />
         <file src="web.config.install.xdt" target="content" />
