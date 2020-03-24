@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BVNetwork.404Handler", "BVN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BVNetwork.404Handler.Tests", "..\tests\BVNetwork.404Handler.Tests\BVNetwork.404Handler.Tests.csproj", "{1E8472FF-8DBC-4BDF-BB96-F68A0598C7CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geta.404Handler.SandboxApp", "..\tests\Geta.404Handler.SandboxApp\Geta.404Handler.SandboxApp.csproj", "{2B16851E-A57B-4741-A599-1B6D2218DDDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geta.404Handler.SandboxApp", "..\samples\Geta.404Handler.SandboxApp\Geta.404Handler.SandboxApp.csproj", "{2B16851E-A57B-4741-A599-1B6D2218DDDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

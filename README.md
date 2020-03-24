@@ -36,7 +36,7 @@ When installed, the following sections are added to your web.config:
 
 ```xml
 <configSections>
-	<section name="bvn404Handler" type="BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration, BVNetwork.EPi404" />
+    <section name="bvn404Handler" type="BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration, BVNetwork.EPi404" />
 </configSections>
 <bvn404Handler handlerMode="On">
 </bvn404Handler>
@@ -149,7 +149,7 @@ public class ErrorController : PageControllerBase<PageData>
     [BVNetwork.NotFound.Core.NotFoundPage.NotFoundPage]
     public ActionResult Error404()
     {
-		// Custom implementation
+        // Custom implementation
         ErrorPageViewModel model = GetViewModel();
 
         // The Action Filter will add the following to the ViewBag:
@@ -227,9 +227,9 @@ The module has extensive logging. Turn on debug logging for the `BVNetwork.NotFo
 # Sandbox App
 Sandbox application is testing poligon for pacakge new features and bug fixes.
 
-CMS username: admin
+CMS username: epiadmin
 
-Password: P@ssw0rd123!
+Password: 3p!Pass
 
 # Contributing
 If you can help please do so by contributing to the package!
