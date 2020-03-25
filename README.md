@@ -27,7 +27,7 @@ The perfect companion if you're transitioning to EPiServer from another system a
 * You need to be authorized to work with the gadget, and have access to edit mode, but there is no restriction on which editors can edit.
 
 # Installation
-`Install-Package BVN.404Handler`
+`Install-Package Geta.404Handler`
 
 The package can be found in the [EPiServer Nuget Feed](http://nuget.episerver.com/).
 
@@ -38,14 +38,17 @@ When installed, the following sections are added to your web.config:
 <configSections>
     <section name="bvn404Handler" type="BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration, BVNetwork.EPi404" />
 </configSections>
+
 <bvn404Handler handlerMode="On">
 </bvn404Handler>
+
 <system.webServer>        
     <httpErrors errorMode="Custom" existingResponse="Replace">
         <remove statusCode="404" />
         <error statusCode="404" path="/notfound.aspx" responseMode="ExecuteURL" />
     </httpErrors>
 </system.webServer>
+
 <episerver.shell>
     <protectedModules>
         <add name="BVNetwork.404Handler" />
