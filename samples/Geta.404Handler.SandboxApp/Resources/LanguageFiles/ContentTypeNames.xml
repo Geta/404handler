@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<languages>
+  <language name="English" id="en">
+    <contenttypes>
+      <pagelistblock>
+        <name>Page List</name>
+        <description>Displays a list of pages, for example to display recent news</description>
+      </pagelistblock>
+      <teaserblock>
+        <name>Teaser</name>
+        <description>Used to insert a content teaser</description>
+      </teaserblock>
+      <sitelogotypeblock>
+        <name>Logotype</name>
+        <description>Used to set the logotype for the website</description>
+      </sitelogotypeblock>
+      <videoblock>
+        <name>Video Player</name>
+        <description>Used to embed a video player</description>
+      </videoblock>
+      <editorialblock>
+        <name>Editorial</name>
+        <description>Used to add simple editorial content</description>
+      </editorialblock>
+      <contactblock>
+        <name>Contact</name>
+        <description>Used to add contact information</description>
+      </contactblock>
+      <buttonblock>
+        <name>Button</name>
+        <description>Used to add a button with a link</description>
+      </buttonblock>
+      <jumbotronblock>
+        <name>Jumbotron</name>
+        <description>Used to add a large section</description>
+      </jumbotronblock>
+      <articlepage>
+        <name>Article</name>
+        <description>Used to publish news articles on the website</description>
+      </articlepage>
+      <contactpage>
+        <name>Contact</name>
+        <description>Used to publish contact details for a specific contact</description>
+      </contactpage>
+      <containerpage>
+        <name>Container Page</name>
+        <description>Used to logically group pages in the content tree</description>
+      </containerpage>
+      <landingpage>
+        <name>Landing Page</name>
+        <description>Used to create a page consisting entirely of blocks</description>
+      </landingpage>
+      <newspage>
+        <name>News Page</name>
+        <description>Used as a start page for a site's news section and commonly displays a list of the most recent articles</description>
+      </newspage>
+      <productpage>
+        <name>Product</name>
+        <description>Used to present a specific product</description>
+      </productpage>
+      <searchpage>
+        <name>Search Page</name>
+        <description>Used to provide on-site search features</description>
+      </searchpage>
+      <startpage>
+        <name>Start Page</name>
+        <description>The home page of the website</description>
+      </startpage>
+      <standardpage>
+        <name>Standard Page</name>
+        <description>Used mainly for default editorial content such as text and images</description>
+      </standardpage>
+      <imagefile>
+        <name>Image</name>
+        <description>Used for image files (BMP, GIF, ICO, JPEG, PNG)</description>
+      </imagefile>
+      <videofile>
+        <name>Video</name>
+        <description>Used for video files (FLV, MP4, WEBM)</description>
+      </videofile>
+      <genericmedia>
+        <name>Generic File</name>
+        <description>Used for media which doesn't have a specific content type</description>
+      </genericmedia>
+    </contenttypes>
+  </language>
+</languages>

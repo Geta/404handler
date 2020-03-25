@@ -36,7 +36,7 @@ When installed, the following sections are added to your web.config:
 
 ```xml
 <configSections>
-	<section name="bvn404Handler" type="BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration, BVNetwork.EPi404" />
+    <section name="bvn404Handler" type="BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration, BVNetwork.EPi404" />
 </configSections>
 <bvn404Handler handlerMode="On">
 </bvn404Handler>
@@ -128,6 +128,10 @@ The Custom Redirect Manager is an Episerver gadget. Access to it can be controll
 For more info, check - [Configuring the dashboard](https://world.episerver.com/documentation/developer-guides/CMS/user-interface/views/Configuring-the-dashboard/).
 
 
+## Import
+
+For details see [Import redirects for 404 handler](https://getadigital.com/blog/import-redirects-for-404-handler/) article.
+
 # Custom 404 Page
 You probably want to change the path to the 404 page to something else, typically a view in your project, or even a page in Episerver. Example:
 
@@ -145,7 +149,7 @@ public class ErrorController : PageControllerBase<PageData>
     [BVNetwork.NotFound.Core.NotFoundPage.NotFoundPage]
     public ActionResult Error404()
     {
-		// Custom implementation
+        // Custom implementation
         ErrorPageViewModel model = GetViewModel();
 
         // The Action Filter will add the following to the ViewBag:
@@ -219,6 +223,17 @@ The module has extensive logging. Turn on debug logging for the `BVNetwork.NotFo
     <appender-ref ref="debugLogAppender"/>
 </logger>
 ```
+
+# Sandbox App
+Sandbox application is testing poligon for pacakge new features and bug fixes.
+
+CMS username: epiadmin
+
+Password: 3p!Pass
+
+# Contributing
+If you can help please do so by contributing to the package!
+Reach out package maintainer for additional details if needed.
 
 ## Package Maintainer
 

@@ -1,0 +1,5 @@
+@model EPiServer.Core.ContentReference
+@if (Model != null)
+{
+    <img src="@Url.ContentUrl(Model)" alt="" />
+}
