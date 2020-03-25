@@ -209,6 +209,7 @@
     </Compile>
     <None Include="CustomRedirects.config" />
     <None Include="module.config" />
+    <None Include="web.config" />
     <None Include="web.config.install.xdt" />
   </ItemGroup>
   <ItemGroup>
