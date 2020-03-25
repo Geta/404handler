@@ -145,7 +145,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Geta.404Handler\Geta.404Handler.csproj">
       <Project>{dfbf0553-7e44-44bf-a59f-f94f9493fc17}</Project>
-      <Name>BVNetwork.404Handler</Name>
+      <Name>Geta.404Handler</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
