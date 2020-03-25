@@ -1,0 +1,1 @@
+﻿<%@ Application Codebehind="Global.asax.cs" Language="C#" Inherits="Geta._404Handler.SandboxApp.EPiServerApplication" %>

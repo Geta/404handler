@@ -1,0 +1,3 @@
+@{
+    Layout = "~/Views/Shared/Layouts/_Root.cshtml";
+}

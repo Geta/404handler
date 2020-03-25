@@ -1,0 +1,49 @@
+@using System.Web.Optimization
+@using EPiServer.Framework.Web.Mvc.Html
+@using Geta._404Handler.SandboxApp.Business
+@model IPageViewModel<SitePageData>
+<!DOCTYPE html>
+<html lang="@Model.CurrentPage.LanguageBranch">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=10" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@Model.CurrentPage.MetaTitle</title>
+        @if (Model.CurrentPage.MetaKeywords != null && Model.CurrentPage.MetaKeywords.Length > 0)
+        {
+            <meta name="keywords" content="@string.Join(",", Model.CurrentPage.MetaKeywords)" />
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.CurrentPage.MetaDescription))
+        {
+            <meta name="description" content="@Model.CurrentPage.MetaDescription" />
+        }
+        <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")" type="image/x-icon" />
+        @Html.CanonicalLink()
+        @Html.AlternateLinks()
+        @Styles.Render("~/bundles/css")
+        @Scripts.Render("~/bundles/js")
+        @Html.RequiredClientResources("Header") @*Enable components to require resources. For an example, see the view for VideoBlock.*@
+    </head>
+
+    <body>
+        @if (Model.Layout.IsInReadonlyMode)
+        {
+            Html.RenderPartial("Readonly", Model);
+        }
+
+        @Html.RenderEPiServerQuickNavigator()
+        @Html.FullRefreshPropertiesMetaData()
+        <div class="container">
+            @if(!Model.Layout.HideHeader)
+            {
+                Html.RenderPartial("Header", Model);
+            }
+            @RenderBody()
+            @if(!Model.Layout.HideFooter)
+            {
+                Html.RenderPartial("Footer", Model);
+            }
+        </div>
+        @Html.RequiredClientResources("Footer")
+    </body>
+</html>

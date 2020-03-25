@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+
+  <language name="English" id="en">
+
+    <contact>
+      <email>E-mail</email>
+      <phone>Phone</phone>
+      <noneselected>No contact selected</noneselected>
+    </contact>
+
+    <footer>
+      <company>The Company</company>
+      <customerzone>Customer Zone</customerzone>
+      <login>Log in</login>
+      <logout>Log out</logout>
+      <news>News &amp; Events</news>
+      <products>Products</products>
+    </footer>
+
+    <mainnavigation>
+      <search>Search</search>
+    </mainnavigation>
+
+    <newspagetemplate>
+      <latestnews>Latest news</latestnews>
+      <listrootempty>News list will be empty since no list root has been set</listrootempty>
+    </newspagetemplate>
+
+    <searchpagetemplate>
+      <zero>no</zero>
+      <result>Search result</result>
+      <searchbutton>Search</searchbutton>
+      <searchfor>Your search for</searchfor>
+      <resultedin>resulted in</resultedin>
+      <hits>hits</hits>
+      <disabled>EPiServer Search is not configured or is not active for this website.</disabled>
+    </searchpagetemplate>
+
+  </language>
+
+</languages>
