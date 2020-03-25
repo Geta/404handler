@@ -119,8 +119,7 @@
     <Content Include="NotFound.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="readme.txt" />
-    <None Include=".editorconfig" />
+    <None Include="readme.txt" />
     <None Include="app.config" />
     <None Include="Geta.404Handler.nuspec" />
     <None Include="Geta.404Handler.Version.targets" />
