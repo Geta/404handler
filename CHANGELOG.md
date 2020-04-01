@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0]
+
+### Changed
+- Package has been renamed to "Geta.404Handler"
+
+# BVN.404Handler Package Changes
+
 ## [11.4.0]
 
 ### Changed
