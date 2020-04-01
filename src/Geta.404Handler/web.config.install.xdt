@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+    <configSections>
+        <section name="bvn404Handler" type="BVNetwork.NotFound.Configuration.Bvn404HandlerConfiguration, BVNetwork.EPi404"
+                 xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing"/>
+    </configSections>
+    <bvn404Handler handlerMode="On" xdt:Transform="InsertIfMissing">
+        <providers>
+            <!--
+              Register your own handler that will be given a chance to
+              rewrite the url. The type must implement INotFoundHandler
+              <add name="NameOfHandler" type="Your.Handler.Here" />
+           -->
+        </providers>
+    </bvn404Handler>
+    <system.webServer>
+        <httpErrors errorMode="Custom" existingResponse="Replace" xdt:Transform="InsertIfMissing">
+            <remove statusCode="404" />
+            <!-- Note! You should change this to your custom error page. See the
+                 readme on https://github.com/Geta/404handler for more information -->
+            <error statusCode="404" path="/notfound.aspx" responseMode="ExecuteURL" />
+        </httpErrors>
+    </system.webServer>
+    <episerver.shell>
+        <protectedModules>
+            <add name="BVNetwork.404Handler" xdt:Transform="InsertIfMissing" />
+        </protectedModules>
+    </episerver.shell>
+</configuration>

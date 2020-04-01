@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0]
+
+### Changed
+- Package has been renamed to "Geta.404Handler"
+
+# BVN.404Handler Package Changes
+
+## [11.4.0]
+
+### Changed
+
+- Episerver CMS10 support is dropped
+- This package is bneing renamed to `Geta.404Handler`. Dependency is set to latest `Geta.404Handler` package version. This will allow to transition easily to new package.
+
+
 ## [11.3.0], [10.5.0]
 
 ### Changed

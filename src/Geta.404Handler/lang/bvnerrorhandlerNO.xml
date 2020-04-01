@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+	<language name="Norsk" id="NO">
+    <bvn>
+      <filenotfound>
+        <admin>
+          <default>
+            <heading>404 - File Not Found Configuration</heading>
+          </default>
+        </admin>
+      </filenotfound>
+    </bvn>
+
+    <templates>
+			<notfound>
+				<title>Siden ble ikke funnet</title>
+				<toptext>Vi beklager, men siden du forsøkte å laste ble ikke funnet.
+					&#60;br&#62;
+					&#60;br&#62;
+				</toptext>
+				<lookingfor>Du så etter:
+					&#60;br&#62;</lookingfor>
+				<referer>&#60;br&#62;Du kom fra:&#60;br&#62;
+				</referer>
+				<bottomtext>
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;b&#62;Hva nå?&#60;/b&#62;
+					&#60;br&#62;
+					&#60;br&#62;
+					Du kan forsøke vår &#60;a href="/sok"&#62;søkeside&#60;/a&#62;, og se om du finner fram til 
+					informasjonen via den.
+					&#60;br&#62;
+					&#60;br&#62;
+					Vi har også &#60;a href="/nettstedskart"&#62;et nettstedskart&#60;/a&#62; som du kan forsøke.
+					&#60;br&#62;
+					&#60;br&#62;
+					Om du vil ta kontakt med oss, se våre &#60;a href="/kontakt"&#62;kontaktsider&#60;/a&#62;.
+					&#60;br&#62;
+					&#60;br&#62;
+					&#60;b&#62;Gå til &#60;a href="/"&#62;forsiden&#60;/a&#62;.&#60;/b&#62;
+				</bottomtext>	
+			</notfound>
+		</templates>			
+	</language>
+</languages>
