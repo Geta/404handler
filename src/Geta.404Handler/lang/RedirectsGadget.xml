@@ -81,7 +81,7 @@
                 <note>Dette kan du ikke angre på, kompis.</note>
                 <search>Søk</search>
                 <searchresult>Ditt søk etter &lt;b&gt;{0}&lt;/b&gt; ga &lt;b&gt;{1}&lt;/b&gt; treff.</searchresult>
-                <wildcard>Jokertegn («wiildcard»)</wildcard>
+                <wildcard>Jokertegn («wildcard»)</wildcard>
                 <storedredirects>Det er for tiden lagret &lt;b&gt;{0}&lt;/b&gt; videresendingsregler</storedredirects>
                 <saveredirect>Videresendingsregel med gammel URL &lt;b&gt;{0}&lt;/b&gt; og ny URL &lt;b&gt;{1}&lt;/b&gt; ble lagret.</saveredirect>
                 <inactiveredirects>For å se videresendingsregler, huk av for «Vis videresendinger»</inactiveredirects>
@@ -100,7 +100,7 @@
                 <url>URL</url>
                 <importsuccess>{0} videresendinger ble importert.</importsuccess>
                 <importdeletedsuccess>{0} URLer ble importert.</importdeletedsuccess>
-                <importnone>Ingen videresendimnger kunne bli importert</importnone>
+                <importnone>Ingen videresendinger kunne bli importert</importnone>
                 <importinfo>Importer videresendinger fra en XML-fil </importinfo>
                 <importDeleted>Importering slettet (410) URLer fra en tekstfil</importDeleted>
                 <ignoredremoved>Alle {0} ignorerte forslag ble permanent slettet</ignoredremoved>
@@ -117,6 +117,7 @@
                 <exportredirects>Eksporter videresendinger til en XML-fil</exportredirects>
                 <invalidxmlfile>Filen som ble lasta opp er ikke en gyldig XML-fil. Vennligst last opp en som funker.</invalidxmlfile>
                 <invalidtxtfile>Filen som ble lasta opp er ikke en gyldig tekstfil. Vennligst last opp en som funker.</invalidtxtfile>
+                <migrateddstosql>Migrér videresendinger fra DDS til SQL.</migrateddstosql>
             </redirects>
         </gadget>
     </language>
