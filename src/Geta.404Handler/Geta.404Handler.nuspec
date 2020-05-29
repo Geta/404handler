@@ -4,8 +4,8 @@
         <id>Geta.404Handler</id>
         <title>404 Handler for EPiServer</title>
         <version>$version$</version>
-        <authors>$author$</authors>
-        <owners>$author$</owners>
+        <authors>Geta AS</authors>
+        <owners>Geta AS</owners>
         <licenseUrl>https://github.com/Geta/404handler/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/Geta/404handler</projectUrl>
         <iconUrl>https://cdn.geta.no/opensource/icons/Geta-logo-3.png</iconUrl>
