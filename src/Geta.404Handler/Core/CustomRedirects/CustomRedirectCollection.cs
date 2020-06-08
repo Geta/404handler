@@ -144,7 +144,16 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             }
 
             var redirCopy = new CustomRedirect(cr);
-            var newUrl = AppendSlash(redirCopy.NewUrl);
+            var newUrl = string.Empty;
+            if (url.IndexOf("?", StringComparison.Ordinal) > 0) 
+            {
+                newUrl = redirCopy.NewUrl;
+            }
+            else
+            {
+                newUrl = AppendSlash(redirCopy.NewUrl);
+            }
+            
             var appendSegment = RemoveSlash(url.Substring(oldUrl.Length));
             redirCopy.NewUrl = $"{newUrl}{appendSegment}";
             return redirCopy;
