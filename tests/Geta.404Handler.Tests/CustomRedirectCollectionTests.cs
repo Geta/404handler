@@ -301,7 +301,7 @@ namespace BVNetwork.NotFound.Tests
         /// https://github.com/Geta/404handler/issues/171
         /// </summary>
         [Fact]
-        public void Find_does_heep_slash_when_querystring_parameter()
+        public void Find_does_keep_slash_when_querystring_parameter()
         {
             var collection = new CustomRedirectCollection
             {
