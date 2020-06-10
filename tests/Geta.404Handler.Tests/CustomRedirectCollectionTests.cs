@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Web;
 using BVNetwork.NotFound.Core;
@@ -275,6 +275,66 @@ namespace BVNetwork.NotFound.Tests
             var actual = _sut.Find(requesttUrl.ToUri());
 
             Assert.NotNull(actual);
+        }
+
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/171
+        /// </summary>
+        [Fact]
+        public void Find_does_not_add_slash_when_querystring_parameter()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/content/file", "/legacy"),
+                new CustomRedirect("/content/file/", "/legacy/")
+            };
+
+            var urlToFind = "/content/file?doc=filename";
+            var expected = "/legacy?doc=filename";
+
+            var actual = collection.Find(urlToFind.ToUri());
+
+            Assert.Equal(expected, actual.NewUrl);
+        }
+
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/171
+        /// </summary>
+        [Fact]
+        public void Find_does_keep_slash_when_querystring_parameter()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/content/file", "/legacy"),
+                new CustomRedirect("/content/file/", "/legacy/")
+            };
+
+            var urlToFind = "/content/file/?doc=filename";
+            var expected = "/legacy/?doc=filename";
+
+            var actual = collection.Find(urlToFind.ToUri());
+
+            Assert.Equal(expected, actual.NewUrl);
+        }
+
+        /// <summary>
+        /// https://github.com/Geta/404handler/issues/171
+        /// </summary>
+        [Fact]
+        public void Find_does_not_add_slash_when_querystring_parameters()
+        {
+            var collection = new CustomRedirectCollection
+            {
+                new CustomRedirect("/content/file", "/legacy"),
+                new CustomRedirect("/content/file/", "/legacy/")
+            };
+
+            var urlToFind = "/content/file?doc=filename&param2=value";
+            var expected = "/legacy?doc=filename&param2=value";
+
+            var actual = collection.Find(urlToFind.ToUri());
+
+            Assert.Equal(expected, actual.NewUrl);
         }
     }
 }
