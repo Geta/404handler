@@ -198,3 +198,4 @@ FakesAssemblies/
 
 # Rider
 */.idea/*
+.idea/*
