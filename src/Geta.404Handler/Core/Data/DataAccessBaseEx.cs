@@ -1,4 +1,4 @@
-﻿// Copyright (c) Geta Digital. All rights reserved.
+// Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -127,7 +127,7 @@ namespace BVNetwork.NotFound.Core.Data
         public void DeleteRowsForRequest(string oldUrl)
         {
             var sqlCommand = $"DELETE FROM {Redirectstable} WHERE [OldUrl] = @oldurl";
-            var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
+            var oldUrlParam = CreateParameter("oldurl", DbType.String, 2000);
             oldUrlParam.Value = oldUrl;
 
             ExecuteNonQuery(sqlCommand, oldUrlParam);
@@ -158,7 +158,7 @@ namespace BVNetwork.NotFound.Core.Data
         {
             var sqlCommand =
                 $"SELECT [Referer], COUNT(*) as Requests FROM {Redirectstable} where [OldUrl] = @oldurl  GROUP BY [Referer] order by Requests desc";
-            var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
+            var oldUrlParam = CreateParameter("oldurl", DbType.String, 2000);
             oldUrlParam.Value = url;
 
             return ExecuteSql(sqlCommand, oldUrlParam);
@@ -213,10 +213,10 @@ namespace BVNetwork.NotFound.Core.Data
                        var requstedParam = CreateParameter("requested", DbType.DateTime, 0);
                        requstedParam.Value = now;
 
-                       var refererParam = CreateParameter("referer", DbType.String, 4000);
+                       var refererParam = CreateParameter("referer", DbType.String, 2000);
                        refererParam.Value = referer ?? string.Empty;
 
-                       var oldUrlParam = CreateParameter("oldurl", DbType.String, 4000);
+                       var oldUrlParam = CreateParameter("oldurl", DbType.String, 2000);
                        oldUrlParam.Value = oldUrl;
 
                        using (var command = CreateCommand(sqlCommand, requstedParam, refererParam, oldUrlParam))
