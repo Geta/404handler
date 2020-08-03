@@ -17,7 +17,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// old url fragment to the new one. Default value is false.
         /// </summary>
         /// <remarks>
-        /// If you want to redirect many addresses below a specifc one to
+        /// If you want to redirect many addresses below a specific one to
         /// one new url, set this to true. If we get a wild card match on
         /// this url, the new url will be used in its raw format, and the
         /// old url will not be appended to the new one.
