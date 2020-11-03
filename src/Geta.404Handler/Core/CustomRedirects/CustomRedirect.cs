@@ -35,6 +35,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         public int  State { get; set; }
 
+        // 301 (permanent) or 302 (temporary)
+        public int RedirectType { get; set; }
+
         /// <summary>
         /// Tells if the new url is a virtual url, not containing
         /// the base root url to redirect to. All urls starting with
@@ -59,10 +62,11 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         {
         }
 
-        public CustomRedirect(string oldUrl, string newUrl, bool skipWildCardAppend)
+        public CustomRedirect(string oldUrl, string newUrl, bool skipWildCardAppend, int redirectType)
             : this(oldUrl, newUrl)
         {
             WildCardSkipAppend = skipWildCardAppend;
+            RedirectType = redirectType;
         }
 
         public CustomRedirect(string oldUrl, string newUrl)
@@ -83,6 +87,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             OldUrl = redirect._oldUrl;
             NewUrl = redirect.NewUrl;
             WildCardSkipAppend = redirect.WildCardSkipAppend;
+            RedirectType = redirect.RedirectType;
         }
     }
 }

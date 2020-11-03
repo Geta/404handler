@@ -4,6 +4,7 @@
               id="en">
         <gadget>
             <redirects>
+                <redirectType>Redirect Type</redirectType>
                 <ignored>Ignored</ignored>
                 <title>Custom Redirects</title>
                 <name>Custom Redirects Manager</name>
@@ -64,6 +65,7 @@
     <language name="Norsk" id="NO">
         <gadget>
             <redirects>
+                <redirectType>Redirect Type</redirectType>
                 <ignored>Ignorert</ignored>
                 <title>Tilpassede videresendinger</title>
                 <name>Administrér videresendingsregler</name>
@@ -124,6 +126,7 @@
     <language name="Svenska" id="SV">
         <gadget>
             <redirects>
+                <redirectType>Redirect Type</redirectType>
                 <ignored>Ignorerad</ignored>
                 <title>Custom Redirects</title>
                 <name>Custom Redirects Manager</name>

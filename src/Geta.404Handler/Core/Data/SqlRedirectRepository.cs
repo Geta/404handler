@@ -20,7 +20,7 @@ namespace BVNetwork.NotFound.Core.Data
 
         private const string RedirectsTable = "[dbo].[404Handler.Redirects]";
 
-        private const string AllFields = "Id, OldUrl, NewUrl, State, WildCardSkipAppend";
+        private const string AllFields = "Id, OldUrl, NewUrl, State, WildCardSkipAppend, RedirectType";
 
         public SqlRedirectRepository(IDatabaseExecutor executor)
         {
@@ -40,9 +40,9 @@ namespace BVNetwork.NotFound.Core.Data
         private void Create(CustomRedirect entity)
         {
             var sqlCommand = $@"INSERT INTO {RedirectsTable}
-                                    (Id, OldUrl, NewUrl, State, WildCardSkipAppend)
+                                    (Id, OldUrl, NewUrl, State, WildCardSkipAppend, RedirectType)
                                     VALUES
-                                    (@id, @oldurl, @newurl, @state, @wildcardskipappend)";
+                                    (@id, @oldurl, @newurl, @state, @wildcardskipappend, @redirectType)";
 
             ExecuteNonQuery(() =>
                 CreateCommand(
@@ -51,7 +51,8 @@ namespace BVNetwork.NotFound.Core.Data
                     CreateStringParameter("oldurl", entity.OldUrl),
                     CreateStringParameter("newurl", entity.NewUrl),
                     CreateIntParameter("state", entity.State),
-                    CreateBoolParameter("wildcardskipappend", entity.WildCardSkipAppend)),
+                    CreateBoolParameter("wildcardskipappend", entity.WildCardSkipAppend),
+                    CreateIntParameter("redirectType", entity.RedirectType)),
                     "An error occurred while creating a redirect.");
         }
 
@@ -62,6 +63,7 @@ namespace BVNetwork.NotFound.Core.Data
                                         ,NewUrl = @newurl
                                         ,State = @state
                                         ,WildCardSkipAppend = @wildcardskipappend
+                                        ,RedirectType = @redirectType
                                     WHERE Id = @id";
 
             ExecuteNonQuery(() =>
@@ -71,7 +73,8 @@ namespace BVNetwork.NotFound.Core.Data
                     CreateStringParameter("oldurl", entity.OldUrl),
                     CreateStringParameter("newurl", entity.NewUrl),
                     CreateIntParameter("state", entity.State),
-                    CreateBoolParameter("wildcardskipappend", entity.WildCardSkipAppend)),
+                    CreateBoolParameter("wildcardskipappend", entity.WildCardSkipAppend),
+                    CreateIntParameter("redirectType", entity.RedirectType)),
                     "An error occurred while updating a redirect.");
         }
 
@@ -134,7 +137,8 @@ namespace BVNetwork.NotFound.Core.Data
             return new CustomRedirect(
                 x.Field<string>("OldUrl"),
                 x.Field<string>("NewUrl"),
-                x.Field<bool>("WildCardSkipAppend"))
+                x.Field<bool>("WildCardSkipAppend"),
+                x.Field<int>("RedirectType"))
             {
                 Id = Identity.NewIdentity(x.Field<Guid>("Id")),
                 State = x.Field<int>("State")

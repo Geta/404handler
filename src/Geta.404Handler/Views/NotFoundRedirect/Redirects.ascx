@@ -51,6 +51,11 @@
                         <label>
                             <%= Html.Translate("/gadget/redirects/wildcard")%></label>
                     </th>
+                    
+                    <th style="text-align: center">
+                        <label>
+                            <%= Html.Translate("/gadget/redirects/redirectType")%></label>
+                    </th>
                     <th>
                     </th>
                 </tr>
@@ -65,6 +70,12 @@
                 </td>
                 <td class="shorter delete">
                     <input name="skipWildCardAppend" type="checkbox" />
+                </td>
+                <td class="shorter">
+                    <select name="redirectType" id="redirectType">
+                        <option value="301">301</option>
+                        <option value="302">302</option>
+                    </select>
                 </td>
                 <td class="shorter delete">
                      <button type="submit" class="notfoundbutton">Add</button>
@@ -92,6 +103,9 @@
                 </td>
                 <td class="shorter delete">
                     <img src="/App_Themes/Default/Images/Tools/<%=m.WildCardSkipAppend ? "CheckBoxOn.gif" : "CheckBoxOff.gif" %>" />
+                </td>
+                <td class="shorter">
+                    <%= m.RedirectType%>
                 </td>
                 <td class="shorter delete">
                     <%= Html.ViewLink(

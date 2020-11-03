@@ -1,4 +1,4 @@
-﻿// Copyright (c) Geta Digital. All rights reserved.
+// Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -91,9 +91,18 @@ namespace BVNetwork.NotFound.Core
             {
                 LogDebug("Handled saved URL", context);
 
-                context
-                    .ClearServerError()
-                    .RedirectPermanent(newUrl.NewUrl);
+                if (newUrl.RedirectType == 302)
+                {
+                    context
+                        .ClearServerError()
+                        .RedirectTemporary(newUrl.NewUrl);
+                }
+                else
+                {
+                    context
+                        .ClearServerError()
+                        .RedirectPermanent(newUrl.NewUrl);
+                }
             }
             else if (canHandleRedirect && newUrl.State == (int)RedirectState.Deleted)
             {
