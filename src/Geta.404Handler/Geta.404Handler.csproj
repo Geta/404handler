@@ -94,7 +94,6 @@
     <Compile Include="Core\Configuration\FileNotFoundMode.cs" />
     <Compile Include="Core\Configuration\IConfiguration.cs" />
     <Compile Include="Core\Configuration\LoggerMode.cs" />
-    <Compile Include="Core\Constants.cs" />
     <Compile Include="Core\CustomRedirects\DefaultRedirectsService.cs" />
     <Compile Include="Core\CustomRedirects\IRedirectHandler.cs" />
     <Compile Include="Core\CustomRedirects\IRedirectsService.cs" />
@@ -102,6 +101,7 @@
     <Compile Include="Core\Data\DdsRedirectRepository.cs" />
     <Compile Include="Core\Data\IRedirectLoader.cs" />
     <Compile Include="Core\Data\IRepository.cs" />
+    <Compile Include="Core\Data\RedirectType.cs" />
     <Compile Include="Core\Data\RedirectState.cs" />
     <Compile Include="Core\Data\SqlRedirectRepository.cs" />
     <Compile Include="Core\ErrorHandler.cs" />

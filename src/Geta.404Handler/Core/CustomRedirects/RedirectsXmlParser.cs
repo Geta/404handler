@@ -77,7 +77,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                         bool.TryParse(skipWildCardAttr.Value, out skipWildCardAppend);
                     }
 
-                    var redirectType = Constants.Permanent;
+                    var redirectType = (int)Data.RedirectType.Permanent;
                     var redirectTypeAttr = oldNode.Attributes[RedirectType];
                     if (redirectTypeAttr != null)
                     {

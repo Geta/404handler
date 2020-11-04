@@ -98,7 +98,7 @@ namespace BVNetwork.NotFound.Core
             {
                 LogDebug("Handled deleted URL", context);
 
-                SetStatusCodeAndShow404(context, Constants.Gone);
+                SetStatusCodeAndShow404(context, 410);
             }
             else
             {

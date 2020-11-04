@@ -87,7 +87,7 @@ namespace BVNetwork.NotFound.Controllers
         public ActionResult SaveSuggestion(string oldUrl, string newUrl, string skipWildCardAppend, int? pageNumber, int? pageSize)
         {
             CheckAccess();
-            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, Constants.Permanent);
+            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, (int)RedirectType.Permanent);
 
             // delete rows from DB
             var dbAccess = DataAccessBaseEx.GetWorker();
@@ -503,7 +503,7 @@ namespace BVNetwork.NotFound.Controllers
                     NewUrl = ddsRequest.NewUrl,
                     OldUrl = ddsRequest.OldUrl,
                     WildCardSkipAppend = ddsRequest.WildCardSkipAppend,
-                    RedirectType = Constants.Permanent
+                    RedirectType = (int)RedirectType.Permanent
                 });
 
                 _ddsRedirectRepository.Delete(ddsRequest);
