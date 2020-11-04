@@ -22,11 +22,11 @@ namespace BVNetwork.NotFound.Core.Web
             return context;
         }
 
-        public static HttpContextBase Redirect(this HttpContextBase context, string url, int redirectType)
+        public static HttpContextBase Redirect(this HttpContextBase context, string url, RedirectType redirectType)
         {
             context.Response.Clear();
             context.Response.TrySkipIisCustomErrors = true;
-            if (redirectType == (int)RedirectType.Temporary)
+            if (redirectType == RedirectType.Temporary)
             {
                 context.Response.Redirect(url, endResponse: false);
             }

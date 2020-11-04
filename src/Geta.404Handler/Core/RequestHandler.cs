@@ -91,8 +91,9 @@ namespace BVNetwork.NotFound.Core
             {
                 LogDebug("Handled saved URL", context);
 
-                context.ClearServerError()
-                        .Redirect(newUrl.NewUrl, newUrl.RedirectType);
+                context
+                    .ClearServerError()
+                    .Redirect(newUrl.NewUrl, newUrl.RedirectType);
             }
             else if (canHandleRedirect && newUrl.State == (int)RedirectState.Deleted)
             {

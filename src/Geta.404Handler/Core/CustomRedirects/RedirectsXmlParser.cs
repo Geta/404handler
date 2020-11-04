@@ -1,6 +1,7 @@
 // Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -77,11 +78,11 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                         bool.TryParse(skipWildCardAttr.Value, out skipWildCardAppend);
                     }
 
-                    var redirectType = (int)Data.RedirectType.Permanent;
+                    var redirectType = Data.RedirectType.Permanent;
                     var redirectTypeAttr = oldNode.Attributes[RedirectType];
                     if (redirectTypeAttr != null)
                     {
-                        int.TryParse(redirectTypeAttr.Value, out redirectType);
+                        Enum.TryParse(redirectTypeAttr.Value, out redirectType);
                     }
 
                     // Create new custom redirect nodes

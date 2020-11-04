@@ -52,7 +52,7 @@ namespace BVNetwork.NotFound.Core.Data
                     CreateStringParameter("newurl", entity.NewUrl),
                     CreateIntParameter("state", entity.State),
                     CreateBoolParameter("wildcardskipappend", entity.WildCardSkipAppend),
-                    CreateIntParameter("redirectType", entity.RedirectType)),
+                    CreateIntParameter("redirectType", (int)entity.RedirectType)),
                     "An error occurred while creating a redirect.");
         }
 
@@ -74,7 +74,7 @@ namespace BVNetwork.NotFound.Core.Data
                     CreateStringParameter("newurl", entity.NewUrl),
                     CreateIntParameter("state", entity.State),
                     CreateBoolParameter("wildcardskipappend", entity.WildCardSkipAppend),
-                    CreateIntParameter("redirectType", entity.RedirectType)),
+                    CreateIntParameter("redirectType", (int)entity.RedirectType)),
                     "An error occurred while updating a redirect.");
         }
 
@@ -138,7 +138,7 @@ namespace BVNetwork.NotFound.Core.Data
                 x.Field<string>("OldUrl"),
                 x.Field<string>("NewUrl"),
                 x.Field<bool>("WildCardSkipAppend"),
-                x.Field<int>("RedirectType"))
+                x.Field<RedirectType>("RedirectType"))
             {
                 Id = Identity.NewIdentity(x.Field<Guid>("Id")),
                 State = x.Field<int>("State")

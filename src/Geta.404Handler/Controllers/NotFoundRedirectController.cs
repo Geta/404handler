@@ -87,7 +87,7 @@ namespace BVNetwork.NotFound.Controllers
         public ActionResult SaveSuggestion(string oldUrl, string newUrl, string skipWildCardAppend, int? pageNumber, int? pageSize)
         {
             CheckAccess();
-            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, (int)RedirectType.Permanent);
+            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, RedirectType.Permanent);
 
             // delete rows from DB
             var dbAccess = DataAccessBaseEx.GetWorker();
@@ -120,7 +120,7 @@ namespace BVNetwork.NotFound.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, int redirectType, int? pageNumber, int? pageSize)
+        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, RedirectType redirectType, int? pageNumber, int? pageSize)
         {
             CheckAccess();
             SaveRedirect(oldUrl, newUrl, skipWildCardAppend, redirectType);
@@ -130,7 +130,7 @@ namespace BVNetwork.NotFound.Controllers
 
         }
 
-        public void SaveRedirect(string oldUrl, string newUrl, string skipWildCardAppend, int redirectType)
+        public void SaveRedirect(string oldUrl, string newUrl, string skipWildCardAppend, RedirectType redirectType)
         {
 
             Logger.Debug("Adding redirect: '{0}' -> '{1}' ({3})", oldUrl, newUrl, redirectType);
@@ -503,7 +503,7 @@ namespace BVNetwork.NotFound.Controllers
                     NewUrl = ddsRequest.NewUrl,
                     OldUrl = ddsRequest.OldUrl,
                     WildCardSkipAppend = ddsRequest.WildCardSkipAppend,
-                    RedirectType = (int)RedirectType.Permanent
+                    RedirectType = RedirectType.Permanent
                 });
 
                 _ddsRedirectRepository.Delete(ddsRequest);

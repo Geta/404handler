@@ -105,7 +105,7 @@
                     <img src="/App_Themes/Default/Images/Tools/<%=m.WildCardSkipAppend ? "CheckBoxOn.gif" : "CheckBoxOff.gif" %>" />
                 </td>
                 <td class="shorter">
-                    <%= m.RedirectType%>
+                    <%= Html.Translate(string.Format("/gadget/redirects/{0}", m.RedirectType.ToString().ToLower()))%>
                 </td>
                 <td class="shorter delete">
                     <%= Html.ViewLink(
