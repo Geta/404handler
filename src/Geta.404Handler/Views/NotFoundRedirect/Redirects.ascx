@@ -73,8 +73,8 @@
                 </td>
                 <td class="shorter">
                     <select name="redirectType" id="redirectType">
-                        <option value="301">301</option>
-                        <option value="302">302</option>
+                        <option value="301"><%= Html.Translate("/gadget/redirects/permanent")%></option>
+                        <option value="302"><%= Html.Translate("/gadget/redirects/temporary")%></option>
                     </select>
                 </td>
                 <td class="shorter delete">

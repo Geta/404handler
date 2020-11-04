@@ -91,24 +91,14 @@ namespace BVNetwork.NotFound.Core
             {
                 LogDebug("Handled saved URL", context);
 
-                if (newUrl.RedirectType == 302)
-                {
-                    context
-                        .ClearServerError()
-                        .RedirectTemporary(newUrl.NewUrl);
-                }
-                else
-                {
-                    context
-                        .ClearServerError()
-                        .RedirectPermanent(newUrl.NewUrl);
-                }
+                context.ClearServerError()
+                        .Redirect(newUrl.NewUrl, newUrl.RedirectType);
             }
             else if (canHandleRedirect && newUrl.State == (int)RedirectState.Deleted)
             {
                 LogDebug("Handled deleted URL", context);
 
-                SetStatusCodeAndShow404(context, 410);
+                SetStatusCodeAndShow404(context, Constants.Gone);
             }
             else
             {

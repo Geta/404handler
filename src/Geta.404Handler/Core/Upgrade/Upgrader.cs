@@ -64,15 +64,15 @@ namespace BVNetwork.NotFound.Core.Upgrade
             return created;
         }
 
-        private static bool AlterRedirectsTable(DataAccessBaseEx dba)
+        private static bool AddRedirectTypeColumnToRedirectsTable(DataAccessBaseEx dba)
         {
-            Logger.Information("Alter 404 handler redirects table START");
+            Logger.Information("Alter 404 handler redirects table to add RedirectType column START");
             var alterTableScript = @"ALTER TABLE [dbo].[404Handler.Redirects]
                                             ADD [RedirectType] int NOT NULL
                                         DEFAULT (301)
                                     WITH VALUES";
             var created = dba.ExecuteNonQuery(alterTableScript);
-            Logger.Information("Alter 404 handler redirects table END");
+            Logger.Information("Alter 404 handler redirects table to add RedirectType column END");
 
             return created;
         }
@@ -141,7 +141,7 @@ namespace BVNetwork.NotFound.Core.Upgrade
 
             if (!ColumnExists("404Handler.Redirects", "RedirectType", dba))
             {
-                Valid = AlterRedirectsTable(dba);
+                Valid = AddRedirectTypeColumnToRedirectsTable(dba);
             }
 
             if (!SuggestionsTableIndexExists(dba))

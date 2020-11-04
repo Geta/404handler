@@ -9,6 +9,7 @@ using System.Security;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
+using BVNetwork.NotFound.Core;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Models;
@@ -86,7 +87,7 @@ namespace BVNetwork.NotFound.Controllers
         public ActionResult SaveSuggestion(string oldUrl, string newUrl, string skipWildCardAppend, int? pageNumber, int? pageSize)
         {
             CheckAccess();
-            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, 301);
+            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, Constants.Permanent);
 
             // delete rows from DB
             var dbAccess = DataAccessBaseEx.GetWorker();
@@ -502,7 +503,7 @@ namespace BVNetwork.NotFound.Controllers
                     NewUrl = ddsRequest.NewUrl,
                     OldUrl = ddsRequest.OldUrl,
                     WildCardSkipAppend = ddsRequest.WildCardSkipAppend,
-                    RedirectType = 301
+                    RedirectType = Constants.Permanent
                 });
 
                 _ddsRedirectRepository.Delete(ddsRequest);

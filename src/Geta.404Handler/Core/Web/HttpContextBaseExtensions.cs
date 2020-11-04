@@ -21,19 +21,19 @@ namespace BVNetwork.NotFound.Core.Web
             return context;
         }
 
-        public static HttpContextBase RedirectPermanent(this HttpContextBase context, string url)
+        public static HttpContextBase Redirect(this HttpContextBase context, string url, int redirectType)
         {
             context.Response.Clear();
             context.Response.TrySkipIisCustomErrors = true;
-            context.Response.RedirectPermanent(url, endResponse: false);
-            return context;
-        }
-
-        public static HttpContextBase RedirectTemporary(this HttpContextBase context, string url)
-        {
-            context.Response.Clear();
-            context.Response.TrySkipIisCustomErrors = true;
-            context.Response.Redirect(url, endResponse: false);
+            if (redirectType == Constants.Temporary)
+            {
+                context.Response.Redirect(url, endResponse: false);
+            }
+            else
+            {
+                context.Response.RedirectPermanent(url, endResponse: false);
+            }
+            
             return context;
         }
     }
