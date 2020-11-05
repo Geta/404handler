@@ -1,6 +1,7 @@
 // Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
+using BVNetwork.NotFound.Core.Data;
 using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 
@@ -35,6 +36,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         public int  State { get; set; }
 
+        // 301 (permanent) or 302 (temporary)
+        public RedirectType RedirectType { get; set; }
+
         /// <summary>
         /// Tells if the new url is a virtual url, not containing
         /// the base root url to redirect to. All urls starting with
@@ -59,10 +63,11 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         {
         }
 
-        public CustomRedirect(string oldUrl, string newUrl, bool skipWildCardAppend)
+        public CustomRedirect(string oldUrl, string newUrl, bool skipWildCardAppend, RedirectType redirectType)
             : this(oldUrl, newUrl)
         {
             WildCardSkipAppend = skipWildCardAppend;
+            RedirectType = redirectType;
         }
 
         public CustomRedirect(string oldUrl, string newUrl)
@@ -83,6 +88,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             OldUrl = redirect._oldUrl;
             NewUrl = redirect.NewUrl;
             WildCardSkipAppend = redirect.WildCardSkipAppend;
+            RedirectType = redirect.RedirectType;
         }
     }
 }

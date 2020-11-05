@@ -55,10 +55,24 @@ namespace BVNetwork.NotFound.Core.Upgrade
                                         [NewUrl] [nvarchar](2000) NOT NULL,
                                         [State] [int] NOT NULL,
                                         [WildCardSkipAppend] [bit] NOT NULL,
+                                        [RedirectType] [int] NOT NULL,
                                         CONSTRAINT [PK_404HandlerRedirects] PRIMARY KEY CLUSTERED ([Id] ASC) ON [PRIMARY]
                                         ) ON [PRIMARY]";
             var created = dba.ExecuteNonQuery(createTableScript);
             Logger.Information("Create 404 handler redirects table END");
+
+            return created;
+        }
+
+        private static bool AddRedirectTypeColumnToRedirectsTable(DataAccessBaseEx dba)
+        {
+            Logger.Information("Alter 404 handler redirects table to add RedirectType column START");
+            var alterTableScript = @"ALTER TABLE [dbo].[404Handler.Redirects]
+                                            ADD [RedirectType] int NOT NULL
+                                        DEFAULT (301)
+                                    WITH VALUES";
+            var created = dba.ExecuteNonQuery(alterTableScript);
+            Logger.Information("Alter 404 handler redirects table to add RedirectType column END");
 
             return created;
         }
@@ -125,6 +139,11 @@ namespace BVNetwork.NotFound.Core.Upgrade
                 Valid = CreateRedirectsTable(dba);
             }
 
+            if (!ColumnExists("404Handler.Redirects", "RedirectType", dba))
+            {
+                Valid = AddRedirectTypeColumnToRedirectsTable(dba);
+            }
+
             if (!SuggestionsTableIndexExists(dba))
             {
                 Valid = CreateSuggestionsTableIndex(dba);
@@ -142,6 +161,16 @@ namespace BVNetwork.NotFound.Core.Upgrade
                  FROM INFORMATION_SCHEMA.TABLES
                  WHERE TABLE_SCHEMA = 'dbo'
                  AND  TABLE_NAME = '{tableName}'";
+            var num = dba.ExecuteScalar(cmd);
+            return num != 0;
+        }
+
+        private static bool ColumnExists(string tableName, string columnName, DataAccessBaseEx dba)
+        {
+            var cmd = $@"SELECT 1
+                        FROM sys.columns
+                        WHERE Name = '{columnName}'
+                        AND  Object_ID = Object_ID(N'dbo.[{tableName}]')";
             var num = dba.ExecuteScalar(cmd);
             return num != 0;
         }

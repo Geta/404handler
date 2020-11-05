@@ -9,6 +9,7 @@ using System.Security;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
+using BVNetwork.NotFound.Core;
 using BVNetwork.NotFound.Core.CustomRedirects;
 using BVNetwork.NotFound.Core.Data;
 using BVNetwork.NotFound.Models;
@@ -86,7 +87,7 @@ namespace BVNetwork.NotFound.Controllers
         public ActionResult SaveSuggestion(string oldUrl, string newUrl, string skipWildCardAppend, int? pageNumber, int? pageSize)
         {
             CheckAccess();
-            SaveRedirect(oldUrl, newUrl, skipWildCardAppend);
+            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, RedirectType.Permanent);
 
             // delete rows from DB
             var dbAccess = DataAccessBaseEx.GetWorker();
@@ -119,22 +120,22 @@ namespace BVNetwork.NotFound.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, int? pageNumber, int? pageSize)
+        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, RedirectType redirectType, int? pageNumber, int? pageSize)
         {
             CheckAccess();
-            SaveRedirect(oldUrl, newUrl, skipWildCardAppend);
+            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, redirectType);
             List<CustomRedirect> redirectList = GetData(null);
             string actionInfo = string.Format(LocalizationService.Current.GetString("/gadget/redirects/saveredirect"), oldUrl, newUrl);
             return View("Index", GetRedirectIndexViewData(pageNumber, redirectList, actionInfo, null, pageSize, false, true));
 
         }
 
-        public void SaveRedirect(string oldUrl, string newUrl, string skipWildCardAppend)
+        public void SaveRedirect(string oldUrl, string newUrl, string skipWildCardAppend, RedirectType redirectType)
         {
 
-            Logger.Debug("Adding redirect: '{0}' -> '{1}'", oldUrl, newUrl);
+            Logger.Debug("Adding redirect: '{0}' -> '{1}' ({3})", oldUrl, newUrl, redirectType);
             // Get hold of the datastore
-            _redirectsService.AddOrUpdate(new CustomRedirect(oldUrl.Trim(), newUrl.Trim(), skipWildCardAppend == null ? false : true));
+            _redirectsService.AddOrUpdate(new CustomRedirect(oldUrl.Trim(), newUrl.Trim(), skipWildCardAppend != null, redirectType));
             CustomRedirectHandler.ClearCache();
 
         }
@@ -501,7 +502,8 @@ namespace BVNetwork.NotFound.Controllers
                     State = ddsRequest.State,
                     NewUrl = ddsRequest.NewUrl,
                     OldUrl = ddsRequest.OldUrl,
-                    WildCardSkipAppend = ddsRequest.WildCardSkipAppend
+                    WildCardSkipAppend = ddsRequest.WildCardSkipAppend,
+                    RedirectType = RedirectType.Permanent
                 });
 
                 _ddsRedirectRepository.Delete(ddsRequest);

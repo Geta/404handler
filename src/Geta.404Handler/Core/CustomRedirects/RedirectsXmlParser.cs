@@ -1,6 +1,7 @@
 // Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -19,6 +20,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         private const string Newurl = "new";
         private const string Oldurl = "old";
         private const string Skipwildcard = "onWildCardMatchSkipAppend";
+        private const string RedirectType = "redirectType";
 
         /// <summary>
         /// Reads the custom redirects information from the specified xml file
@@ -76,8 +78,15 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                         bool.TryParse(skipWildCardAttr.Value, out skipWildCardAppend);
                     }
 
+                    var redirectType = Data.RedirectType.Permanent;
+                    var redirectTypeAttr = oldNode.Attributes[RedirectType];
+                    if (redirectTypeAttr != null)
+                    {
+                        Enum.TryParse(redirectTypeAttr.Value, out redirectType);
+                    }
+
                     // Create new custom redirect nodes
-                    var redirect = new CustomRedirect(oldNode.InnerText, newNode.InnerText, skipWildCardAppend);
+                    var redirect = new CustomRedirect(oldNode.InnerText, newNode.InnerText, skipWildCardAppend, redirectType);
                     redirects.Add(redirect);
                 }
             }
@@ -115,6 +124,10 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                     wildCardAttribute.Value = "true";
                     oldElement.Attributes.Append(wildCardAttribute);
                 }
+
+                var redirectTypeAttribute = document.CreateAttribute(string.Empty, RedirectType, string.Empty);
+                redirectTypeAttribute.Value = redirect.RedirectType.ToString();
+                oldElement.Attributes.Append(redirectTypeAttribute);
 
                 var newElement = document.CreateElement(string.Empty, Newurl, string.Empty);
                 newElement.AppendChild(document.CreateTextNode(redirect.NewUrl.Trim()));
