@@ -1,4 +1,4 @@
-﻿// Copyright (c) Geta Digital. All rights reserved.
+// Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -120,7 +120,7 @@ namespace BVNetwork.NotFound.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, RedirectType redirectType, int? pageNumber, int? pageSize)
+        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, int? pageNumber, int? pageSize, RedirectType redirectType = RedirectType.Permanent)
         {
             CheckAccess();
             SaveRedirect(oldUrl, newUrl, skipWildCardAppend, redirectType);

@@ -87,7 +87,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             var redirectsZA = _redirectsZACache;
             if (redirectsZA == null)
             {
-                redirectsZA = _quickLookupTable.OrderByDescending(x => x.Key, StringComparer.OrdinalIgnoreCase).ToArray();
+                redirectsZA = _quickLookupTable.ToList().OrderByDescending(x => x.Value.OldUrlElementLength).ThenByDescending(x => x.Key).ToArray();
                 _redirectsZACache = redirectsZA;
             }
 
