@@ -31,8 +31,12 @@ namespace BVNetwork.NotFound.Core.Data
         {
             if (entity.Id == null)
             {
-                Create(entity);
-                return;
+                var match = GetByOldUrl(entity.OldUrl);
+                if (match == null)
+                {
+                    Create(entity);
+                    return;
+                }
             }
             Update(entity);
         }
