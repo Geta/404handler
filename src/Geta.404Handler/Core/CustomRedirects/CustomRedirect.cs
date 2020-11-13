@@ -32,14 +32,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             set => _oldUrl = value?.ToLower();
         }
 
-        public int OldUrlElementLength
-        {
-            get
-            {
-                return _oldUrl.Trim('/').Split('/').Length;
-            }
-        }
-
         public string NewUrl { get; set; }
 
         public int  State { get; set; }
