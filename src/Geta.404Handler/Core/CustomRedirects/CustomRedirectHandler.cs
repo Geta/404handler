@@ -48,7 +48,15 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
             foreach (var redirect in RedirectsService.GetAll())
             {
-                _customRedirects.Add(redirect);
+                try
+                {
+                    _customRedirects.Add(redirect);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(string.Format("An error occurred while loading redirect OldUrl = {0}", redirect.OldUrl), ex);
+                    CustomRedirectHandlerException = ex.ToString();
+                }
             }
         }
 
