@@ -1,4 +1,4 @@
-﻿// Copyright (c) Geta Digital. All rights reserved.
+// Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -120,10 +120,11 @@ namespace BVNetwork.NotFound.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, RedirectType redirectType, int? pageNumber, int? pageSize)
+        public ActionResult Save(string oldUrl, string newUrl, string skipWildCardAppend, string redirectType, int? pageNumber, int? pageSize)
         {
             CheckAccess();
-            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, redirectType);
+            RedirectType type = (RedirectType)Enum.Parse(typeof(RedirectType), redirectType);
+            SaveRedirect(oldUrl, newUrl, skipWildCardAppend, type);
             List<CustomRedirect> redirectList = GetData(null);
             string actionInfo = string.Format(LocalizationService.Current.GetString("/gadget/redirects/saveredirect"), oldUrl, newUrl);
             return View("Index", GetRedirectIndexViewData(pageNumber, redirectList, actionInfo, null, pageSize, false, true));
