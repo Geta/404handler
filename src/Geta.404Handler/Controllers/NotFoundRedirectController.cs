@@ -133,7 +133,7 @@ namespace BVNetwork.NotFound.Controllers
         public void SaveRedirect(string oldUrl, string newUrl, string skipWildCardAppend, RedirectType redirectType)
         {
 
-            Logger.Debug("Adding redirect: '{0}' -> '{1}' ({3})", oldUrl, newUrl, redirectType);
+            Logger.Debug("Adding redirect: '{0}' -> '{1}' ({2})", oldUrl, newUrl, redirectType);
             // Get hold of the datastore
             _redirectsService.AddOrUpdate(new CustomRedirect(oldUrl.Trim(), newUrl.Trim(), skipWildCardAppend != null, redirectType));
             CustomRedirectHandler.ClearCache();
