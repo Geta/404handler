@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using BVNetwork.NotFound.Core.Configuration;
 using BVNetwork.NotFound.Core.Data;
+using EPiServer;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
 {
@@ -103,7 +104,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             // url to the <new> url.
             foreach (var redirectPair in redirectsZA)
             {
-                var oldUrl = redirectPair.Key;
+                var oldUrl = Url.Encode(redirectPair.Key);
                 // See if this "old" url (the one that cannot be found) starts with one
                 if (oldUrl != null && url.StartsWith(oldUrl, StringComparison.InvariantCultureIgnoreCase))
                 {
