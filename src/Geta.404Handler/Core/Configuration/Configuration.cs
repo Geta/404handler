@@ -28,7 +28,7 @@ namespace BVNetwork.NotFound.Core.Configuration
         private const string DefIgnoredExtensions = "jpg,gif,png,css,js,ico,swf,woff";
         private static List<string> _ignoredResourceExtensions;
 
-        public const int CurrentVersion = 4;
+        public const int CurrentVersion = 5;
 
 
         // Only contains static methods for reading configuration values
