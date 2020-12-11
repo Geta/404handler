@@ -130,6 +130,20 @@ namespace BVNetwork.NotFound.Tests
             Assert.Null(actual);
         }
 
+        [Fact]
+        public void Add_updates_already_added_redirect()
+        {
+            var redirect = new CustomRedirect(DefaultOldUri.PathAndQuery, DefaultNewUri.ToString());
+            _sut.Add(redirect);
+            var updatedUrl = "http://example.com/expected";
+            var updatedRedirect = new CustomRedirect(DefaultOldUri.PathAndQuery, updatedUrl);
+
+            _sut.Add(updatedRedirect);
+
+            var actual = _sut.Find(DefaultOldUri);
+            Assert.Equal(updatedUrl, actual.NewUrl);
+        }
+
         // Regression tests
 
         /// <summary>

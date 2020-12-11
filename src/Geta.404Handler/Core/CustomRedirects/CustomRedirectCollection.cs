@@ -69,6 +69,12 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         public void Add(CustomRedirect customRedirect)
         {
+            if (_quickLookupTable.ContainsKey(customRedirect.OldUrl))
+            {
+                _quickLookupTable[customRedirect.OldUrl] = customRedirect;
+                return;
+            }
+
             // Add to quick look up table too
             _quickLookupTable.Add(customRedirect.OldUrl, customRedirect);
 
