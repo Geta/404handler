@@ -84,6 +84,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         private CustomRedirect FindInternal(string url)
         {
+            url = HttpUtility.UrlDecode(url);
             if (_quickLookupTable.TryGetValue(url, out var redirect))
             {
                 return redirect;

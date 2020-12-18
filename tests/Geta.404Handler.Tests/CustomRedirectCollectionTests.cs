@@ -262,6 +262,19 @@ namespace BVNetwork.NotFound.Tests
             Assert.NotNull(actual);
         }
 
+        [Fact]
+        public void Find_should_find_redirect_with_special_chars()
+        {
+            var requestUrl = "/old/noël";
+            var newUrl = "/new/noël";
+            var redirect = new CustomRedirect(requestUrl, newUrl);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(requestUrl.ToUri());
+
+            Assert.Equal(redirect.NewUrl, actual.NewUrl);
+        }
+
         /// <summary>
         /// https://github.com/Geta/404handler/issues/118
         /// </summary>
