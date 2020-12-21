@@ -93,7 +93,7 @@ namespace BVNetwork.NotFound.Core
 
                 context
                     .ClearServerError()
-                    .RedirectPermanent(newUrl.NewUrl);
+                    .Redirect(newUrl.NewUrl, newUrl.RedirectType);
             }
             else if (canHandleRedirect && newUrl.State == (int)RedirectState.Deleted)
             {

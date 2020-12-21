@@ -130,6 +130,20 @@ namespace BVNetwork.NotFound.Tests
             Assert.Null(actual);
         }
 
+        [Fact]
+        public void Add_updates_already_added_redirect()
+        {
+            var redirect = new CustomRedirect(DefaultOldUri.PathAndQuery, DefaultNewUri.ToString());
+            _sut.Add(redirect);
+            var updatedUrl = "http://example.com/expected";
+            var updatedRedirect = new CustomRedirect(DefaultOldUri.PathAndQuery, updatedUrl);
+
+            _sut.Add(updatedRedirect);
+
+            var actual = _sut.Find(DefaultOldUri);
+            Assert.Equal(updatedUrl, actual.NewUrl);
+        }
+
         // Regression tests
 
         /// <summary>
@@ -246,6 +260,19 @@ namespace BVNetwork.NotFound.Tests
             var actual = _sut.Find(requestUrl.ToUri());
 
             Assert.NotNull(actual);
+        }
+
+        [Fact]
+        public void Find_should_find_redirect_with_special_chars()
+        {
+            var requestUrl = "/old/noël";
+            var newUrl = "/new/noël";
+            var redirect = new CustomRedirect(requestUrl, newUrl);
+            _sut.Add(redirect);
+
+            var actual = _sut.Find(requestUrl.ToUri());
+
+            Assert.Equal(redirect.NewUrl, actual.NewUrl);
         }
 
         /// <summary>

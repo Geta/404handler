@@ -29,7 +29,7 @@ The perfect companion if you're transitioning to EPiServer from another system a
 # Installation
 `Install-Package Geta.404Handler`
 
-The package can be found in the [EPiServer Nuget Feed](http://nuget.episerver.com/).
+The package can be found in the [EPiServer Nuget Feed](https://nuget.episerver.com/package/?id=Geta.404Handler).
 
 # Configuration
 When installed, the following sections are added to your web.config:

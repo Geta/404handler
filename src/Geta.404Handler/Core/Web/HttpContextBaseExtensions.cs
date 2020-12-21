@@ -2,6 +2,7 @@
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System.Web;
+using BVNetwork.NotFound.Core.Data;
 
 namespace BVNetwork.NotFound.Core.Web
 {
@@ -21,11 +22,19 @@ namespace BVNetwork.NotFound.Core.Web
             return context;
         }
 
-        public static HttpContextBase RedirectPermanent(this HttpContextBase context, string url)
+        public static HttpContextBase Redirect(this HttpContextBase context, string url, RedirectType redirectType)
         {
             context.Response.Clear();
             context.Response.TrySkipIisCustomErrors = true;
-            context.Response.RedirectPermanent(url, endResponse: false);
+            if (redirectType == RedirectType.Temporary)
+            {
+                context.Response.Redirect(url, endResponse: false);
+            }
+            else
+            {
+                context.Response.RedirectPermanent(url, endResponse: false);
+            }
+            
             return context;
         }
     }

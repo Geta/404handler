@@ -1,6 +1,7 @@
 // Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
+using BVNetwork.NotFound.Core.Data;
 using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 
@@ -17,7 +18,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         /// old url fragment to the new one. Default value is false.
         /// </summary>
         /// <remarks>
-        /// If you want to redirect many addresses below a specifc one to
+        /// If you want to redirect many addresses below a specific one to
         /// one new url, set this to true. If we get a wild card match on
         /// this url, the new url will be used in its raw format, and the
         /// old url will not be appended to the new one.
@@ -34,6 +35,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         public string NewUrl { get; set; }
 
         public int  State { get; set; }
+
+        // 301 (permanent) or 302 (temporary)
+        public RedirectType RedirectType { get; set; }
 
         /// <summary>
         /// Tells if the new url is a virtual url, not containing
@@ -59,10 +63,11 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
         {
         }
 
-        public CustomRedirect(string oldUrl, string newUrl, bool skipWildCardAppend)
+        public CustomRedirect(string oldUrl, string newUrl, bool skipWildCardAppend, RedirectType redirectType)
             : this(oldUrl, newUrl)
         {
             WildCardSkipAppend = skipWildCardAppend;
+            RedirectType = redirectType;
         }
 
         public CustomRedirect(string oldUrl, string newUrl)
@@ -83,6 +88,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             OldUrl = redirect._oldUrl;
             NewUrl = redirect.NewUrl;
             WildCardSkipAppend = redirect.WildCardSkipAppend;
+            RedirectType = redirect.RedirectType;
         }
     }
 }

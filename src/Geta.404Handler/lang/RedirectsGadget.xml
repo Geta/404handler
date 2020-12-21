@@ -4,6 +4,9 @@
               id="en">
         <gadget>
             <redirects>
+                <redirectType>Redirect Type</redirectType>
+                <permanent>Permanent (301)</permanent>
+                <temporary>Temporary (302)</temporary>
                 <ignored>Ignored</ignored>
                 <title>Custom Redirects</title>
                 <name>Custom Redirects Manager</name>
@@ -64,6 +67,9 @@
     <language name="Norsk" id="NO">
         <gadget>
             <redirects>
+                <redirectType>Viderekoblingstype</redirectType>
+                <permanent>Fast (301)</permanent>
+                <temporary>Midlertidig (302)</temporary>
                 <ignored>Ignorert</ignored>
                 <title>Tilpassede videresendinger</title>
                 <name>Administrér videresendingsregler</name>
@@ -124,6 +130,9 @@
     <language name="Svenska" id="SV">
         <gadget>
             <redirects>
+                <redirectType>Omdirigeringstyp</redirectType>
+                <permanent>Permanent (301)</permanent>
+                <temporary>Tillfällig (302)</temporary>
                 <ignored>Ignorerad</ignored>
                 <title>Custom Redirects</title>
                 <name>Custom Redirects Manager</name>
