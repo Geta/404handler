@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1]
+- Special character support for redirect URLs.
+- Format exception fix.
+- Duplicate redirect fix.
+
 ## [1.2.0]
 
 ### Added
