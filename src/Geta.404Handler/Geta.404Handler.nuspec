@@ -15,6 +15,7 @@
         <releaseNotes>https://github.com/Geta/404handler/blob/master/CHANGELOG.md</releaseNotes>
         <language>en-US</language>
         <tags>404 NotFound 404Error Handler Geta Redirect</tags>
+        <repository type="git" url="URL" branch="BRANCH_NAME" commit="COMMIT" />
       <dependencies>
         <dependency id="EPiServer.CMS.UI.Core" version="[11.1.0, 12.0)" />
         <dependency id="EPiServer.Framework" version="[11.1.0, 12.0)" />
