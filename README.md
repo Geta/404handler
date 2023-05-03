@@ -6,7 +6,7 @@ The default [notfound.aspx](src/NotFound.aspx) page has an XSS vulnerability. If
 
 ## Description
 
-![](http://tc.geta.no/app/rest/builds/buildType:(id:GetaPackages_Geta404Handler_00ci),branch:master/statusIcon)
+[![Build Status](https://tc.geta.no/app/rest/builds/buildType:(id:GetaPackages_404Handler_00ci),branch:master/statusIcon)](https://tc.geta.no/viewType.html?buildTypeId=GetaPackages_404Handler_00ci)
 [![Platform](https://img.shields.io/badge/Platform-.NET%204.6.1-blue.svg?style=flat)](https://msdn.microsoft.com/en-us/library/w0x726c2%28v=vs.110%29.aspx)
 [![Platform](https://img.shields.io/badge/Episerver%20-%2011-orange.svg?style=flat)](https://world.episerver.com/cms/)
 
