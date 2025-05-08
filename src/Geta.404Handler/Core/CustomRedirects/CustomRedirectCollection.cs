@@ -112,7 +112,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             {
                 var oldUrl = redirectPair.Key;
                 // See if this "old" url (the one that cannot be found) starts with one
-                if (!string.IsNullOrEmpty(oldUrl) && url.StartsWith(oldUrl, StringComparison.InvariantCultureIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(oldUrl) && url.StartsWith(oldUrl, StringComparison.InvariantCultureIgnoreCase))
                 {
                     var cr = redirectPair.Value;
                     if (cr.State == (int)RedirectState.Ignored)
