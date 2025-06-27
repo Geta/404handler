@@ -406,6 +406,48 @@ namespace BVNetwork.NotFound.Tests
             Assert.Equal("/legacy/?doc=filename&param2=value", actual.NewUrl);
         }
 
+        [Fact]
+        public void Find_redirects_subsegment_with_rule_query_overriding_request_query()
+        {
+            var redirect = new CustomRedirect("/content/file", "/legacy?doc=fromRule")
+            {
+                WildCardSkipAppend = false
+            };
+            _sut.Add(redirect);
+
+            var actual = _sut.Find("/content/file/extra?doc=fromRequest&x=1".ToUri());
+
+            Assert.Equal("/legacy/extra?doc=fromRule", actual.NewUrl);
+        }
+
+        [Fact]
+        public void Find_redirects_subsegment_and_preserves_request_query_when_rule_has_none()
+        {
+            var redirect = new CustomRedirect("/content/file", "/legacy")
+            {
+                WildCardSkipAppend = false
+            };
+            _sut.Add(redirect);
+
+            var actual = _sut.Find("/content/file/extra?x=1&y=2".ToUri());
+
+            Assert.Equal("/legacy/extra?x=1&y=2", actual.NewUrl);
+        }
+
+        [Fact]
+        public void Find_redirects_subsegment_without_any_query_when_none_exist()
+        {
+            var redirect = new CustomRedirect("/content/file", "/legacy")
+            {
+                WildCardSkipAppend = false
+            };
+            _sut.Add(redirect);
+
+            var actual = _sut.Find("/content/file/extra".ToUri());
+
+            Assert.Equal("/legacy/extra", actual.NewUrl);
+        }
+
     }
 
 }

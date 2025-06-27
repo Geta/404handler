@@ -152,12 +152,12 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             var urlBase = urlParts[0];
             var urlQuery = urlParts.Length > 1 ? "?" + urlParts[1] : "";
 
-            var appendSegment = !string.IsNullOrEmpty(urlBase) ? $"/{urlBase}" : "";
-            // we ignore the original query string params
-            // whenever we want to redirect to the new 
+            var appendSegment = (!string.IsNullOrEmpty(urlBase) ? $"/{urlBase}" : "").Replace("//", "/");
+            // If the new URL has a query string, we use it.
+            // Otherwise, we preserve the query string from the original request.
             var query = !string.IsNullOrEmpty(newUrlQuery) ? newUrlQuery : urlQuery;
 
-            redirCopy.NewUrl = $"{newUrlBase}{appendSegment}{query}".Replace("//", "/");
+            redirCopy.NewUrl = $"{newUrlBase}{appendSegment}{query}";
             return redirCopy;
         }
 
