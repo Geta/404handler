@@ -135,30 +135,49 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return null;
         }
 
+        private static string AppendSlash(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "/";
+            return s.EndsWith("/") ? s : $"{s}/";
+        }
+
+        private static string RemoveTrailingSlash(string s)
+        {
+            return s?.TrimEnd('/');
+        }
+
+        private static string RemoveLeadingSlash(string s)
+        {
+            return s?.TrimStart('/');
+        }
+
         private static CustomRedirect CreateSubSegmentRedirect(string url, CustomRedirect cr, string oldUrl)
         {
-            string AppendSlashSafe(string s)
+            var redirCopy = new CustomRedirect(cr);
+            var newUrl = redirCopy.NewUrl ?? "";
+            var newUrlParts = newUrl.Split(new[] { '?' }, 2);
+            var newUrlBase = RemoveTrailingSlash(newUrlParts[0]);
+            var newUrlQuery = newUrlParts.Length > 1 ? "?" + newUrlParts[1] : "";
+
+            // if the NewUrl contains query string params, just take them into account
+            if (!string.IsNullOrEmpty(newUrlQuery))
             {
-                if (string.IsNullOrEmpty(s) || s == "/")
-                    return "/";
-                return s.EndsWith("/") ? s : $"{s}/";
+                redirCopy.NewUrl = $"{AppendSlash(newUrlBase)}{newUrlQuery}";
+            }
+            else
+            {
+                var urlParts = url.Split(new[] { '?' }, 2);
+                var urlWithoutQuery = urlParts[0];
+                var queryString = urlParts.Length > 1 ? "?" + urlParts[1] : "";
+                var appendSegment = RemoveLeadingSlash(urlWithoutQuery.Substring(oldUrl.Length));
+
+                redirCopy.NewUrl = $"{AppendSlash(newUrlBase)}{appendSegment}{queryString}";
             }
 
-            string RemoveLeadingSlash(string s) => s?.TrimStart('/');
-
-            var redirCopy = new CustomRedirect(cr);
-
-            // Extract query part (if any)
-            var questionMarkIndex = url.IndexOf("?", StringComparison.Ordinal);
-            var basePath = questionMarkIndex > -1 ? url.Substring(0, questionMarkIndex) : url;
-            var query = questionMarkIndex > -1 ? url.Substring(questionMarkIndex) : "";
-
-            var appendSegment = RemoveLeadingSlash(basePath.Substring(oldUrl.Length));
-            var newUrlBase = AppendSlashSafe(redirCopy.NewUrl);
-
-            redirCopy.NewUrl = $"{newUrlBase}{appendSegment}{query}";
             return redirCopy;
         }
+
+
 
         private static bool UrlIsOldUrlsSubSegment(string url, string oldUrl)
         {
