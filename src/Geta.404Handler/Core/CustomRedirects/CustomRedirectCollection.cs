@@ -177,8 +177,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             return redirCopy;
         }
 
-
-
         private static bool UrlIsOldUrlsSubSegment(string url, string oldUrl)
         {
             string RemoveQueryString(string u)
