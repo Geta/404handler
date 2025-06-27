@@ -1,13 +1,13 @@
 // Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
+using BVNetwork.NotFound.Core.Configuration;
+using BVNetwork.NotFound.Core.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using BVNetwork.NotFound.Core.Configuration;
-using BVNetwork.NotFound.Core.Data;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
 {
@@ -137,23 +137,20 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         private static CustomRedirect CreateSubSegmentRedirect(string url, CustomRedirect cr, string oldUrl)
         {
-            string AppendSlash(string s)
-            {
-                if (s == null)
-                    return s;
-
-                return s.EndsWith("/") ? s : $"{s}/";
-            }
-
-            string RemoveSlash(string s)
-            {
-                return s.StartsWith("/") ? s.TrimStart('/') : s;
-            }
+            string AppendSlash(string s) => string.IsNullOrEmpty(s) || s.EndsWith("/") ? s : $"{s}/";
+            string RemoveSlash(string s) => s?.TrimStart('/');
 
             var redirCopy = new CustomRedirect(cr);
-            var newUrl = url.IndexOf("?", StringComparison.Ordinal) > 0 ? redirCopy.NewUrl : AppendSlash(redirCopy.NewUrl);
-            var appendSegment = RemoveSlash(url.Substring(oldUrl.Length));
-            redirCopy.NewUrl = $"{newUrl}{appendSegment}";
+
+            // Split URL into path and query
+            var questionMarkIndex = url.IndexOf("?", StringComparison.Ordinal);
+            var basePath = questionMarkIndex > -1 ? url.Substring(0, questionMarkIndex) : url;
+            var query = questionMarkIndex > -1 ? url.Substring(questionMarkIndex) : "";
+
+            var appendSegment = RemoveSlash(basePath.Substring(oldUrl.Length));
+            var newUrlBase = AppendSlash(redirCopy.NewUrl.TrimEnd('/')); // Ensure no double slash
+
+            redirCopy.NewUrl = $"{newUrlBase}{appendSegment}{query}";
             return redirCopy;
         }
 
