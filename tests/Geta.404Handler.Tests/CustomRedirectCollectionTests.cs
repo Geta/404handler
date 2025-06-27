@@ -363,5 +363,49 @@ namespace BVNetwork.NotFound.Tests
 
             Assert.Equal(expected, actual.NewUrl);
         }
+
+        /// <summary>
+        /// New test case: From /content/file to /legacy?doc=filename&param2=value
+        /// </summary>
+        [Fact]
+        public void Find_redirects_from_file_to_legacy_with_full_query()
+        {
+            var redirect = new CustomRedirect("/content/file", "/legacy?doc=filename&param2=value");
+            _sut.Add(redirect);
+
+            var actual = _sut.Find("/content/file".ToUri());
+
+            Assert.Equal("/legacy?doc=filename&param2=value", actual.NewUrl);
+        }
+
+        /// <summary>
+        /// New test case: From /content/file/ to /legacy?doc=filename&param2=value
+        /// </summary>
+        [Fact]
+        public void Find_redirects_from_file_slash_to_legacy_with_full_query()
+        {
+            var redirect = new CustomRedirect("/content/file/", "/legacy?doc=filename&param2=value");
+            _sut.Add(redirect);
+
+            var actual = _sut.Find("/content/file/".ToUri());
+
+            Assert.Equal("/legacy?doc=filename&param2=value", actual.NewUrl);
+        }
+
+        /// <summary>
+        /// New test case: From /content/file/ to /legacy/?doc=filename&param2=value
+        /// </summary>
+        [Fact]
+        public void Find_redirects_from_file_slash_to_legacy_slash_with_full_query()
+        {
+            var redirect = new CustomRedirect("/content/file/", "/legacy/?doc=filename&param2=value");
+            _sut.Add(redirect);
+
+            var actual = _sut.Find("/content/file/".ToUri());
+
+            Assert.Equal("/legacy/?doc=filename&param2=value", actual.NewUrl);
+        }
+
     }
+
 }

@@ -1,13 +1,13 @@
 // Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
+using BVNetwork.NotFound.Core.Configuration;
+using BVNetwork.NotFound.Core.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using BVNetwork.NotFound.Core.Configuration;
-using BVNetwork.NotFound.Core.Data;
 
 namespace BVNetwork.NotFound.Core.CustomRedirects
 {
@@ -137,23 +137,27 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         private static CustomRedirect CreateSubSegmentRedirect(string url, CustomRedirect cr, string oldUrl)
         {
-            string AppendSlash(string s)
-            {
-                if (s == null)
-                    return s;
-
-                return s.EndsWith("/") ? s : $"{s}/";
-            }
-
-            string RemoveSlash(string s)
-            {
-                return s.StartsWith("/") ? s.TrimStart('/') : s;
-            }
-
             var redirCopy = new CustomRedirect(cr);
-            var newUrl = url.IndexOf("?", StringComparison.Ordinal) > 0 ? redirCopy.NewUrl : AppendSlash(redirCopy.NewUrl);
-            var appendSegment = RemoveSlash(url.Substring(oldUrl.Length));
-            redirCopy.NewUrl = $"{newUrl}{appendSegment}";
+
+            // splits new URL to query and base
+            var newUrl = redirCopy.NewUrl ?? "";
+            var newUrlParts = newUrl.Split(new[] { '?' }, 2);
+            var newUrlBase = newUrlParts[0];
+            var newUrlQuery = newUrlParts.Length > 1 ? "?" + newUrlParts[1] : "";
+
+            // splits the incoming request URL to query and base
+            // takes a segment of base in case oldUrl is only a part of it
+            var urlBaseSegment = url.Substring(oldUrl.Length);
+            var urlParts = urlBaseSegment.Split(new[] { '?' }, 2);
+            var urlBase = urlParts[0];
+            var urlQuery = urlParts.Length > 1 ? "?" + urlParts[1] : "";
+
+            var appendSegment = !string.IsNullOrEmpty(urlBase) ? $"/{urlBase}" : "";
+            // we ignore the original query string params
+            // whenever we want to redirect to the new 
+            var query = !string.IsNullOrEmpty(newUrlQuery) ? newUrlQuery : urlQuery;
+
+            redirCopy.NewUrl = $"{newUrlBase}{appendSegment}{query}".Replace("//", "/");
             return redirCopy;
         }
 
