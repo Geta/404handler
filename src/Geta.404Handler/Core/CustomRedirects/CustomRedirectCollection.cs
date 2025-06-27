@@ -159,19 +159,28 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             var newUrlBase = RemoveTrailingSlash(newUrlParts[0]);
             var newUrlQuery = newUrlParts.Length > 1 ? "?" + newUrlParts[1] : "";
 
-            // if the NewUrl contains query string params, just take them into account
+            var urlParts = url.Split(new[] { '?' }, 2);
+            var urlWithoutQuery = urlParts[0];
+            var queryString = urlParts.Length > 1 ? "?" + urlParts[1] : "";
+
+            var normalizedOldUrl = oldUrl.TrimEnd('/');
+            var segmentToAppend = urlWithoutQuery.Length > normalizedOldUrl.Length
+                ? RemoveLeadingSlash(urlWithoutQuery.Substring(normalizedOldUrl.Length))
+                : string.Empty;
+
             if (!string.IsNullOrEmpty(newUrlQuery))
             {
-                redirCopy.NewUrl = $"{AppendSlash(newUrlBase)}{newUrlQuery}";
+                // NewUrl has its own query, use it as-is, do not merge with incoming query
+                redirCopy.NewUrl = newUrlBase + newUrlQuery;
             }
             else
             {
-                var urlParts = url.Split(new[] { '?' }, 2);
-                var urlWithoutQuery = urlParts[0];
-                var queryString = urlParts.Length > 1 ? "?" + urlParts[1] : "";
-                var appendSegment = RemoveLeadingSlash(urlWithoutQuery.Substring(oldUrl.Length));
+                // Only append segment if it's non-empty
+                var finalUrl = string.IsNullOrEmpty(segmentToAppend)
+                    ? newUrlBase
+                    : AppendSlash(newUrlBase) + segmentToAppend;
 
-                redirCopy.NewUrl = $"{AppendSlash(newUrlBase)}{appendSegment}{queryString}";
+                redirCopy.NewUrl = finalUrl + queryString;
             }
 
             return redirCopy;
