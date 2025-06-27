@@ -137,18 +137,24 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         private static CustomRedirect CreateSubSegmentRedirect(string url, CustomRedirect cr, string oldUrl)
         {
-            string AppendSlash(string s) => string.IsNullOrEmpty(s) || s.EndsWith("/") ? s : $"{s}/";
-            string RemoveSlash(string s) => s?.TrimStart('/');
+            string AppendSlashSafe(string s)
+            {
+                if (string.IsNullOrEmpty(s) || s == "/")
+                    return "/";
+                return s.EndsWith("/") ? s : $"{s}/";
+            }
+
+            string RemoveLeadingSlash(string s) => s?.TrimStart('/');
 
             var redirCopy = new CustomRedirect(cr);
 
-            // Split URL into path and query
+            // Extract query part (if any)
             var questionMarkIndex = url.IndexOf("?", StringComparison.Ordinal);
             var basePath = questionMarkIndex > -1 ? url.Substring(0, questionMarkIndex) : url;
             var query = questionMarkIndex > -1 ? url.Substring(questionMarkIndex) : "";
 
-            var appendSegment = RemoveSlash(basePath.Substring(oldUrl.Length));
-            var newUrlBase = AppendSlash(redirCopy.NewUrl.TrimEnd('/')); // Ensure no double slash
+            var appendSegment = RemoveLeadingSlash(basePath.Substring(oldUrl.Length));
+            var newUrlBase = AppendSlashSafe(redirCopy.NewUrl);
 
             redirCopy.NewUrl = $"{newUrlBase}{appendSegment}{query}";
             return redirCopy;
