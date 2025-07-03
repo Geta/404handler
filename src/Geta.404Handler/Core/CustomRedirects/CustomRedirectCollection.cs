@@ -57,23 +57,17 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         private CustomRedirect FindWithOptionalDecoding(Uri urlNotFound, bool urlDecode = true)
         {
-            // Handle absolute addresses first
-            var url = urlNotFound.AbsoluteUri;
-            url = urlDecode ? HttpUtility.UrlDecode(url) : url;
-            var foundRedirect = FindInternal(url);
-
-            // Common case
-            if (foundRedirect != null) return foundRedirect;
-
-            url = urlNotFound.PathAndQuery;
-            url = urlDecode ? HttpUtility.UrlDecode(url) : url;
-            foundRedirect = FindInternal(url);
+            var absoluteUrl = urlDecode ? HttpUtility.UrlDecode(urlNotFound.AbsoluteUri) : urlNotFound.AbsoluteUri;
+            var foundRedirect = FindInternal(absoluteUrl);
 
             if (foundRedirect != null) return foundRedirect;
 
-            url = urlNotFound.AbsoluteUri;
-            url = urlDecode ? HttpUtility.UrlDecode(url) : url;
-            foundRedirect = FindInProviders(url);
+            var pathAndQuery = urlDecode ? HttpUtility.UrlDecode(urlNotFound.PathAndQuery) : urlNotFound.PathAndQuery;
+            foundRedirect = FindInternal(pathAndQuery);
+
+            if (foundRedirect != null) return foundRedirect;
+
+            foundRedirect = FindInProviders(absoluteUrl);
 
             return foundRedirect;
         }
