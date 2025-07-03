@@ -47,7 +47,7 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             var url = urlNotFound.AbsoluteUri;
             var decodedUrl = HttpUtility.UrlDecode(url);
 
-            if (string.Compare(decodedUrl, url, StringComparison.InvariantCultureIgnoreCase) != 0)
+            if (string.Compare(decodedUrl, url, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 foundRedirect = FindWithOptionalDecoding(urlNotFound, false);
             }
