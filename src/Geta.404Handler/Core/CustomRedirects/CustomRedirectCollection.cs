@@ -58,8 +58,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             url = HttpUtility.HtmlEncode(urlNotFound.PathAndQuery);
             foundRedirect = FindInternal(url);
 
-            // Handle providers
             if (foundRedirect != null) return foundRedirect;
+
+            // Handle providers
             foundRedirect = FindInProviders(urlNotFound.AbsoluteUri);
 
             return foundRedirect;
