@@ -40,29 +40,41 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         public CustomRedirect Find(Uri urlNotFound)
         {
-            // Handle absolute addresses first
-            var url = urlNotFound.AbsoluteUri;
-            var foundRedirect = FindInternal(url);
+            var foundRedirect = FindWithOptionalDecoding(urlNotFound);
 
-            // Common case
-            if (foundRedirect == null)
+            if (foundRedirect != null) return foundRedirect;
+
+            var url = urlNotFound.AbsoluteUri;
+            var decodedAbsoluteUrl = HttpUtility.UrlDecode(url);
+
+            if (string.Compare(decodedAbsoluteUrl, url, StringComparison.OrdinalIgnoreCase) != 0)
             {
-                url = urlNotFound.PathAndQuery;
-                foundRedirect = FindInternal(url);
+                foundRedirect = FindWithOptionalDecoding(urlNotFound, false);
             }
+
+            if (foundRedirect != null) return foundRedirect;
 
             // Handle legacy databases with encoded values
-            if (foundRedirect == null)
-            {
-                url = HttpUtility.HtmlEncode(url);
-                foundRedirect = FindInternal(url);
-            }
+            url = HttpUtility.HtmlEncode(urlNotFound.PathAndQuery);
+            foundRedirect = FindInternal(url);
 
-            if (foundRedirect == null)
-            {
-                url = urlNotFound.AbsoluteUri;
-                foundRedirect = FindInProviders(url);
-            }
+            if (foundRedirect != null) return foundRedirect;
+
+            // Handle providers
+            foundRedirect = FindInProviders(urlNotFound.AbsoluteUri);
+
+            return foundRedirect;
+        }
+
+        private CustomRedirect FindWithOptionalDecoding(Uri urlNotFound, bool urlDecode = true)
+        {
+            var absoluteUrl = urlDecode ? HttpUtility.UrlDecode(urlNotFound.AbsoluteUri) : urlNotFound.AbsoluteUri;
+            var foundRedirect = FindInternal(absoluteUrl);
+
+            if (foundRedirect != null) return foundRedirect;
+
+            var pathAndQuery = urlDecode ? HttpUtility.UrlDecode(urlNotFound.PathAndQuery) : urlNotFound.PathAndQuery;
+            foundRedirect = FindInternal(pathAndQuery);
 
             return foundRedirect;
         }
@@ -84,7 +96,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
         private CustomRedirect FindInternal(string url)
         {
-            url = HttpUtility.UrlDecode(url);
             if (_quickLookupTable.TryGetValue(url, out var redirect))
             {
                 return redirect;

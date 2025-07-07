@@ -448,6 +448,34 @@ namespace BVNetwork.NotFound.Tests
             Assert.Equal("/legacy/extra", actual.NewUrl);
         }
 
+
+        /// <summary>
+        /// New test case: From /encoded/oldurlå to /newurl
+        /// </summary>
+        [Fact]
+        public void Find_returnsRedirect_url_contains_utf8_encoded_character()
+        {
+            var redirect = new CustomRedirect("/encoded/oldurl%C3%A5", "/newurl");
+            _sut.Add(redirect);
+
+            var actual = _sut.Find("/encoded/oldurlå".ToUri());
+
+            Assert.Equal("/newurl", actual.NewUrl);
+        }
+
+        /// <summary>
+        /// New test case: From /encoded/oldurlå to /newurl
+        /// </summary>
+        [Fact]
+        public void Find_returnsRedirect_url_contains_utf8_unencoded_character()
+        {
+            var redirect = new CustomRedirect("/encoded/oldurlå", "/newurl");
+            _sut.Add(redirect);
+
+            var actual = _sut.Find("/encoded/oldurlå".ToUri());
+
+            Assert.Equal("/newurl", actual.NewUrl);
+        }
     }
 
 }
