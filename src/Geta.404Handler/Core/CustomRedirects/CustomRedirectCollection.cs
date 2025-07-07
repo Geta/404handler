@@ -52,6 +52,12 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
                 foundRedirect = FindWithOptionalDecoding(urlNotFound, false);
             }
 
+            if (foundRedirect != null) return foundRedirect;
+
+            // Handle legacy databases with encoded values
+            url = HttpUtility.HtmlEncode(urlNotFound.PathAndQuery);
+            foundRedirect = FindInternal(url);
+
             return foundRedirect;
         }
 
