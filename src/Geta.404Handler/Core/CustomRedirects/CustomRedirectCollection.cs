@@ -45,9 +45,9 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             if (foundRedirect != null) return foundRedirect;
 
             var url = urlNotFound.AbsoluteUri;
-            var decodedUrl = HttpUtility.UrlDecode(url);
+            var decodedAbsoluteUrl = HttpUtility.UrlDecode(url);
 
-            if (string.Compare(decodedUrl, url, StringComparison.OrdinalIgnoreCase) != 0)
+            if (string.Compare(decodedAbsoluteUrl, url, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 foundRedirect = FindWithOptionalDecoding(urlNotFound, false);
             }
@@ -57,6 +57,10 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
             // Handle legacy databases with encoded values
             url = HttpUtility.HtmlEncode(urlNotFound.PathAndQuery);
             foundRedirect = FindInternal(url);
+
+            // Handle providers
+            if (foundRedirect != null) return foundRedirect;
+            foundRedirect = FindInProviders(urlNotFound.AbsoluteUri);
 
             return foundRedirect;
         }
@@ -70,10 +74,6 @@ namespace BVNetwork.NotFound.Core.CustomRedirects
 
             var pathAndQuery = urlDecode ? HttpUtility.UrlDecode(urlNotFound.PathAndQuery) : urlNotFound.PathAndQuery;
             foundRedirect = FindInternal(pathAndQuery);
-
-            if (foundRedirect != null) return foundRedirect;
-
-            foundRedirect = FindInProviders(absoluteUrl);
 
             return foundRedirect;
         }
