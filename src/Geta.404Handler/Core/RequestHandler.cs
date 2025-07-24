@@ -1,4 +1,4 @@
-﻿// Copyright (c) Geta Digital. All rights reserved.
+// Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -21,6 +21,7 @@ namespace BVNetwork.NotFound.Core
         private readonly IConfiguration _configuration;
         private const string HandledRequestItemKey = "404handler:handled";
 
+        private const string RedirectedOnceKey = "404handler:redirected";
         private static readonly ILogger Logger = LogManager.GetLogger();
 
         public RequestHandler(
@@ -54,7 +55,7 @@ namespace BVNetwork.NotFound.Core
                 LogDebug("Not handled, custom redirect manager is set to off.", context);
                 return;
             }
-            // If we're only doing this for remote users, we need to test for local host
+// If we're only doing this for remote users, we need to test for local host
             if (_configuration.FileNotFoundHandlerMode == FileNotFoundMode.RemoteOnly)
             {
                 // Determine if we're on localhost
@@ -78,18 +79,24 @@ namespace BVNetwork.NotFound.Core
             }
 
             var query = context.Request.ServerVariables["QUERY_STRING"];
-
-            // avoid duplicate log entries
             if (query != null && query.StartsWith("404;"))
             {
                 LogDebug("Skipping request with 404; in the query string.", context);
                 return;
             }
 
+            if (context.Items.Contains(RedirectedOnceKey))
+            {
+                LogDebug("Redirect already attempted in this request, skipping to avoid loop.", context);
+                return;
+            }
+
             var canHandleRedirect = HandleRequest(context.Request.UrlReferrer, notFoundUri, out var newUrl);
             if (canHandleRedirect && newUrl.State == (int)RedirectState.Saved)
             {
-                LogDebug("Handled saved URL", context);
+                LogDebug("Handled saved URL", context); 
+                
+                context.Items[RedirectedOnceKey] = true;
 
                 context
                     .ClearServerError()
@@ -98,18 +105,15 @@ namespace BVNetwork.NotFound.Core
             else if (canHandleRedirect && newUrl.State == (int)RedirectState.Deleted)
             {
                 LogDebug("Handled deleted URL", context);
-
                 SetStatusCodeAndShow404(context, 410);
             }
             else
             {
                 LogDebug("Not handled. Current URL is ignored or no redirect found.", context);
-
                 SetStatusCodeAndShow404(context);
             }
 
             MarkHandled(context);
-
         }
 
         private bool IsHandled(HttpContextBase context)
@@ -140,22 +144,32 @@ namespace BVNetwork.NotFound.Core
 
                 if (redirect.State.Equals((int)RedirectState.Saved))
                 {
-                    // Found it, however, we need to make sure we're not running in an
-                    // infinite loop. The new url must not be the referrer to this page
-                    if (string.Compare(redirect.NewUrl, urlNotFound.PathAndQuery, StringComparison.InvariantCultureIgnoreCase) != 0)
-                    {
+                    // Prevent redirect loop
+                    var currentPath = urlNotFound.PathAndQuery;
+                    var newPath = redirect.NewUrl;
 
-                        foundRedirect = redirect;
-                        return true;
+                    if (string.Equals(newPath, currentPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        LogDebug($"Redirect leads back to the same path: {newPath}. Skipping to avoid loop.", null);
+                        return false;
                     }
+
+                    // Avoid redirecting back to the referrer (loop possibility)
+                    if (referrer != null &&
+                        string.Equals(referrer.PathAndQuery, newPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        LogDebug($"Redirect target matches referrer: {newPath}. Skipping to avoid loop.", null);
+                        return false;
+                    }
+
+                    foundRedirect = redirect;
+                    return true;
                 }
             }
             else
             {
-                // log request to database - if logging is turned on.
                 if (_configuration.Logging == LoggerMode.On)
                 {
-                    // Safe logging
                     var logUrl = _configuration.LogWithHostname ? urlNotFound.ToString() : urlNotFound.PathAndQuery;
                     _requestLogger.LogRequest(logUrl, referrer?.ToString());
                 }

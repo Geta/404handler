@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web;
 using BVNetwork.NotFound.Core;
 using BVNetwork.NotFound.Core.Configuration;
@@ -224,6 +224,28 @@ namespace BVNetwork.NotFound.Tests
             var actual = _sut.HandleRequest(DefaultOldUri, sameUri, out var _);
 
             Assert.False(actual);
+        }
+
+        [Fact]
+        public void HandleRequest_returns_false_when_redirect_matches_referrer()
+        {
+            // Arrange
+            var notFoundUri = new Uri("http://example.com/missing-page");
+            var referrerUri = new Uri("http://example.com/redirect-target");
+
+            var redirect = new CustomRedirect(notFoundUri.ToString(), (int)RedirectState.Saved, 1)
+            {
+                NewUrl = referrerUri.PathAndQuery
+            };
+
+            WhenRedirectFound(redirect);
+
+            // Act
+            var actual = _sut.HandleRequest(referrerUri, notFoundUri, out var foundRedirect);
+
+            // Assert
+            Assert.False(actual);
+            Assert.Null(foundRedirect);
         }
 
         private void WhenRedirectFound(CustomRedirect redirect)
