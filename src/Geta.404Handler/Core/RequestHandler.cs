@@ -55,7 +55,7 @@ namespace BVNetwork.NotFound.Core
                 LogDebug("Not handled, custom redirect manager is set to off.", context);
                 return;
             }
-// If we're only doing this for remote users, we need to test for local host
+            // If we're only doing this for remote users, we need to test for local host
             if (_configuration.FileNotFoundHandlerMode == FileNotFoundMode.RemoteOnly)
             {
                 // Determine if we're on localhost
@@ -79,6 +79,8 @@ namespace BVNetwork.NotFound.Core
             }
 
             var query = context.Request.ServerVariables["QUERY_STRING"];
+
+            // avoid duplicate log entries
             if (query != null && query.StartsWith("404;"))
             {
                 LogDebug("Skipping request with 404; in the query string.", context);
@@ -105,15 +107,18 @@ namespace BVNetwork.NotFound.Core
             else if (canHandleRedirect && newUrl.State == (int)RedirectState.Deleted)
             {
                 LogDebug("Handled deleted URL", context);
+
                 SetStatusCodeAndShow404(context, 410);
             }
             else
             {
                 LogDebug("Not handled. Current URL is ignored or no redirect found.", context);
+
                 SetStatusCodeAndShow404(context);
             }
 
             MarkHandled(context);
+
         }
 
         private bool IsHandled(HttpContextBase context)
@@ -168,8 +173,10 @@ namespace BVNetwork.NotFound.Core
             }
             else
             {
+                // log request to database - if logging is turned on.
                 if (_configuration.Logging == LoggerMode.On)
                 {
+                    // Safe logging
                     var logUrl = _configuration.LogWithHostname ? urlNotFound.ToString() : urlNotFound.PathAndQuery;
                     _requestLogger.LogRequest(logUrl, referrer?.ToString());
                 }
