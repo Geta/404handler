@@ -96,7 +96,7 @@ namespace BVNetwork.NotFound.Core
             var canHandleRedirect = HandleRequest(context.Request.UrlReferrer, notFoundUri, out var newUrl);
             if (canHandleRedirect && newUrl.State == (int)RedirectState.Saved)
             {
-                LogDebug("Handled saved URL", context); 
+                LogDebug("Handled saved URL", context);
                 
                 context.Items[RedirectedOnceKey] = true;
 
@@ -155,7 +155,7 @@ namespace BVNetwork.NotFound.Core
 
                     if (string.Equals(newPath, currentPath, StringComparison.OrdinalIgnoreCase))
                     {
-                        LogDebug($"Redirect leads back to the same path: {newPath}. Skipping to avoid loop.", null);
+                        Logger.Debug($"Redirect leads back to the same path: {newPath}. Skipping to avoid loop.");
                         return false;
                     }
 
@@ -163,7 +163,7 @@ namespace BVNetwork.NotFound.Core
                     if (referrer != null &&
                         string.Equals(referrer.PathAndQuery, newPath, StringComparison.OrdinalIgnoreCase))
                     {
-                        LogDebug($"Redirect target matches referrer: {newPath}. Skipping to avoid loop.", null);
+                        Logger.Debug($"Redirect target matches referrer: {newPath}. Skipping to avoid loop.");
                         return false;
                     }
 
