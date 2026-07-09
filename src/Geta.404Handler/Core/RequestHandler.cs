@@ -1,4 +1,4 @@
-﻿// Copyright (c) Geta Digital. All rights reserved.
+// Copyright (c) Geta Digital. All rights reserved.
 // Licensed under Apache-2.0. See the LICENSE file in the project root for more information
 
 using System;
@@ -21,6 +21,7 @@ namespace BVNetwork.NotFound.Core
         private readonly IConfiguration _configuration;
         private const string HandledRequestItemKey = "404handler:handled";
 
+        private const string RedirectedOnceKey = "404handler:redirected";
         private static readonly ILogger Logger = LogManager.GetLogger();
 
         public RequestHandler(
@@ -86,10 +87,18 @@ namespace BVNetwork.NotFound.Core
                 return;
             }
 
+            if (context.Items.Contains(RedirectedOnceKey))
+            {
+                LogDebug("Redirect already attempted in this request, skipping to avoid loop.", context);
+                return;
+            }
+
             var canHandleRedirect = HandleRequest(context.Request.UrlReferrer, notFoundUri, out var newUrl);
             if (canHandleRedirect && newUrl.State == (int)RedirectState.Saved)
             {
                 LogDebug("Handled saved URL", context);
+                
+                context.Items[RedirectedOnceKey] = true;
 
                 context
                     .ClearServerError()
@@ -140,14 +149,26 @@ namespace BVNetwork.NotFound.Core
 
                 if (redirect.State.Equals((int)RedirectState.Saved))
                 {
-                    // Found it, however, we need to make sure we're not running in an
-                    // infinite loop. The new url must not be the referrer to this page
-                    if (string.Compare(redirect.NewUrl, urlNotFound.PathAndQuery, StringComparison.InvariantCultureIgnoreCase) != 0)
-                    {
+                    // Prevent redirect loop
+                    var currentPath = urlNotFound.PathAndQuery;
+                    var newPath = redirect.NewUrl;
 
-                        foundRedirect = redirect;
-                        return true;
+                    if (string.Equals(newPath, currentPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Logger.Debug($"Redirect leads back to the same path: {newPath}. Skipping to avoid loop.");
+                        return false;
                     }
+
+                    // Avoid redirecting back to the referrer (loop possibility)
+                    if (referrer != null &&
+                        string.Equals(referrer.PathAndQuery, newPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Logger.Debug($"Redirect target matches referrer: {newPath}. Skipping to avoid loop.");
+                        return false;
+                    }
+
+                    foundRedirect = redirect;
+                    return true;
                 }
             }
             else
